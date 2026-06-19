@@ -47,6 +47,13 @@ hợp lý. Phân biệt rạch ròi điều đã biết với điều bạn suy 
 không phải trang trí — người đọc dựa vào nó để biết câu nào cần tự kiểm trước
 khi dùng để quyết định việc lớn, nên gắn đúng, đừng gắn 🟢 cho thứ thực ra là 🟡.
 
+Định dạng CỐ ĐỊNH (giữ nguyên giữa các lần chạy, đừng tự đổi style):
+- Tiêu đề mỗi mục viết đúng dạng "**N. TÊN MỤC**" (in đậm bằng **, KHÔNG dùng
+  #, ##, ### hoặc bất kỳ ký hiệu heading nào khác).
+- Mỗi bullet bắt đầu bằng "*" rồi xuống dòng cho bullet kế tiếp.
+- Mục 1, 3, 4, 5 dài 2-4 câu mỗi mục, không hơn không kém nhiều giữa các lần
+  chạy. Mục 6 dài đúng 1 đoạn ngắn (3-5 câu) + 1 câu hỏi cuối.
+
 Sau digest, in một dòng "---JSON---" rồi một block JSON đúng schema:
 {"themes": [...], "companies": [{"name","round","investors"}], "tech": [...],
  "deep_tech": [{"name","domain"}]}

@@ -1,0 +1,18 @@
+name = "morning-intel-webhook"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+
+# Vars không nhạy cảm (owner/repo để gọi GitHub repository_dispatch).
+# Secret thật (GEMINI_API_KEY, TELEGRAM_BOT_TOKEN, GITHUB_PAT) set bằng
+# `wrangler secret put <NAME>`, KHÔNG để ở đây (xem README phần Cloudflare).
+[vars]
+GITHUB_OWNER = "Duckduck-05"
+GITHUB_REPO = "Newnews"
+GEMINI_MODEL = "gemini-flash-lite-latest"
+
+# KV namespace dùng để đọc context item digest do main.py ghi vào (xem
+# src/deliver.py::write_items_to_kv). id phải điền sau khi chạy:
+#   wrangler kv:namespace create DIGEST_KV
+[[kv_namespaces]]
+binding = "DIGEST_KV"
+id = "4e8fd4040a6f41e091a2b3dae49b33ac"

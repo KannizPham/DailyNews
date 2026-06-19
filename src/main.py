@@ -18,7 +18,7 @@ from pathlib import Path
 
 import yaml
 
-from deliver import deliver
+from deliver import build_inline_keyboard, deliver, write_items_to_kv
 from llm_client import LLMClient
 from memory import load_kb, merge_kb_update, save_archive, save_kb, update_seen_ids
 from pipeline import (
@@ -174,8 +174,15 @@ def main() -> None:
     update_seen_ids(SEEN_PATH, [v.item.id for v in verified_items])
     logger.info("Stage 3 — xong: kb.json cập nhật, archive lưu, seen.json cập nhật.")
 
+    logger.info(
+        "Stage 3.5 — ghi context item lên Cloudflare KV cho tương tác real-time "
+        "(Worker 'Hỏi sâu thêm'/'/refresh'); optional, bỏ qua nếu thiếu secret..."
+    )
+    write_items_to_kv(verified_items)
+    inline_keyboard = build_inline_keyboard(verified_items)
+
     logger.info("Stage 4 — deliver (Telegram nếu không DRY_RUN)...")
-    delivered_ok = deliver(analysis.digest_text, dry_run=dry_run)
+    delivered_ok = deliver(analysis.digest_text, dry_run=dry_run, reply_markup=inline_keyboard)
     logger.info("Stage 4 — kết quả gửi: %s", "THÀNH CÔNG" if delivered_ok else "THẤT BẠI (xem warning ở trên)")
 
     if analysis.json_parse_error:

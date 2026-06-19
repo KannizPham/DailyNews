@@ -30,6 +30,10 @@ DEEPSEEK_MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash")
 DEEPSEEK_ENDPOINT = "https://api.deepseek.com/anthropic/v1/messages"
 
 DEFAULT_TIMEOUT_S = 30
+# Temperature thấp (mặc định API thường ~1.0) để output ổn định/nhất quán
+# giữa các lần gọi — đây vốn là phân tích/báo cáo, không cần sáng tạo cao,
+# và operator báo "chất lượng mỗi lần gửi khác nhau" -> giảm variance.
+DEFAULT_TEMPERATURE = float(os.environ.get("LLM_TEMPERATURE", "0.3"))
 
 
 class LLMError(RuntimeError):
@@ -111,7 +115,10 @@ class LLMClient:
             pass
         contents.append({"role": "user", "parts": [{"text": prompt}]})
 
-        payload: dict = {"contents": contents}
+        payload: dict = {
+            "contents": contents,
+            "generationConfig": {"temperature": DEFAULT_TEMPERATURE},
+        }
         if system:
             payload["systemInstruction"] = {"parts": [{"text": system}]}
 
@@ -151,6 +158,7 @@ class LLMClient:
         payload = {
             "model": DEEPSEEK_MODEL,
             "max_tokens": 4096,
+            "temperature": DEFAULT_TEMPERATURE,
             "messages": [{"role": "user", "content": prompt}],
         }
         if system:

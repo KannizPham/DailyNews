@@ -118,6 +118,7 @@ thay vì sinh digest 6 mục, nhưng Stage 0/1/1.5/3/4 vẫn chạy đầy đủ
 | `TELEGRAM_BOT_TOKEN` | Cần để gửi thật (không cần cho DRY_RUN) | Chat với [@BotFather](https://t.me/BotFather) trên Telegram → `/newbot` → đặt tên → BotFather trả về token dạng `123456:ABC-DEF...`. |
 | `TELEGRAM_CHAT_ID` | Cần để gửi thật | Chat với bot vừa tạo (gửi bất kỳ tin gì), sau đó mở `https://api.telegram.org/bot<TOKEN>/getUpdates` trên browser, tìm field `"chat":{"id": ...}` trong JSON trả về — đó là chat_id của bạn. |
 | `PRODUCTHUNT_TOKEN` | Tuỳ chọn | Vào [api.producthunt.com/v2/oauth/applications](https://api.producthunt.com/v2/oauth/applications) → tạo application → lấy "Developer Token". **Nếu không set, `producthunt.py` tự bỏ qua nguồn này (log warning), không block pipeline.** |
+| `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `CLOUDFLARE_KV_NAMESPACE_ID` | Tuỳ chọn (chỉ cần cho tương tác real-time) | Xem mục "Thiết lập tương tác real-time (Cloudflare Workers)" phía dưới — cần làm cùng bước thiết lập Worker. **Nếu không set, `deliver.py::write_items_to_kv` tự bỏ qua (log warning), không block pipeline.** |
 
 Không có key nào trong bảng trên là bắt buộc để pipeline **chạy được** (DRY_RUN
 hoặc thật) — pipeline luôn degrade gracefully và log rõ thiếu gì. Nhưng để có
@@ -131,6 +132,177 @@ Repo → **Settings → Secrets and variables → Actions → New repository sec
 thêm từng secret theo tên đúng như bảng trên (case-sensitive). Workflow
 `.github/workflows/daily.yml` và `weekly.yml` đã đọc đúng các tên này qua
 `${{ secrets.TÊN_SECRET }}`.
+
+---
+
+## Thiết lập tương tác real-time (Cloudflare Workers)
+
+Mặc định bot chỉ MỘT CHIỀU: cron gửi digest, operator không tương tác lại được.
+Phần này thêm webhook serverless free (Cloudflare Workers) để bot nhận lệnh
+Telegram **ngay lập tức** (không polling chậm):
+
+- `/start` — xem hướng dẫn.
+- `/refresh` — chạy lại pipeline ngay qua GitHub `repository_dispatch`.
+- Nút **"🔍 Hỏi sâu thêm"** dưới mỗi mục digest — hỏi sâu riêng item đó (đọc
+  context từ Cloudflare KV, gọi Gemini trực tiếp từ Worker).
+- Gõ câu hỏi tự do bất kỳ — bot dùng toàn bộ digest gần nhất làm nền để trả lời.
+
+Code Worker nằm ở `worker/` (root repo), JS thuần, không cần build step.
+**Phần dưới đây CẦN OPERATOR TỰ LÀM** (cần đăng nhập tài khoản Cloudflare/
+GitHub cá nhân — agent không tự động hoá được). Làm đúng thứ tự:
+
+### 1. Cài wrangler + login
+
+```bash
+npm install -g wrangler
+wrangler login
+```
+
+(Hoặc dùng `npx wrangler <command>` thay cho `wrangler <command>` ở mọi bước
+dưới đây nếu không muốn cài global.)
+
+### 2. Tạo KV namespace
+
+```bash
+cd worker
+wrangler kv:namespace create DIGEST_KV
+```
+
+Lệnh trả về một `id` dạng chuỗi hex — copy giá trị này, dán vào
+`worker/wrangler.toml`, thay chỗ `REPLACE_WITH_NAMESPACE_ID_FROM_WRANGLER_KV_NAMESPACE_CREATE`.
+
+### 3. Sửa `worker/wrangler.toml`
+
+Mở `worker/wrangler.toml`, thay 2 dòng vars:
+
+```toml
+[vars]
+GITHUB_OWNER = "<github-username-của-bạn>"
+GITHUB_REPO = "<tên-repo-này>"
+```
+
+### 4. Set secrets cho Worker
+
+Chạy trong thư mục `worker/` (mỗi lệnh sẽ hỏi nhập giá trị secret, không gõ
+trực tiếp vào terminal history):
+
+```bash
+wrangler secret put GEMINI_API_KEY
+wrangler secret put TELEGRAM_BOT_TOKEN
+wrangler secret put GITHUB_PAT
+```
+
+- `GEMINI_API_KEY`: dùng lại đúng key đã lấy ở mục "Secrets cần thiết" phía
+  trên (Google AI Studio).
+- `TELEGRAM_BOT_TOKEN`: dùng lại đúng token bot đã tạo qua @BotFather.
+- `GITHUB_PAT`: xem cách lấy ở mục 6 dưới đây.
+
+### 5. Deploy Worker
+
+```bash
+cd worker
+wrangler deploy
+```
+
+Lệnh trả về URL dạng `https://morning-intel-webhook.<subdomain>.workers.dev`
+— copy lại URL này, dùng ở bước 6.
+
+### 6. Set Telegram webhook
+
+Lấy `<TELEGRAM_BOT_TOKEN>` và `<WORKER_URL>` (từ bước 5), gọi 1 dòng curl:
+
+```bash
+curl "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=<WORKER_URL>"
+```
+
+Kết quả mong đợi: `{"ok":true,"result":true,"description":"Webhook was set"}`.
+Từ giờ mọi message/callback Telegram sẽ POST trực tiếp tới Worker, không cần
+polling.
+
+### 7. Lấy GitHub PAT (cho `/refresh`)
+
+GitHub → **Settings → Developer settings → Personal access tokens →
+Fine-grained tokens → Generate new token**:
+- Repository access: chọn đúng repo này.
+- Permissions cần tối thiểu: **Contents: Read and write** (để
+  `repository_dispatch` hoạt động — GitHub yêu cầu quyền contents cho event
+  dispatch) hoặc bật thêm quyền "Actions: Read and write" nếu fine-grained
+  token của bạn tách riêng quyền dispatch.
+- Copy token, dùng ở bước 4 (`wrangler secret put GITHUB_PAT`).
+
+### 8. Lấy Cloudflare API Token + Account ID (cho main.py ghi KV)
+
+- **API Token**: Cloudflare dashboard → **My Profile → API Tokens → Create
+  Token** → chọn template "Edit Cloudflare Workers" hoặc tạo custom token với
+  quyền **Workers KV Storage: Edit**.
+- **Account ID**: Cloudflare dashboard → chọn account → nhìn sidebar phải,
+  có field "Account ID" (chuỗi hex).
+- **Namespace ID**: chính là `id` đã lấy ở bước 2.
+
+### 9. Set 3 secret Cloudflare vào GitHub Secrets
+
+Để `src/main.py` chạy trong GitHub Actions ghi được lên Cloudflare KV, vào
+repo → **Settings → Secrets and variables → Actions → New repository
+secret**, thêm:
+
+| Secret | Giá trị |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Token từ bước 8 |
+| `CLOUDFLARE_ACCOUNT_ID` | Account ID từ bước 8 |
+| `CLOUDFLARE_KV_NAMESPACE_ID` | Namespace ID từ bước 2 |
+
+Thiếu 1 trong 3 secret này KHÔNG làm sập pipeline — `main.py` log warning và
+bỏ qua bước ghi KV (nút "Hỏi sâu thêm"/"/refresh" sẽ không hoạt động cho lần
+gửi đó, nhưng digest vẫn gửi bình thường qua Telegram).
+
+### Test local trước khi deploy thật (`wrangler dev`)
+
+Không cần deploy ngay để thử Worker — chạy local:
+
+```bash
+cd worker
+wrangler dev
+```
+
+Wrangler in ra URL local (vd `http://localhost:8787`). Giả lập 1 update
+Telegram bằng curl:
+
+```bash
+# Giả lập /start
+curl -X POST http://localhost:8787/ \
+  -H "Content-Type: application/json" \
+  -d '{"message":{"chat":{"id":123456},"text":"/start"}}'
+
+# Giả lập /refresh
+curl -X POST http://localhost:8787/ \
+  -H "Content-Type: application/json" \
+  -d '{"message":{"chat":{"id":123456},"text":"/refresh"}}'
+
+# Giả lập bấm nút "Hỏi sâu thêm" item số 1 (cần đã có key "item:1" trong KV —
+# dùng `wrangler kv:key put --binding=DIGEST_KV "item:1" '{"title":"test","url":"https://x.com","raw_text":"nội dung test","type":"research","confidence":"🟢"}' --local`
+# để seed dữ liệu test trước khi gọi callback dưới đây)
+curl -X POST http://localhost:8787/ \
+  -H "Content-Type: application/json" \
+  -d '{"callback_query":{"id":"cb1","message":{"chat":{"id":123456}},"data":"qa:1"}}'
+
+# Giả lập câu hỏi tự do
+curl -X POST http://localhost:8787/ \
+  -H "Content-Type: application/json" \
+  -d '{"message":{"chat":{"id":123456},"text":"item nào đáng chú ý nhất hôm nay?"}}'
+```
+
+Vì `wrangler dev` không có secret thật trừ khi bạn set `.dev.vars` (file local,
+KHÔNG commit) với nội dung tương tự `GEMINI_API_KEY=...`, `TELEGRAM_BOT_TOKEN=...`,
+`GITHUB_PAT=...` — Worker sẽ log lỗi rõ "thiếu X" giống cơ chế graceful-degrade
+của pipeline Python, không silent fail.
+
+### ⚠️ Cảnh báo privacy (nhắc lại)
+
+Nhánh "Hỏi sâu thêm"/free-text Q&A gọi **CÙNG GEMINI_API_KEY free tier** như
+pipeline chính — áp dụng đúng cảnh báo data privacy ở đầu README: Gemini free
+tier có thể dùng prompt để train, chỉ nội dung tin công khai (title/url/
+raw_text rút gọn của các nguồn công khai) được gửi đi, không có dữ liệu cá
+nhân nào trong context KV.
 
 ---
 
@@ -200,7 +372,10 @@ web-search thật).
 
 - `daily.yml`: cron `0 23 * * *` UTC (= 6h sáng giờ VN), chạy `python
   src/main.py`, commit + push `state/`, `archive/`, `knowledge/` ngược vào
-  repo. Cần `permissions: contents: write` (đã set trong workflow).
+  repo. Cần `permissions: contents: write` (đã set trong workflow). Cũng nhận
+  trigger `repository_dispatch` (event_type `refresh-digest`) — đây là cách
+  Cloudflare Worker gọi lại pipeline khi operator gõ `/refresh` trên Telegram
+  (xem mục "Thiết lập tương tác real-time" phía trên).
 - `weekly.yml`: cron Chủ nhật `0 23 * * 0` UTC, chạy `python src/weekly.py`.
 
 Cả 2 đều có `workflow_dispatch` để chạy thủ công từ tab Actions khi cần test.

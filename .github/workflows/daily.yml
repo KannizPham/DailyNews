@@ -5,6 +5,11 @@ on:
     # 0 23 * * * UTC = 6h sáng giờ VN (Asia/Ho_Chi_Minh, UTC+7), mỗi ngày.
     - cron: "0 23 * * *"
   workflow_dispatch: {}
+  # Trigger thủ công từ Cloudflare Worker khi operator gõ /refresh trên
+  # Telegram (xem worker/src/index.js::handleRefresh). Cron + workflow_dispatch
+  # giữ nguyên, chỉ thêm trigger này bên cạnh.
+  repository_dispatch:
+    types: [refresh-digest]
 
 permissions:
   contents: write
@@ -32,6 +37,9 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PRODUCTHUNT_TOKEN: ${{ secrets.PRODUCTHUNT_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_KV_NAMESPACE_ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
         run: python src/main.py
 
       - name: Commit state/archive/knowledge
