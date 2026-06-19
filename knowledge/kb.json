@@ -1,5 +1,17 @@
 {
   "companies": {
+    "AA-Briefcase": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": [],
+          "round": "Show HN"
+        }
+      ]
+    },
     "Acrab": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -96,6 +108,18 @@
         }
       ]
     },
+    "PinLeads": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": [],
+          "round": "Show HN"
+        }
+      ]
+    },
     "Plane": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -146,6 +170,12 @@
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
+    "MinSurf": {
+      "count": 1,
+      "domain": "materials science",
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19"
+    },
     "Modos E-Paper": {
       "count": 1,
       "domain": "Display Hardware",
@@ -167,6 +197,12 @@
     "Shared Mobile Storage": {
       "count": 1,
       "domain": "Energy Storage",
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19"
+    },
+    "Triangulene-based Superatomic Graphene": {
+      "count": 1,
+      "domain": "materials science",
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     }
@@ -348,6 +384,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Knowledge Conflict Resolution for LLM": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "Masked Latent Fields": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -396,6 +438,18 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Robust Q-learning": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Rule Violation Score": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "Rust": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -429,13 +483,13 @@
   },
   "themes": {
     "AI Application Layer": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "notes": []
