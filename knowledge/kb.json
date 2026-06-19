@@ -1,5 +1,29 @@
 {
   "companies": {
+    "Acrab": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": "Not disclosed",
+          "round": "Cumulative $350M"
+        }
+      ]
+    },
+    "Continue": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": "N/A",
+          "round": "End of life"
+        }
+      ]
+    },
     "Funding Societies": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -47,9 +71,27 @@
           "round": "unknown"
         }
       ]
+    },
+    "Xero": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": "N/A",
+          "round": "N/A"
+        }
+      ]
     }
   },
   "deep_tech": {
+    "Acrab Compute": {
+      "count": 1,
+      "domain": "AI Infrastructure",
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19"
+    },
     "Iroh Networking": {
       "count": 1,
       "domain": "Decentralized Computing",
@@ -77,13 +119,13 @@
       "pattern_notes": []
     },
     "/": {
-      "count": 1,
+      "count": 3,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
     },
     "A": {
-      "count": 1,
+      "count": 3,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -107,7 +149,7 @@
       "pattern_notes": []
     },
     "N": {
-      "count": 1,
+      "count": 4,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -118,8 +160,20 @@
       "last_seen": "2026-06-19",
       "pattern_notes": []
     },
-    "e": {
+    "c": {
       "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "pattern_notes": []
+    },
+    "d": {
+      "count": 2,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "pattern_notes": []
+    },
+    "e": {
+      "count": 2,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -131,7 +185,7 @@
       "pattern_notes": []
     },
     "i": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -143,7 +197,7 @@
       "pattern_notes": []
     },
     "l": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -155,19 +209,19 @@
       "pattern_notes": []
     },
     "o": {
-      "count": 2,
+      "count": 4,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
     },
     "s": {
-      "count": 1,
+      "count": 3,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
     },
     "t": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -186,6 +240,12 @@
     }
   },
   "tech": {
+    "Agentic compute stack": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "BigQuery ML": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -199,6 +259,12 @@
       "notes": []
     },
     "GitHub Security": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "IDE integration": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
@@ -228,6 +294,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Token compression": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "ZFS": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -237,6 +309,18 @@
   },
   "themes": {
     "AI Application Layer": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "AI Confidence Gap": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Agentic Infrastructure": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
@@ -291,6 +375,12 @@
       "notes": []
     },
     "Time Series Foundation Models": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Token Compression Skepticism": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
