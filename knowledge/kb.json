@@ -12,6 +12,18 @@
         }
       ]
     },
+    "Chatwoot": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": "N/A",
+          "round": "N/A"
+        }
+      ]
+    },
     "Continue": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -84,6 +96,18 @@
         }
       ]
     },
+    "Plane": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "rounds": [
+        {
+          "date": "2026-06-19",
+          "investors": "N/A",
+          "round": "N/A"
+        }
+      ]
+    },
     "Xero": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -104,6 +128,12 @@
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
+    "Al-doped ZnO": {
+      "count": 1,
+      "domain": "Semiconductors / Advanced Materials",
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19"
+    },
     "Iroh Networking": {
       "count": 1,
       "domain": "Decentralized Computing",
@@ -119,6 +149,12 @@
     "Modos E-Paper": {
       "count": 1,
       "domain": "Display Hardware",
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19"
+    },
+    "Perovskite Nanocrystals": {
+      "count": 1,
+      "domain": "Optoelectronics / Advanced Materials",
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
@@ -143,13 +179,13 @@
       "pattern_notes": []
     },
     "/": {
-      "count": 3,
+      "count": 5,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
     },
     "A": {
-      "count": 3,
+      "count": 5,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -173,7 +209,7 @@
       "pattern_notes": []
     },
     "N": {
-      "count": 4,
+      "count": 6,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "pattern_notes": []
@@ -264,6 +300,12 @@
     }
   },
   "tech": {
+    "Active Learning": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "Agentic compute stack": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -276,7 +318,19 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Conformal Prediction": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "E-Paper": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Flow Matching Models": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
@@ -300,7 +354,31 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Missing Not At Random (MNAR) Mechanisms": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "Networking Stack": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Off-Policy Evaluation": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Open-source Customer Support": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Open-source Project Management": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
@@ -351,13 +429,13 @@
   },
   "themes": {
     "AI Application Layer": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "notes": []
@@ -369,7 +447,7 @@
       "notes": []
     },
     "Agentic Infrastructure": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
       "notes": []
@@ -392,7 +470,19 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Material Science for Optoelectronics": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
     "On-premise Sovereignty": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Open Source as Moat": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
@@ -441,6 +531,12 @@
       "notes": []
     },
     "Token Compression Skepticism": {
+      "count": 1,
+      "first_seen": "2026-06-19",
+      "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Uncertainty Quantification": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
