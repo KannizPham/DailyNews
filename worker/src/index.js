@@ -315,6 +315,16 @@ async function handleCallbackQuery(callbackQuery, env) {
     return;
   }
 
+  const itemTitle = itemCtx.title || "item";
+
+  // Bấm nút chỉ gửi callback_query ngầm cho Worker, KHÔNG tự hiện thành tin
+  // nhắn nào trong chat Telegram của operator -> nếu chỉ gửi thẳng câu trả
+  // lời, operator đọc lại sau sẽ không biết bot đang trả lời cho câu hỏi/mục
+  // nào. Echo lại rõ "đang hỏi sâu về gì" thành 1 tin riêng TRƯỚC, đóng vai
+  // tin "của operator" trong luồng hội thoại (Telegram không cho Worker gửi
+  // thay mặt operator, nên đây là cách gần nhất để luồng đọc lại còn hiểu được).
+  await sendMessage(env, chatId, `🔍 Hỏi sâu thêm: "${itemTitle}"\n⏳ Đang phân tích...`);
+
   const prompt = buildDeepDivePrompt(itemCtx);
   const result = await callGemini(env, prompt);
   if (!result.ok) {
@@ -324,7 +334,7 @@ async function handleCallbackQuery(callbackQuery, env) {
   await sendMessage(env, chatId, result.text);
   // Ghi vào lịch sử hội thoại để nếu operator hỏi tiếp tự do ngay sau đó
   // ("vậy nó khác gì X?"), bot vẫn nhớ vừa đào sâu item nào.
-  await appendConversation(env, chatId, `[Hỏi sâu] ${itemCtx.title || "item"}`, result.text);
+  await appendConversation(env, chatId, `[Hỏi sâu] ${itemTitle}`, result.text);
 }
 
 function buildDeepDivePrompt(itemCtx) {
