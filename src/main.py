@@ -18,7 +18,7 @@ from pathlib import Path
 
 import yaml
 
-from deliver import build_inline_keyboard, deliver, write_items_to_kv
+from deliver import build_inline_keyboard, deliver, write_items_to_kv, write_trends_to_kv
 from enrich import enrich_items
 from llm_client import LLMClient
 from memory import load_kb, merge_kb_update, save_archive, save_kb, update_seen_ids
@@ -184,10 +184,12 @@ def main() -> None:
     logger.info("Stage 3 — xong: kb.json cập nhật, archive lưu, seen.json cập nhật.")
 
     logger.info(
-        "Stage 3.5 — ghi context item lên Cloudflare KV cho tương tác real-time "
-        "(Worker 'Hỏi sâu thêm'/'/refresh'); optional, bỏ qua nếu thiếu secret..."
+        "Stage 3.5 — ghi context item + tóm tắt xu hướng (kb.json) lên Cloudflare "
+        "KV cho tương tác real-time (Worker 'Hỏi sâu thêm'/'/refresh'/'/trends'); "
+        "optional, bỏ qua nếu thiếu secret..."
     )
     kv_write_ok = write_items_to_kv(verified_items)
+    write_trends_to_kv(kb)
     # Chỉ gắn nút "Hỏi sâu thêm" khi ghi KV thành công — nếu không, nút sẽ
     # bấm vào nhưng Worker không tìm thấy context (đã xảy ra thật khi thiếu
     # secret Cloudflare ở GitHub Actions, gây lỗi "Không tìm thấy context").

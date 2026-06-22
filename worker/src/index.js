@@ -6,11 +6,17 @@
  *   2. command /refresh HOẶC callback_query "refresh" (nút nhanh dưới /start)
  *      -> trigger lại pipeline qua GitHub repository_dispatch (event_type
  *      "refresh-digest"). Cả 2 đường dùng chung handleRefresh().
- *   3. callback_query "qa:<key>" (bấm nút "🔍 Hỏi sâu thêm" dưới digest)
+ *   3. command /trends         -> đọc tóm tắt kb.json (key "trends:latest",
+ *      ghi bởi src/deliver.py::write_trends_to_kv sau Stage 3) -> trả top
+ *      themes/companies/tech/deep_tech tích luỹ qua các ngày, KHÔNG cần gọi
+ *      LLM (đọc thẳng số liệu, rẻ và xác định được).
+ *   4. callback_query "qa:<key>" (bấm nút "🔍 Hỏi sâu thêm" dưới digest)
  *      -> đọc context item từ KV (key ghi bởi src/deliver.py qua
  *      write_items_to_kv), hỏi Gemini đào sâu thêm, reply.
- *   4. text tự do khác         -> coi là câu hỏi follow-up, dùng toàn bộ
- *      context "latest_items" trong KV làm nền, hỏi Gemini, trả lời.
+ *   5. text tự do khác         -> coi là câu hỏi follow-up, dùng toàn bộ
+ *      context "latest_items" + "trends:latest" trong KV làm nền, CỘNG lịch
+ *      sử hội thoại gần đây của chính chat_id đó (key "conv:<chatId>") để
+ *      trả lời có tính liên tục, không phải hỏi-đáp rời rạc từng lần.
  *
  * Nguyên tắc: KHÔNG để Telegram timeout im lặng — mọi nhánh lỗi (KV rỗng,
  * Gemini lỗi, GitHub API lỗi) đều phải sendMessage báo lỗi rõ cho operator.
@@ -20,6 +26,13 @@
  */
 
 const TELEGRAM_API = (token, method) => `https://api.telegram.org/bot${token}/${method}`;
+
+// Lịch sử hội thoại theo chat_id — giữ tối đa 6 lượt hỏi-đáp gần nhất (12
+// entry user+model), đủ để trả lời "liên tục" mà không phình prompt vô hạn.
+const CONV_MAX_ENTRIES = 12;
+// TTL dài hơn item context (48h) vì đây là trí nhớ "của operator" nên muốn
+// giữ qua nhiều ngày, nhưng không vĩnh viễn để tránh KV phình theo thời gian.
+const CONV_TTL_SECONDS = 7 * 24 * 3600;
 
 export default {
   async fetch(request, env, ctx) {
@@ -79,11 +92,21 @@ async function handleMessage(message, env) {
     return;
   }
 
+  if (text === "/trends" || text.startsWith("/trends ")) {
+    await handleTrends(chatId, env);
+    return;
+  }
+
+  if (text === "/forget" || text.startsWith("/forget ")) {
+    await handleForget(chatId, env);
+    return;
+  }
+
   if (text.startsWith("/")) {
     await sendMessage(
       env,
       chatId,
-      "Lệnh không nhận diện được. Lệnh có sẵn: /start, /refresh. Hoặc gõ câu hỏi tự do về digest gần nhất."
+      "Lệnh không nhận diện được. Lệnh có sẵn: /start, /refresh, /trends, /forget. Hoặc gõ câu hỏi tự do về digest gần nhất."
     );
     return;
   }
@@ -103,8 +126,10 @@ const WELCOME_TEXT = `👋 Chào operator!
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
 • /refresh — chạy lại pipeline ngay (digest mới sẽ tới trong vài phút).
+• /trends — xem xu hướng tích luỹ (themes/companies/tech xuất hiện nhiều lần qua các ngày), không chỉ digest hôm nay.
+• /forget — xoá lịch sử hội thoại đã nhớ với bot, bắt đầu lại từ đầu.
 • Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để hỏi sâu riêng item đó.
-• Hoặc gõ thẳng câu hỏi tự do — bot sẽ dùng digest gần nhất làm nền để trả lời.
+• Hoặc gõ thẳng câu hỏi tự do — bot nhớ vài lượt hỏi-đáp gần nhất với bạn nên có thể hỏi tiếp/nối ý, không cần lặp lại context.
 
 👇 Hoặc bấm nút nhanh dưới đây:`;
 
@@ -154,6 +179,83 @@ async function handleRefresh(chatId, env) {
     }
   } catch (err) {
     await sendMessage(env, chatId, `⚠️ Lỗi gọi GitHub API để refresh: ${escapeForTelegram(String(err))}`);
+  }
+}
+
+// ---------------------------------------------------------------------
+// /trends -> đọc thẳng "trends:latest" trong KV (không gọi LLM)
+// ---------------------------------------------------------------------
+
+async function handleTrends(chatId, env) {
+  if (!env.DIGEST_KV) {
+    await sendMessage(env, chatId, "Worker thiếu binding KV (DIGEST_KV) — không đọc được dữ liệu xu hướng.");
+    return;
+  }
+
+  let raw;
+  try {
+    raw = await env.DIGEST_KV.get("trends:latest");
+  } catch (err) {
+    await sendMessage(env, chatId, `Lỗi đọc KV: ${escapeForTelegram(String(err))}`);
+    return;
+  }
+
+  if (!raw) {
+    await sendMessage(
+      env,
+      chatId,
+      "Chưa có dữ liệu xu hướng tích luỹ (cần ít nhất 1 lần pipeline chạy xong Stage 3 — xem src/deliver.py::write_trends_to_kv)."
+    );
+    return;
+  }
+
+  let trends;
+  try {
+    trends = JSON.parse(raw);
+  } catch (err) {
+    await sendMessage(env, chatId, "Dữ liệu xu hướng trong KV bị hỏng (không parse được JSON).");
+    return;
+  }
+
+  await sendMessage(env, chatId, buildTrendsMessage(trends));
+}
+
+function buildTrendsMessage(trends) {
+  const section = (emoji, label, list) => {
+    if (!list || !list.length) return `${emoji} ${label}: (chưa có dữ liệu)`;
+    const lines = list
+      .slice(0, 8)
+      .map((x, i) => `${i + 1}. ${x.name} — ${x.count} lần (gần nhất ${x.last_seen})`);
+    return `${emoji} ${label}:\n${lines.join("\n")}`;
+  };
+
+  return [
+    "📊 Xu hướng tích luỹ (toàn bộ lịch sử digest, không chỉ hôm nay):",
+    "",
+    section("🧠", "Themes", trends.themes),
+    "",
+    section("🏢", "Companies", trends.companies),
+    "",
+    section("🛠️", "Tech", trends.tech),
+    "",
+    section("🔬", "Deep tech", trends.deep_tech),
+  ].join("\n");
+}
+
+// ---------------------------------------------------------------------
+// /forget -> xoá lịch sử hội thoại của chat_id này
+// ---------------------------------------------------------------------
+
+async function handleForget(chatId, env) {
+  if (!env.DIGEST_KV) {
+    await sendMessage(env, chatId, "Worker thiếu binding KV (DIGEST_KV) — không có gì để xoá.");
+    return;
+  }
+  try {
+    await env.DIGEST_KV.delete(`conv:${chatId}`);
+    await sendMessage(env, chatId, "🧹 Đã xoá lịch sử hội thoại. Bắt đầu lại từ đầu.");
+  } catch (err) {
+    await sendMessage(env, chatId, `Lỗi xoá lịch sử hội thoại: ${escapeForTelegram(String(err))}`);
   }
 }
 
@@ -214,7 +316,15 @@ async function handleCallbackQuery(callbackQuery, env) {
   }
 
   const prompt = buildDeepDivePrompt(itemCtx);
-  await askGeminiAndReply(env, chatId, prompt, "deep-dive");
+  const result = await callGemini(env, prompt);
+  if (!result.ok) {
+    await sendMessage(env, chatId, result.error);
+    return;
+  }
+  await sendMessage(env, chatId, result.text);
+  // Ghi vào lịch sử hội thoại để nếu operator hỏi tiếp tự do ngay sau đó
+  // ("vậy nó khác gì X?"), bot vẫn nhớ vừa đào sâu item nào.
+  await appendConversation(env, chatId, `[Hỏi sâu] ${itemCtx.title || "item"}`, result.text);
 }
 
 function buildDeepDivePrompt(itemCtx) {
@@ -236,7 +346,8 @@ Hãy giải thích sâu hơn: cơ chế/why-now/bối cảnh, dựa đúng nội
 }
 
 // ---------------------------------------------------------------------
-// Free-text follow-up -> dùng toàn bộ "latest_items" trong KV
+// Free-text follow-up -> dùng "latest_items" + "trends:latest" + lịch sử
+// hội thoại của chat_id này trong KV
 // ---------------------------------------------------------------------
 
 async function handleFreeTextQuestion(chatId, question, env) {
@@ -245,32 +356,48 @@ async function handleFreeTextQuestion(chatId, question, env) {
     return;
   }
 
-  let raw;
-  try {
-    raw = await env.DIGEST_KV.get("latest_items");
-  } catch (err) {
-    await sendMessage(env, chatId, `Lỗi đọc KV: ${escapeForTelegram(String(err))}`);
-    return;
-  }
+  const [rawItems, rawTrends, history] = await Promise.all([
+    env.DIGEST_KV.get("latest_items"),
+    env.DIGEST_KV.get("trends:latest"),
+    getConversation(env, chatId),
+  ]);
 
-  if (!raw) {
+  if (!rawItems) {
     await sendMessage(env, chatId, "Chưa có digest nào để hỏi, đợi lần chạy đầu tiên.");
     return;
   }
 
   let items;
   try {
-    items = JSON.parse(raw);
+    items = JSON.parse(rawItems);
   } catch (err) {
     await sendMessage(env, chatId, "Context digest gần nhất trong KV bị hỏng (không parse được JSON).");
     return;
   }
 
-  const prompt = buildFreeTextPrompt(items, question);
-  await askGeminiAndReply(env, chatId, prompt, "free-text-qa");
+  // trends:latest là optional (chỉ có nếu pipeline đã chạy ít nhất 1 lần với
+  // secret Cloudflare đủ) -> thiếu thì vẫn trả lời được, chỉ thiếu phần RAG
+  // xu hướng dài hạn, KHÔNG block câu hỏi.
+  let trends = null;
+  if (rawTrends) {
+    try {
+      trends = JSON.parse(rawTrends);
+    } catch (err) {
+      trends = null;
+    }
+  }
+
+  const prompt = buildFreeTextPrompt(items, trends, history, question);
+  const result = await callGemini(env, prompt);
+  if (!result.ok) {
+    await sendMessage(env, chatId, result.error);
+    return;
+  }
+  await sendMessage(env, chatId, result.text);
+  await appendConversation(env, chatId, question, result.text);
 }
 
-function buildFreeTextPrompt(items, question) {
+function buildFreeTextPrompt(items, trends, history, question) {
   const itemsBlock = (Array.isArray(items) ? items : [])
     .map((it, idx) => {
       return `[Item ${idx + 1}] (${it.type || "?"}, confidence ${it.confidence || "?"})
@@ -280,25 +407,93 @@ Raw: ${truncate(it.raw_text || "", 1200)}`;
     })
     .join("\n\n");
 
-  return `Bạn là research analyst riêng của operator. Dưới đây là toàn bộ item trong
-digest gần nhất (đã có nhãn confidence 🟢🟡🔴 gắn sẵn, không tự đổi nhãn).
-Operator hỏi một câu follow-up tự do. Trả lời ngắn gọn, tiếng Việt, CHỈ dựa
-trên nội dung dưới đây — nếu không đủ thông tin để trả lời, nói thẳng "không
-đủ thông tin trong digest để trả lời câu này" thay vì bịa.
+  const trendsBlock = trends ? formatTrendsForPrompt(trends) : "(chưa có dữ liệu xu hướng tích luỹ)";
+  const historyBlock = formatConversationHistory(history);
 
+  return `Bạn là research analyst riêng của operator, đã trao đổi với operator nhiều lượt
+trước đó (xem lịch sử hội thoại bên dưới) — trả lời với tinh thần liên tục, có thể
+nối tiếp ý đã trao đổi trước nếu liên quan, KHÔNG cần lặp lại y nguyên thông tin
+operator đã biết rồi.
+
+LỊCH SỬ HỘI THOẠI GẦN ĐÂY (cũ nhất trước, mới nhất sau):
+${historyBlock}
+
+DỮ LIỆU XU HƯỚNG TÍCH LUỸ (themes/companies/tech xuất hiện nhiều lần qua các ngày,
+KHÔNG chỉ digest hôm nay):
+${trendsBlock}
+
+DIGEST GẦN NHẤT:
 ${itemsBlock}
 
-Câu hỏi của operator: ${question}`;
+Trả lời ngắn gọn, tiếng Việt, CHỈ dựa trên nội dung trên (digest + xu hướng tích luỹ +
+lịch sử hội thoại) — nếu không đủ thông tin để trả lời, nói thẳng "không đủ thông tin
+để trả lời câu này" thay vì bịa.
+
+Câu hỏi mới của operator: ${question}`;
+}
+
+function formatTrendsForPrompt(trends) {
+  const section = (label, list) => {
+    if (!list || !list.length) return "";
+    const lines = list
+      .slice(0, 10)
+      .map((x) => `- ${x.name} (xuất hiện ${x.count} lần, gần nhất ${x.last_seen})`);
+    return `${label}:\n${lines.join("\n")}`;
+  };
+  const blocks = [
+    section("Themes", trends.themes),
+    section("Companies", trends.companies),
+    section("Tech", trends.tech),
+    section("Deep tech", trends.deep_tech),
+  ].filter(Boolean);
+  return blocks.length ? blocks.join("\n\n") : "(rỗng)";
+}
+
+// ---------------------------------------------------------------------
+// Lịch sử hội thoại (conv:<chatId>) — trí nhớ "native" của bot với từng
+// operator, tách biệt theo chat_id, tự trim/expire để không phình KV.
+// ---------------------------------------------------------------------
+
+async function getConversation(env, chatId) {
+  if (!env.DIGEST_KV) return [];
+  try {
+    const raw = await env.DIGEST_KV.get(`conv:${chatId}`);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error("getConversation lỗi:", err);
+    return [];
+  }
+}
+
+async function appendConversation(env, chatId, userText, modelText) {
+  if (!env.DIGEST_KV) return;
+  const history = await getConversation(env, chatId);
+  history.push({ role: "user", text: truncate(userText, 500) });
+  history.push({ role: "model", text: truncate(modelText, 1000) });
+  const trimmed = history.slice(-CONV_MAX_ENTRIES);
+  try {
+    await env.DIGEST_KV.put(`conv:${chatId}`, JSON.stringify(trimmed), {
+      expirationTtl: CONV_TTL_SECONDS,
+    });
+  } catch (err) {
+    console.error("appendConversation lỗi:", err);
+  }
+}
+
+function formatConversationHistory(turns) {
+  if (!turns || !turns.length) return "(chưa có lịch sử hội thoại trước đó)";
+  return turns.map((t) => `${t.role === "user" ? "Operator" : "Bot"}: ${t.text}`).join("\n");
 }
 
 // ---------------------------------------------------------------------
 // Gemini call (raw HTTP, không SDK)
 // ---------------------------------------------------------------------
 
-async function askGeminiAndReply(env, chatId, prompt, contextLabel) {
+async function callGemini(env, prompt) {
   if (!env.GEMINI_API_KEY) {
-    await sendMessage(env, chatId, "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời.");
-    return;
+    return { ok: false, error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời." };
   }
 
   const model = env.GEMINI_MODEL || "gemini-2.5-flash";
@@ -316,25 +511,19 @@ async function askGeminiAndReply(env, chatId, prompt, contextLabel) {
 
     if (!resp.ok) {
       const body = await resp.text();
-      await sendMessage(
-        env,
-        chatId,
-        `⚠️ Gemini lỗi (${contextLabel}, status ${resp.status}): ${truncate(body, 300)}`
-      );
-      return;
+      return { ok: false, error: `⚠️ Gemini lỗi (status ${resp.status}): ${truncate(body, 300)}` };
     }
 
     const data = await resp.json();
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) {
-      await sendMessage(env, chatId, `⚠️ Gemini trả response không có nội dung (${contextLabel}).`);
-      return;
+      return { ok: false, error: "⚠️ Gemini trả response không có nội dung." };
     }
 
-    await sendMessage(env, chatId, text);
+    return { ok: true, text };
   } catch (err) {
-    await sendMessage(env, chatId, `⚠️ Lỗi gọi Gemini (${contextLabel}): ${escapeForTelegram(String(err))}`);
+    return { ok: false, error: `⚠️ Lỗi gọi Gemini: ${escapeForTelegram(String(err))}` };
   }
 }
 

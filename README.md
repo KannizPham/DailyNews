@@ -143,9 +143,18 @@ Telegram **ngay lập tức** (không polling chậm):
 
 - `/start` — xem hướng dẫn.
 - `/refresh` — chạy lại pipeline ngay qua GitHub `repository_dispatch`.
+- `/trends` — xem xu hướng tích luỹ (themes/companies/tech/deep_tech xuất
+  hiện nhiều lần qua các ngày, đọc thẳng từ kb.json, không qua LLM) — "1 nơi"
+  để nắm bắt xu hướng dài hạn, không chỉ digest hôm nay.
+- `/forget` — xoá lịch sử hội thoại đã nhớ với bot (xem mục Q&A dưới), bắt
+  đầu lại từ đầu.
 - Nút **"🔍 Hỏi sâu thêm"** dưới mỗi mục digest — hỏi sâu riêng item đó (đọc
   context từ Cloudflare KV, gọi Gemini trực tiếp từ Worker).
-- Gõ câu hỏi tự do bất kỳ — bot dùng toàn bộ digest gần nhất làm nền để trả lời.
+- Gõ câu hỏi tự do bất kỳ — bot dùng digest gần nhất + tóm tắt xu hướng tích
+  luỹ (`trends:latest`) làm nền để trả lời, **VÀ nhớ tối đa 6 lượt hỏi-đáp
+  gần nhất** của riêng chat đó (key `conv:<chat_id>` trong KV, TTL 7 ngày)
+  để trả lời nối tiếp được câu hỏi trước — không phải hỏi-đáp rời rạc từng
+  lần như trước.
 
 Code Worker nằm ở `worker/` (root repo), JS thuần, không cần build step.
 **Phần dưới đây CẦN OPERATOR TỰ LÀM** (cần đăng nhập tài khoản Cloudflare/
@@ -252,8 +261,8 @@ secret**, thêm:
 | `CLOUDFLARE_KV_NAMESPACE_ID` | Namespace ID từ bước 2 |
 
 Thiếu 1 trong 3 secret này KHÔNG làm sập pipeline — `main.py` log warning và
-bỏ qua bước ghi KV (nút "Hỏi sâu thêm"/"/refresh" sẽ không hoạt động cho lần
-gửi đó, nhưng digest vẫn gửi bình thường qua Telegram).
+bỏ qua bước ghi KV (nút "Hỏi sâu thêm"/"/refresh"/"/trends" sẽ không hoạt
+động cho lần gửi đó, nhưng digest vẫn gửi bình thường qua Telegram).
 
 ### Test local trước khi deploy thật (`wrangler dev`)
 

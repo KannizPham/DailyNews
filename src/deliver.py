@@ -183,13 +183,31 @@ def build_inline_keyboard(verified_items: list) -> Optional[dict]:
     return {"inline_keyboard": buttons}
 
 
-def _kv_put(key: str, value: str, account_id: str, namespace_id: str, api_token: str) -> bool:
+def _kv_put(
+    key: str,
+    value: str,
+    account_id: str,
+    namespace_id: str,
+    api_token: str,
+    ttl_seconds: int = KV_TTL_SECONDS,
+) -> bool:
     url = CLOUDFLARE_KV_URL.format(account_id=account_id, namespace_id=namespace_id, key=key)
     try:
+        # QUAN TRỌNG: API Cloudflare KV (PUT .../values/{key}) yêu cầu body
+        # multipart/form-data cho field "value"/"expiration_ttl" (xem docs
+        # Cloudflare "Write key-value pair"). Dùng requests.put(..., data=dict)
+        # gửi application/x-www-form-urlencoded -> Cloudflare KHÔNG parse được
+        # field, lưu nguyên văn chuỗi "value=...&expiration_ttl=..." làm value
+        # (bug thật đã phát hiện: Worker đọc lại bị "JSON.parse" lỗi vì value
+        # không phải JSON nữa). Dùng `files=` với tuple (None, x) để buộc
+        # requests encode đúng multipart/form-data, không phải url-encoded.
         resp = requests.put(
             url,
             headers={"Authorization": f"Bearer {api_token}"},
-            data={"value": value, "expiration_ttl": str(KV_TTL_SECONDS)},
+            files={
+                "value": (None, value),
+                "expiration_ttl": (None, str(ttl_seconds)),
+            },
             timeout=DEFAULT_TIMEOUT_S,
         )
         if resp.status_code != 200:
@@ -270,6 +288,77 @@ def write_items_to_kv(verified_items: list) -> bool:
         logger.warning("deliver.py: ghi Cloudflare KV có lỗi một phần, xem warning ở trên.")
 
     return all_ok
+
+
+# Top-N mỗi mục (themes/companies/tech/deep_tech) ghi lên KV cho lệnh
+# Telegram "/trends" — kb.json đầy đủ sẽ phình to theo thời gian, không nên
+# đẩy nguyên file lên KV (free tier giới hạn dung lượng value, và Worker
+# chỉ cần top items để trả lời, không cần toàn bộ lịch sử).
+KB_TRENDS_TOP_N = 15
+# "trends:latest" là lớp tích luỹ dài hạn (khác item context 48h) — giữ
+# TTL dài (30 ngày) để vẫn còn dữ liệu nếu pipeline lỡ 1-2 ngày không chạy,
+# nhưng không set vĩnh viễn (key sẽ được pipeline ngày mai ghi đè lại).
+KB_TRENDS_TTL_SECONDS = 30 * 24 * 3600
+
+
+def build_trends_summary(kb: dict) -> dict:
+    """Tóm tắt kb.json thành top-N theo count mỗi mục (themes/companies/tech/
+    deep_tech), dùng làm dữ liệu cho lệnh "/trends" và làm RAG context bổ
+    sung cho free-text Q&A ở Worker (xem worker/src/index.js)."""
+
+    def top_n(section: dict, n: int = KB_TRENDS_TOP_N) -> list[dict]:
+        entries = [
+            {
+                "name": name,
+                "count": v.get("count", 0),
+                "last_seen": v.get("last_seen", ""),
+            }
+            for name, v in section.items()
+        ]
+        entries.sort(key=lambda x: x["count"], reverse=True)
+        return entries[:n]
+
+    return {
+        "themes": top_n(kb.get("themes", {})),
+        "companies": top_n(kb.get("companies", {})),
+        "tech": top_n(kb.get("tech", {})),
+        "deep_tech": top_n(kb.get("deep_tech", {})),
+    }
+
+
+def write_trends_to_kv(kb: dict) -> bool:
+    """Ghi tóm tắt kb.json (build_trends_summary) lên Cloudflare KV key
+    "trends:latest" để Worker trả lời lệnh "/trends" và làm RAG context.
+
+    OPTIONAL: thiếu secret Cloudflare -> log warning, trả False, KHÔNG
+    raise (đúng nguyên tắc graceful-degrade của project)."""
+    api_token = os.environ.get("CLOUDFLARE_API_TOKEN")
+    account_id = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
+    namespace_id = os.environ.get("CLOUDFLARE_KV_NAMESPACE_ID")
+
+    if not api_token or not account_id or not namespace_id:
+        logger.warning(
+            "deliver.py: thiếu CLOUDFLARE_API_TOKEN/CLOUDFLARE_ACCOUNT_ID/"
+            "CLOUDFLARE_KV_NAMESPACE_ID -> bỏ qua ghi 'trends:latest' (lệnh "
+            "'/trends' trên Worker sẽ không có dữ liệu cho tới khi set secret)."
+        )
+        return False
+
+    summary = build_trends_summary(kb)
+    ok = _kv_put(
+        key="trends:latest",
+        value=json.dumps(summary, ensure_ascii=False),
+        account_id=account_id,
+        namespace_id=namespace_id,
+        api_token=api_token,
+        ttl_seconds=KB_TRENDS_TTL_SECONDS,
+    )
+    if ok:
+        logger.info(
+            "deliver.py: đã ghi 'trends:latest' (top %d mỗi mục) lên Cloudflare KV.",
+            KB_TRENDS_TOP_N,
+        )
+    return ok
 
 
 def deliver(

@@ -14,7 +14,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from deliver import build_inline_keyboard, write_items_to_kv  # noqa: E402
+from deliver import (  # noqa: E402
+    build_inline_keyboard,
+    build_trends_summary,
+    write_items_to_kv,
+    write_trends_to_kv,
+)
 
 
 @dataclass
@@ -87,3 +92,33 @@ def test_write_items_to_kv_empty_list_returns_false(monkeypatch):
     monkeypatch.setenv("CLOUDFLARE_KV_NAMESPACE_ID", "fake-namespace")
 
     assert write_items_to_kv([]) is False
+
+
+def test_build_trends_summary_sorts_by_count_desc_and_caps_top_n():
+    kb = {
+        "themes": {
+            "A": {"count": 1, "last_seen": "2026-06-19"},
+            "B": {"count": 5, "last_seen": "2026-06-20"},
+            "C": {"count": 3, "last_seen": "2026-06-21"},
+        },
+        "companies": {},
+        "tech": {},
+        "deep_tech": {},
+    }
+
+    summary = build_trends_summary(kb)
+
+    assert [e["name"] for e in summary["themes"]] == ["B", "C", "A"]
+    assert summary["themes"][0] == {"name": "B", "count": 5, "last_seen": "2026-06-20"}
+    assert summary["companies"] == []
+
+
+def test_write_trends_to_kv_graceful_degrade_when_missing_secrets(monkeypatch):
+    monkeypatch.delenv("CLOUDFLARE_API_TOKEN", raising=False)
+    monkeypatch.delenv("CLOUDFLARE_ACCOUNT_ID", raising=False)
+    monkeypatch.delenv("CLOUDFLARE_KV_NAMESPACE_ID", raising=False)
+
+    kb = {"themes": {"X": {"count": 1, "last_seen": "2026-06-19"}}}
+    result = write_trends_to_kv(kb)  # không raise là pass
+
+    assert result is False
