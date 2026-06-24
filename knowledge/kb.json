@@ -49,9 +49,9 @@
       ]
     },
     "Anthropic": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "rounds": [
         {
           "date": "2026-06-22",
@@ -69,6 +69,11 @@
             "Menlo Ventures"
           ],
           "round": "Series D"
+        },
+        {
+          "date": "2026-06-24",
+          "investors": null,
+          "round": null
         }
       ]
     },
@@ -300,12 +305,29 @@
       ]
     },
     "Meta": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-23",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "rounds": [
         {
           "date": "2026-06-23",
+          "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-06-24",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "Microsoft": {
+      "count": 1,
+      "first_seen": "2026-06-24",
+      "last_seen": "2026-06-24",
+      "rounds": [
+        {
+          "date": "2026-06-24",
           "investors": null,
           "round": null
         }
@@ -335,10 +357,22 @@
         }
       ]
     },
+    "NousResearch": {
+      "count": 1,
+      "first_seen": "2026-06-24",
+      "last_seen": "2026-06-24",
+      "rounds": [
+        {
+          "date": "2026-06-24",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "OpenAI": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-24",
       "rounds": [
         {
           "date": "2026-06-19",
@@ -349,6 +383,11 @@
         },
         {
           "date": "2026-06-22",
+          "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-06-24",
           "investors": null,
           "round": null
         }
@@ -602,11 +641,23 @@
       "first_seen": "2026-06-22",
       "last_seen": "2026-06-22"
     },
+    "Origami Circuit Board": {
+      "count": 1,
+      "domain": "Advanced Materials / Flexible Electronics",
+      "first_seen": "2026-06-24",
+      "last_seen": "2026-06-24"
+    },
     "Perovskite Nanocrystals": {
       "count": 1,
       "domain": "Optoelectronics / Advanced Materials",
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
+    },
+    "RFIC design": {
+      "count": 1,
+      "domain": "AI-driven chip design",
+      "first_seen": "2026-06-24",
+      "last_seen": "2026-06-24"
     },
     "RLM Library": {
       "count": 1,
@@ -865,27 +916,27 @@
   },
   "tech": {
     "AI Agent Control": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI Agents": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI Workflow": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI agent internet access": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-19",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI agentic engineering": {
@@ -1003,9 +1054,9 @@
       "notes": []
     },
     "LLM": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "LLM Memory": {
@@ -1185,21 +1236,21 @@
   },
   "themes": {
     "AI Application Layer": {
-      "count": 11,
+      "count": 12,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 10,
+      "count": 11,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI Engineering": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "AI Operating Model": {
@@ -1209,9 +1260,9 @@
       "notes": []
     },
     "Agentic Infrastructure": {
-      "count": 10,
+      "count": 11,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "Agritech": {
@@ -1227,9 +1278,9 @@
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-23",
+      "last_seen": "2026-06-24",
       "notes": []
     },
     "Community-driven Development": {
