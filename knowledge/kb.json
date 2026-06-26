@@ -1,5 +1,17 @@
 {
   "companies": {
+    "3Cat": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "rounds": [
+        {
+          "date": "2026-06-26",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "AA-Briefcase": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -357,6 +369,18 @@
         }
       ]
     },
+    "Navegar": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "rounds": [
+        {
+          "date": "2026-06-26",
+          "investors": "Swedfund",
+          "round": "Fund III"
+        }
+      ]
+    },
     "NousResearch": {
       "count": 1,
       "first_seen": "2026-06-24",
@@ -534,10 +558,10 @@
       "last_seen": "2026-06-19"
     },
     "Advanced Materials": {
-      "count": 1,
-      "domain": "Energy",
+      "count": 2,
+      "domain": "new materials",
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-22"
+      "last_seen": "2026-06-26"
     },
     "Agritech": {
       "count": 1,
@@ -564,10 +588,16 @@
       "last_seen": "2026-06-22"
     },
     "Autonomy Stack": {
-      "count": 2,
-      "domain": "Autonomy Stack",
+      "count": 3,
+      "domain": "EV & autonomous",
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-22"
+      "last_seen": "2026-06-26"
+    },
+    "Battery Tech": {
+      "count": 1,
+      "domain": "energy & battery",
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26"
     },
     "Contextual Emotion AI": {
       "count": 1,
@@ -580,6 +610,12 @@
       "domain": "Autonomous Underwater Vehicle (AUV) maneuvering modeling",
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
+    },
+    "Energy Storage": {
+      "count": 1,
+      "domain": "energy & battery",
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26"
     },
     "Grid Capacity Utilization": {
       "count": 1,
@@ -787,6 +823,12 @@
       "last_seen": "2026-06-22",
       "pattern_notes": []
     },
+    "S": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "pattern_notes": []
+    },
     "SoftBank (exited)": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -812,21 +854,21 @@
       "pattern_notes": []
     },
     "d": {
-      "count": 3,
+      "count": 5,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-26",
       "pattern_notes": []
     },
     "e": {
-      "count": 10,
+      "count": 11,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-26",
       "pattern_notes": []
     },
     "f": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-26",
       "pattern_notes": []
     },
     "h": {
@@ -854,9 +896,9 @@
       "pattern_notes": []
     },
     "n": {
-      "count": 12,
+      "count": 13,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-26",
       "pattern_notes": []
     },
     "o": {
@@ -890,9 +932,9 @@
       "pattern_notes": []
     },
     "u": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-26",
       "pattern_notes": []
     },
     "v": {
@@ -902,9 +944,9 @@
       "pattern_notes": []
     },
     "w": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-19",
+      "last_seen": "2026-06-26",
       "pattern_notes": []
     },
     "y": {
@@ -916,21 +958,21 @@
   },
   "tech": {
     "AI Agent Control": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "AI Agents": {
-      "count": 7,
+      "count": 8,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "AI Workflow": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "AI agent internet access": {
@@ -1029,6 +1071,12 @@
       "last_seen": "2026-06-23",
       "notes": []
     },
+    "Generative Models": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "notes": []
+    },
     "GitHub Security": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1054,9 +1102,9 @@
       "notes": []
     },
     "LLM": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "LLM Memory": {
@@ -1155,6 +1203,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Reinforcement Learning": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "notes": []
+    },
     "Ring all-reduce": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1236,9 +1290,9 @@
   },
   "themes": {
     "AI Application Layer": {
-      "count": 12,
+      "count": 13,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "AI Confidence Gap": {
@@ -1248,9 +1302,9 @@
       "notes": []
     },
     "AI Engineering": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "AI Operating Model": {
@@ -1260,9 +1314,9 @@
       "notes": []
     },
     "Agentic Infrastructure": {
-      "count": 11,
+      "count": 12,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "Agritech": {
@@ -1278,9 +1332,9 @@
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 7,
+      "count": 8,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "Community-driven Development": {
@@ -1313,10 +1367,22 @@
       "last_seen": "2026-06-22",
       "notes": []
     },
+    "EV & Autonomous": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "notes": []
+    },
     "Economic Affordability": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Energy & Battery": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "Energy & Grid": {
@@ -1329,6 +1395,12 @@
       "count": 1,
       "first_seen": "2026-06-20",
       "last_seen": "2026-06-20",
+      "notes": []
+    },
+    "Generative Modeling": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "Geopolitics": {
@@ -1361,6 +1433,12 @@
       "last_seen": "2026-06-22",
       "notes": []
     },
+    "OOD / Long-tailed learning": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "notes": []
+    },
     "On-premise Sovereignty": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1385,6 +1463,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Quant Trading": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
+      "notes": []
+    },
     "Quantum-enhanced Distributed Training": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1407,6 +1491,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "SEA Fintech / Payments / Startup Ecosystem": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "SEA Startup Ecosystem": {
@@ -1443,6 +1533,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Uncertainty": {
+      "count": 1,
+      "first_seen": "2026-06-26",
+      "last_seen": "2026-06-26",
       "notes": []
     },
     "Uncertainty Quantification": {
