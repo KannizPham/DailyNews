@@ -1,5 +1,17 @@
 {
   "companies": {
+    "360": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "rounds": [
+        {
+          "date": "2026-06-27",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "3Cat": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -214,6 +226,18 @@
           "date": "2026-06-26",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "DeepSeek AI": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "rounds": [
+        {
+          "date": "2026-06-27",
+          "investors": null,
+          "round": null
         }
       ]
     },
@@ -487,6 +511,18 @@
         }
       ]
     },
+    "Sakana AI": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "rounds": [
+        {
+          "date": "2026-06-27",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "Seedcamp": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -571,6 +607,18 @@
         }
       ]
     },
+    "comma.ai": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "rounds": [
+        {
+          "date": "2026-06-27",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "lyogavin": {
       "count": 1,
       "first_seen": "2026-06-23",
@@ -650,6 +698,12 @@
       "domain": "AI/Cognitive Science",
       "first_seen": "2026-06-23",
       "last_seen": "2026-06-23"
+    },
+    "DSpark": {
+      "count": 1,
+      "domain": "AI / LLM Optimization",
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27"
     },
     "Differentiable Composite Approximation Framework": {
       "count": 1,
@@ -794,6 +848,12 @@
       "domain": "Logistics/Clean Energy",
       "first_seen": "2026-06-22",
       "last_seen": "2026-06-22"
+    },
+    "openpilot": {
+      "count": 1,
+      "domain": "Autonomy Stack",
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27"
     }
   },
   "investors": {
@@ -1051,6 +1111,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "AI models": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "notes": []
+    },
     "Active Learning": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1097,6 +1163,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Fintech engineering patterns": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "Flow Matching Models": {
@@ -1159,6 +1231,12 @@
       "last_seen": "2026-06-26",
       "notes": []
     },
+    "LLM KV cache trimming": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "notes": []
+    },
     "LLM Memory": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -1169,6 +1247,18 @@
       "count": 1,
       "first_seen": "2026-06-22",
       "last_seen": "2026-06-22",
+      "notes": []
+    },
+    "LLM inference optimization": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "notes": []
+    },
+    "Linux Pressure Stall Information (PSI)": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "Local AI Inference": {
@@ -1273,6 +1363,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Robotics operating system": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "notes": []
+    },
     "Robust Q-learning": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1295,6 +1391,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Speculative decoding": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "System Prompts": {
@@ -1342,9 +1444,9 @@
   },
   "themes": {
     "AI Application Layer": {
-      "count": 14,
+      "count": 15,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "AI Confidence Gap": {
@@ -1354,9 +1456,9 @@
       "notes": []
     },
     "AI Engineering": {
-      "count": 7,
+      "count": 8,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "AI Operating Model": {
@@ -1378,15 +1480,21 @@
       "notes": []
     },
     "Autonomy Stack": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-27",
+      "notes": []
+    },
+    "Biotech": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 9,
+      "count": 10,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "Community-driven Development": {
@@ -1443,6 +1551,12 @@
       "last_seen": "2026-06-23",
       "notes": []
     },
+    "Fintech Engineering": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
+      "notes": []
+    },
     "Founder Resilience": {
       "count": 1,
       "first_seen": "2026-06-20",
@@ -1465,6 +1579,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "LLM Optimization": {
+      "count": 1,
+      "first_seen": "2026-06-27",
+      "last_seen": "2026-06-27",
       "notes": []
     },
     "Material Science for Optoelectronics": {
