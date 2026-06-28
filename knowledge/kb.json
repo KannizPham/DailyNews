@@ -97,9 +97,9 @@
       ]
     },
     "Anthropic": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-28",
       "rounds": [
         {
           "date": "2026-06-22",
@@ -127,6 +127,11 @@
           "date": "2026-06-26",
           "investors": "N/A",
           "round": "N/A"
+        },
+        {
+          "date": "2026-06-28",
+          "investors": null,
+          "round": null
         }
       ]
     },
@@ -253,6 +258,18 @@
         }
       ]
     },
+    "Ford": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
+      "rounds": [
+        {
+          "date": "2026-06-28",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "Funding Societies": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -278,9 +295,9 @@
       ]
     },
     "Google": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-28",
       "rounds": [
         {
           "date": "2026-06-19",
@@ -289,6 +306,11 @@
         },
         {
           "date": "2026-06-22",
+          "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-06-28",
           "investors": null,
           "round": null
         }
@@ -382,9 +404,9 @@
       ]
     },
     "Meta": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-23",
-      "last_seen": "2026-06-24",
+      "last_seen": "2026-06-28",
       "rounds": [
         {
           "date": "2026-06-23",
@@ -393,6 +415,11 @@
         },
         {
           "date": "2026-06-24",
+          "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-06-28",
           "investors": null,
           "round": null
         }
@@ -535,6 +562,18 @@
         }
       ]
     },
+    "Semgrep": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
+      "rounds": [
+        {
+          "date": "2026-06-28",
+          "investors": null,
+          "round": null
+        }
+      ]
+    },
     "SignalDesk": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -604,6 +643,18 @@
           "date": "2026-06-19",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "Xiaomi": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
+      "rounds": [
+        {
+          "date": "2026-06-28",
+          "investors": null,
+          "round": null
         }
       ]
     },
@@ -682,10 +733,16 @@
       "last_seen": "2026-06-22"
     },
     "Autonomy Stack": {
-      "count": 3,
-      "domain": "EV & autonomous",
+      "count": 4,
+      "domain": "EV & Autonomy",
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-26"
+      "last_seen": "2026-06-28"
+    },
+    "Battery Chemistry": {
+      "count": 1,
+      "domain": "EV & Autonomy",
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28"
     },
     "Battery Tech": {
       "count": 1,
@@ -826,10 +883,10 @@
       "last_seen": "2026-06-20"
     },
     "Sensor Stack": {
-      "count": 1,
-      "domain": "AI/Robotics",
+      "count": 2,
+      "domain": "EV & Autonomy",
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-20"
+      "last_seen": "2026-06-28"
     },
     "Shared Mobile Storage": {
       "count": 1,
@@ -1076,9 +1133,9 @@
       "notes": []
     },
     "AI Agents": {
-      "count": 9,
+      "count": 10,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "AI Workflow": {
@@ -1135,10 +1192,22 @@
       "last_seen": "2026-06-20",
       "notes": []
     },
+    "BPE tokenizer": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
+      "notes": []
+    },
     "BigQuery ML": {
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "C/CUDA": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Chatbots": {
@@ -1171,6 +1240,12 @@
       "last_seen": "2026-06-27",
       "notes": []
     },
+    "FlashAttention": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
+      "notes": []
+    },
     "Flow Matching Models": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1184,9 +1259,9 @@
       "notes": []
     },
     "Generative AI": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-20",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Generative Modeling": {
@@ -1226,9 +1301,9 @@
       "notes": []
     },
     "LLM": {
-      "count": 8,
+      "count": 9,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "LLM KV cache trimming": {
@@ -1444,21 +1519,21 @@
   },
   "themes": {
     "AI Application Layer": {
-      "count": 15,
+      "count": 16,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-27",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 12,
+      "count": 13,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "AI Engineering": {
-      "count": 8,
+      "count": 9,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-27",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "AI Operating Model": {
@@ -1468,9 +1543,9 @@
       "notes": []
     },
     "Agentic Infrastructure": {
-      "count": 13,
+      "count": 14,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Agritech": {
@@ -1492,9 +1567,9 @@
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 10,
+      "count": 11,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-27",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Community-driven Development": {
@@ -1521,6 +1596,12 @@
       "last_seen": "2026-06-22",
       "notes": []
     },
+    "Distribution": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
+      "notes": []
+    },
     "ESG/Sustainability in Logistics": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -1531,6 +1612,12 @@
       "count": 1,
       "first_seen": "2026-06-26",
       "last_seen": "2026-06-26",
+      "notes": []
+    },
+    "EV & Autonomy": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Economic Affordability": {
@@ -1564,9 +1651,9 @@
       "notes": []
     },
     "Generative Modeling": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-26",
-      "last_seen": "2026-06-26",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Geopolitics": {
@@ -1594,9 +1681,9 @@
       "notes": []
     },
     "Moat": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Nuclear Energy Revival": {
@@ -1633,6 +1720,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Policy & Geopolitics": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Quant Trading": {
@@ -1693,6 +1786,12 @@
       "count": 1,
       "first_seen": "2026-06-22",
       "last_seen": "2026-06-22",
+      "notes": []
+    },
+    "Sustainability": {
+      "count": 1,
+      "first_seen": "2026-06-28",
+      "last_seen": "2026-06-28",
       "notes": []
     },
     "Systemic Security Risks": {
