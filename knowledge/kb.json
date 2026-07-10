@@ -135,9 +135,9 @@
       ]
     },
     "Anthropic": {
-      "count": 9,
+      "count": 10,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-07-06",
+      "last_seen": "2026-07-10",
       "rounds": [
         {
           "date": "2026-06-22",
@@ -185,6 +185,11 @@
           "date": "2026-07-06",
           "investors": null,
           "round": null
+        },
+        {
+          "date": "2026-07-10",
+          "investors": [],
+          "round": "N/A"
         }
       ]
     },
@@ -197,6 +202,32 @@
           "date": "2026-07-07",
           "investors": "not_specified",
           "round": "not_specified"
+        }
+      ]
+    },
+    "Apple": {
+      "count": 1,
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10",
+      "rounds": [
+        {
+          "date": "2026-07-10",
+          "investors": [],
+          "round": "N/A"
+        }
+      ]
+    },
+    "Atome": {
+      "count": 1,
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10",
+      "rounds": [
+        {
+          "date": "2026-07-10",
+          "investors": [
+            "Asia United Bank"
+          ],
+          "round": "wholesale facility"
         }
       ]
     },
@@ -557,6 +588,18 @@
         }
       ]
     },
+    "Kyutai Labs": {
+      "count": 1,
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10",
+      "rounds": [
+        {
+          "date": "2026-07-10",
+          "investors": [],
+          "round": "N/A"
+        }
+      ]
+    },
     "LINE MAN Wongnai": {
       "count": 1,
       "first_seen": "2026-07-08",
@@ -795,9 +838,9 @@
       ]
     },
     "OpenAI": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "rounds": [
         {
           "date": "2026-06-19",
@@ -830,6 +873,11 @@
           "date": "2026-07-09",
           "investors": null,
           "round": null
+        },
+        {
+          "date": "2026-07-10",
+          "investors": [],
+          "round": "N/A"
         }
       ]
     },
@@ -1425,6 +1473,12 @@
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
+    "Peter G. Neumann's work": {
+      "count": 1,
+      "domain": "System Dependability",
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10"
+    },
     "Product Lifecycle Management (PLM)": {
       "count": 1,
       "domain": "Software Engineering",
@@ -1515,6 +1569,12 @@
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
+    "Unified Memory": {
+      "count": 1,
+      "domain": "AI Model Optimization",
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10"
+    },
     "Wave Propagation": {
       "count": 1,
       "domain": "Physics, RF Engineering",
@@ -1587,6 +1647,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "pattern_notes": []
+    },
+    "Asia United Bank": {
+      "count": 1,
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10",
       "pattern_notes": []
     },
     "Atinum Investment": {
@@ -1910,9 +1976,9 @@
   },
   "tech": {
     "AI Agent Control": {
-      "count": 11,
+      "count": 12,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "AI Agents": {
@@ -1939,10 +2005,16 @@
       "last_seen": "2026-07-08",
       "notes": []
     },
+    "AI Model Optimization": {
+      "count": 1,
+      "first_seen": "2026-07-10",
+      "last_seen": "2026-07-10",
+      "notes": []
+    },
     "AI Workflow": {
-      "count": 10,
+      "count": 11,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "AI agent internet access": {
@@ -2144,9 +2216,9 @@
       "notes": []
     },
     "Generative Modeling": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-06-23",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "Generative Models": {
@@ -2198,9 +2270,9 @@
       "notes": []
     },
     "LLM": {
-      "count": 17,
+      "count": 18,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "LLM (Codex)": {
@@ -2542,15 +2614,15 @@
       "notes": []
     },
     "AI Application Layer": {
-      "count": 26,
+      "count": 27,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 22,
+      "count": 23,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "AI Education": {
@@ -2560,9 +2632,9 @@
       "notes": []
     },
     "AI Engineering": {
-      "count": 18,
+      "count": 19,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "AI Infrastructure": {
@@ -2626,9 +2698,9 @@
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 19,
+      "count": 20,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-09",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "Capital allocation": {
@@ -2932,9 +3004,9 @@
       "notes": []
     },
     "SEA Fintech": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-29",
-      "last_seen": "2026-06-30",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "SEA Fintech / Payments / Startup Ecosystem": {
@@ -2944,9 +3016,9 @@
       "notes": []
     },
     "SEA Startup Ecosystem": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-19",
+      "last_seen": "2026-07-10",
       "notes": []
     },
     "SEA fintech / payments / startup ecosystem": {
