@@ -1476,6 +1476,12 @@
       "first_seen": "2026-07-05",
       "last_seen": "2026-07-05"
     },
+    "Foundation Stack for General-Purpose Robots": {
+      "count": 1,
+      "domain": "Robotics",
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13"
+    },
     "GPU-Parallel Linearization Error Bounds": {
       "count": 1,
       "domain": "Optimal Control",
@@ -2081,9 +2087,9 @@
       "notes": []
     },
     "AI Agents": {
-      "count": 21,
+      "count": 22,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "AI Education": {
@@ -2111,9 +2117,9 @@
       "notes": []
     },
     "AI Workflow": {
-      "count": 12,
+      "count": 13,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "AI agent internet access": {
@@ -2345,9 +2351,9 @@
       "notes": []
     },
     "Generative Modeling": {
-      "count": 8,
+      "count": 9,
       "first_seen": "2026-06-23",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "Generative Models": {
@@ -2399,9 +2405,9 @@
       "notes": []
     },
     "LLM": {
-      "count": 19,
+      "count": 20,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "LLM (Codex)": {
@@ -2572,6 +2578,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "RAG": {
+      "count": 1,
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13",
+      "notes": []
+    },
     "RF Engineering": {
       "count": 1,
       "first_seen": "2026-07-06",
@@ -2710,6 +2722,12 @@
       "last_seen": "2026-07-02",
       "notes": []
     },
+    "Tokenization": {
+      "count": 1,
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13",
+      "notes": []
+    },
     "UPI architecture": {
       "count": 1,
       "first_seen": "2026-07-11",
@@ -2750,6 +2768,12 @@
       "count": 1,
       "first_seen": "2026-07-06",
       "last_seen": "2026-07-06",
+      "notes": []
+    },
+    "Workflow Orchestration": {
+      "count": 1,
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "ZFS": {
@@ -2797,15 +2821,15 @@
       "notes": []
     },
     "AI Application Layer": {
-      "count": 28,
+      "count": 29,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 23,
+      "count": 24,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-10",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "AI Education": {
@@ -2851,9 +2875,9 @@
       "notes": []
     },
     "Agentic Infrastructure": {
-      "count": 26,
+      "count": 27,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "Agritech": {
@@ -2893,9 +2917,9 @@
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 20,
+      "count": 21,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-10",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "Capital allocation": {
@@ -2914,6 +2938,12 @@
       "count": 1,
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
+      "notes": []
+    },
+    "Data Privacy": {
+      "count": 1,
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "Decentralized AI Compute": {
@@ -3150,6 +3180,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Open Data": {
+      "count": 1,
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13",
+      "notes": []
+    },
     "Open Source Tools": {
       "count": 1,
       "first_seen": "2026-07-04",
@@ -3199,9 +3235,9 @@
       "notes": []
     },
     "Quant Trading": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-06-26",
-      "last_seen": "2026-06-30",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "Quantum Computing": {
@@ -3229,9 +3265,9 @@
       "notes": []
     },
     "Robotics": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-03",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "SEA Fintech": {
@@ -3247,9 +3283,9 @@
       "notes": []
     },
     "SEA Startup Ecosystem": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-10",
+      "last_seen": "2026-07-13",
       "notes": []
     },
     "SEA fintech / payments / startup ecosystem": {
@@ -3334,6 +3370,12 @@
       "count": 1,
       "first_seen": "2026-07-06",
       "last_seen": "2026-07-06",
+      "notes": []
+    },
+    "Workflow Orchestration": {
+      "count": 1,
+      "first_seen": "2026-07-13",
+      "last_seen": "2026-07-13",
       "notes": []
     }
   }
