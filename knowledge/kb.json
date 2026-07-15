@@ -538,6 +538,18 @@
         }
       ]
     },
+    "Google DeepMind": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "rounds": [
+        {
+          "date": "2026-07-15",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "HeyGen": {
       "count": 1,
       "first_seen": "2026-06-23",
@@ -720,6 +732,18 @@
         }
       ]
     },
+    "Mass-Driver": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "rounds": [
+        {
+          "date": "2026-07-15",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Menlo Ventures": {
       "count": 1,
       "first_seen": "2026-06-23",
@@ -795,6 +819,20 @@
           "date": "2026-07-07",
           "investors": "not_specified",
           "round": "not_specified"
+        }
+      ]
+    },
+    "Miles Wang's startup": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "rounds": [
+        {
+          "date": "2026-07-15",
+          "investors": [
+            "Lightspeed (in talks)"
+          ],
+          "round": "$200M"
         }
       ]
     },
@@ -895,14 +933,19 @@
       ]
     },
     "Nvidia": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-11",
-      "last_seen": "2026-07-11",
+      "last_seen": "2026-07-15",
       "rounds": [
         {
           "date": "2026-07-11",
           "investors": "N/A",
           "round": "investment"
+        },
+        {
+          "date": "2026-07-15",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -922,9 +965,9 @@
       ]
     },
     "OpenAI": {
-      "count": 8,
+      "count": 9,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-12",
+      "last_seen": "2026-07-15",
       "rounds": [
         {
           "date": "2026-06-19",
@@ -966,6 +1009,11 @@
         {
           "date": "2026-07-12",
           "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-07-15",
+          "investors": [],
           "round": null
         }
       ]
@@ -1212,6 +1260,18 @@
         }
       ]
     },
+    "Thinking Machines Lab": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "rounds": [
+        {
+          "date": "2026-07-15",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Toot": {
       "count": 1,
       "first_seen": "2026-07-09",
@@ -1407,13 +1467,18 @@
       ]
     },
     "xAI": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-22",
-      "last_seen": "2026-06-22",
+      "last_seen": "2026-07-15",
       "rounds": [
         {
           "date": "2026-06-22",
           "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-07-15",
+          "investors": [],
           "round": null
         }
       ]
@@ -1522,6 +1587,12 @@
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
+    "ELIZA": {
+      "count": 1,
+      "domain": "Natural Language Processing",
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15"
+    },
     "Electric Axle": {
       "count": 1,
       "domain": "EV & autonomous",
@@ -1582,6 +1653,12 @@
       "first_seen": "2026-06-23",
       "last_seen": "2026-06-23"
     },
+    "Grok Build": {
+      "count": 1,
+      "domain": "AI Agents",
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15"
+    },
     "High Frequency Communication": {
       "count": 1,
       "domain": "communication",
@@ -1593,6 +1670,12 @@
       "domain": "GPU Acceleration",
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29"
+    },
+    "Inkling": {
+      "count": 1,
+      "domain": "Generative Modeling",
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15"
     },
     "Intrinsic Mechanical Quality Factor Determination": {
       "count": 1,
@@ -1974,6 +2057,12 @@
       "last_seen": "2026-07-05",
       "pattern_notes": []
     },
+    "Lightspeed (in talks)": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "pattern_notes": []
+    },
     "Lochpine Capital": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -2246,6 +2335,12 @@
       "last_seen": "2026-07-11",
       "notes": []
     },
+    "AI coding agent": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "notes": []
+    },
     "AI engineering": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -2268,6 +2363,12 @@
       "count": 1,
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
+      "notes": []
+    },
+    "API Gateway": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "Active Learning": {
@@ -2594,6 +2695,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Mixture-of-Experts transformer": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "notes": []
+    },
     "Model Optimization": {
       "count": 1,
       "first_seen": "2026-07-14",
@@ -2604,6 +2711,12 @@
       "count": 1,
       "first_seen": "2026-07-02",
       "last_seen": "2026-07-02",
+      "notes": []
+    },
+    "Multimodal capabilities": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "Networking Stack": {
@@ -2676,6 +2789,12 @@
       "count": 1,
       "first_seen": "2026-07-05",
       "last_seen": "2026-07-05",
+      "notes": []
+    },
+    "Pattern matching (ELIZA)": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "Plugin Ecosystem": {
@@ -2828,6 +2947,12 @@
       "last_seen": "2026-06-22",
       "notes": []
     },
+    "Terminal-based AI": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "notes": []
+    },
     "Text-to-Speech (TTS)": {
       "count": 1,
       "first_seen": "2026-07-07",
@@ -2932,6 +3057,12 @@
     }
   },
   "themes": {
+    "AI Agent Control": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "notes": []
+    },
     "AI Agent Security": {
       "count": 1,
       "first_seen": "2026-07-08",
@@ -2939,9 +3070,9 @@
       "notes": []
     },
     "AI Agents": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-04",
-      "last_seen": "2026-07-04",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "AI Agents in Finance": {
@@ -2951,15 +3082,15 @@
       "notes": []
     },
     "AI Application Layer": {
-      "count": 30,
+      "count": 31,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-14",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "AI Confidence Gap": {
-      "count": 25,
+      "count": 26,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-14",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "AI Education": {
@@ -2969,9 +3100,9 @@
       "notes": []
     },
     "AI Engineering": {
-      "count": 21,
+      "count": 22,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-14",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "AI Infrastructure": {
@@ -2998,6 +3129,12 @@
       "last_seen": "2026-07-04",
       "notes": []
     },
+    "AI Workflow": {
+      "count": 1,
+      "first_seen": "2026-07-15",
+      "last_seen": "2026-07-15",
+      "notes": []
+    },
     "Advanced Materials": {
       "count": 1,
       "first_seen": "2026-07-05",
@@ -3005,9 +3142,9 @@
       "notes": []
     },
     "Agentic Infrastructure": {
-      "count": 28,
+      "count": 29,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-14",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "Agritech": {
@@ -3047,9 +3184,9 @@
       "notes": []
     },
     "Capital Structural Dependency": {
-      "count": 22,
+      "count": 23,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-14",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "Capital allocation": {
@@ -3191,9 +3328,9 @@
       "notes": []
     },
     "Generative Modeling": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-06-26",
-      "last_seen": "2026-07-06",
+      "last_seen": "2026-07-15",
       "notes": []
     },
     "Geopolitical/Sovereignty": {
