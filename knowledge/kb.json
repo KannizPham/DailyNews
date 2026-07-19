@@ -3755,6 +3755,12 @@
       "last_seen": "2026-07-15",
       "notes": []
     },
+    "APEC 2027": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Advanced Materials": {
       "count": 1,
       "first_seen": "2026-07-05",
@@ -4023,6 +4029,12 @@
       "count": 1,
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
+      "notes": []
+    },
+    "Khởi nghiệp": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Kinh tế cửa khẩu": {
@@ -4301,8 +4313,14 @@
       "last_seen": "2026-07-19",
       "notes": []
     },
-    "Thị trường vàng": {
+    "Thị trường tiền số": {
       "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
+    "Thị trường vàng": {
+      "count": 2,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
       "notes": []
