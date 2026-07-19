@@ -41,7 +41,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # Namespace ID không phải secret. Giá trị này phải trùng với binding
           # DIGEST_KV trong worker/wrangler.toml để pipeline và Worker dùng chung KV.
-          CLOUDFLARE_KV_NAMESPACE_ID: "4e8fd4040a6f41e091a2b3dae49b33ac"
+          CLOUDFLARE_KV_NAMESPACE_ID: "0ad7f43199aa41ae9ed5603c057557d7"
         run: python src/main.py
 
       - name: Commit state/archive/knowledge
