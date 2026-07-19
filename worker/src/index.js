@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker — webhook tương tác Telegram cho Morning Intel Agent.
+ * Cloudflare Worker — webhook Telegram cho Bản Tin Kinh Tế & Thị Trường.
  *
  * Xử lý các loại update Telegram:
  *   1. command /start          -> welcome message + nút nhanh "🔄 Refresh".
@@ -42,7 +42,7 @@ const PENDING_QA_TTL_SECONDS = 10 * 60;
 export default {
   async fetch(request, env, ctx) {
     if (request.method !== "POST") {
-      return new Response("Morning Intel webhook đang chạy. Dùng POST từ Telegram.", {
+      return new Response("Bản Tin Kinh Tế & Thị Trường đang chạy. Dùng POST từ Telegram.", {
         status: 200,
       });
     }
@@ -138,7 +138,8 @@ async function handleMessage(message, env) {
 
 const WELCOME_TEXT = `👋 Chào operator!
 
-Đây là Morning Intel Agent — bot gửi digest tình báo buổi sáng (6 mục: tín hiệu, lăng kính tiền, lăng kính người xây, deep tech, ngoài đường ray, nối điểm).
+Đây là Bản Tin Kinh Tế & Thị Trường.
+Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, chứng khoán, doanh nghiệp, công nghệ và địa chính trị.
 
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
