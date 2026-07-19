@@ -131,6 +131,20 @@ def test_numeric_claim_without_tier1_2_forces_red():
     assert result.confidence_emoji == "🔴"
 
 
+def test_vietnamese_numeric_claim_and_new_category_are_supported():
+    item = make_item(
+        "Ngân hàng công bố lợi nhuận mới",
+        source="tuoitre.vn",
+        item_type="banking",
+        raw_text="Lợi nhuận trước thuế đạt 1.000 tỷ đồng.",
+    )
+    result = verify_item(item, [item])
+
+    assert result.item.type == "banking"
+    assert result.has_numeric_claim is True
+    assert result.source_tier == 1
+
+
 def test_compute_confidence_reasoning_never_green():
     """Suy luận (is_reasoning=True) không bao giờ 🟢 dù tier 1, theo §7
     ANALYSIS_SYSTEM_PROMPT: 'Suy luận của tôi... luôn 🟡 hoặc 🔴, không bao
