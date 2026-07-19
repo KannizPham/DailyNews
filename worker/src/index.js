@@ -974,6 +974,30 @@ function getTelegramDisplayName(message) {
 
   return "bạn";
 }
+function sanitizeSensitiveText(value, env) {
+  let text = String(value ?? "");
+
+  const secrets = [
+    env.GEMINI_API_KEY,
+    env.OPENROUTER_API_KEY,
+    env.DEEPSEEK_API_KEY,
+    env.TELEGRAM_BOT_TOKEN,
+    env.GITHUB_PAT,
+  ].filter(Boolean);
+
+  for (const secret of secrets) {
+    text = text.split(secret).join("[REDACTED]");
+  }
+
+  // Che các chuỗi token phổ biến ngay cả khi env không có sẵn.
+  text = text
+    .replace(/sk-or-v1-[A-Za-z0-9_-]+/g, "[REDACTED_OPENROUTER_KEY]")
+    .replace(/ghp_[A-Za-z0-9]+/g, "[REDACTED_GITHUB_TOKEN]")
+    .replace(/github_pat_[A-Za-z0-9_]+/g, "[REDACTED_GITHUB_TOKEN]")
+    .replace(/\b\d{8,12}:[A-Za-z0-9_-]{20,}\b/g, "[REDACTED_TELEGRAM_TOKEN]");
+
+  return text;
+}
 function truncate(text, maxLen) {
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen) + "... (cắt bớt)";
