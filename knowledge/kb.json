@@ -1287,6 +1287,18 @@
         }
       ]
     },
+    "Shopee": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "SignalDesk": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -1383,6 +1395,18 @@
         }
       ]
     },
+    "TikTok Shop": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Toot": {
       "count": 1,
       "first_seen": "2026-07-09",
@@ -1416,6 +1440,18 @@
           "date": "2026-06-22",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "Vietnam Airlines": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -1608,6 +1644,12 @@
     }
   },
   "deep_tech": {
+    "AI Infrastructure": {
+      "count": 1,
+      "domain": "AI",
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19"
+    },
     "AI Model Optimization": {
       "count": 3,
       "domain": "AI Engineering",
@@ -2464,6 +2506,12 @@
     }
   },
   "tech": {
+    "AI": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "AI Agent Control": {
       "count": 15,
       "first_seen": "2026-06-22",
@@ -2684,6 +2732,12 @@
       "count": 1,
       "first_seen": "2026-07-02",
       "last_seen": "2026-07-02",
+      "notes": []
+    },
+    "Data Centers": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Decentralized Markets": {
@@ -3343,9 +3397,9 @@
       "notes": []
     },
     "AI Infrastructure": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-08",
-      "last_seen": "2026-07-08",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "AI Infrastructure Finance": {
@@ -3492,6 +3546,12 @@
       "last_seen": "2026-06-28",
       "notes": []
     },
+    "E-commerce Regulation": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "ESG/Sustainability in Logistics": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -3574,6 +3634,12 @@
       "count": 6,
       "first_seen": "2026-06-26",
       "last_seen": "2026-07-15",
+      "notes": []
+    },
+    "Geopolitical Risk": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Geopolitical/Sovereignty": {
@@ -3670,6 +3736,12 @@
       "count": 2,
       "first_seen": "2026-06-30",
       "last_seen": "2026-07-06",
+      "notes": []
+    },
+    "Monetary Policy": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Network Infrastructure": {
