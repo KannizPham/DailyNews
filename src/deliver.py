@@ -56,7 +56,10 @@ WEEKDAY_VI = [
 def format_header(now: Optional[datetime] = None) -> str:
     now = now or datetime.now()
     weekday = WEEKDAY_VI[now.weekday()]
-    return f"📰 Morning Intel — {now.strftime('%d/%m/%Y')} ({weekday})"
+    return (
+        "📰 Bản Tin Kinh Tế & Thị Trường — "
+        f"{now.strftime('%d/%m/%Y')} ({weekday})"
+    )
 
 
 def markdown_to_telegram_html(text: str) -> str:
