@@ -87,10 +87,10 @@ async function handleMessage(message, env) {
   if (!chatId) return;
 
   if (text === "/start" || text.startsWith("/start ")) {
-    const displayName = getTelegramDisplayName(message);
-    await sendMessage(env, chatId, buildWelcomeText(displayName), START_KEYBOARD);
-    return;
-  }
+  const displayName = getTelegramDisplayName(message);
+  await sendMessage(env, chatId, buildWelcomeText(displayName), START_KEYBOARD);
+  return;
+}
 
   if (text === "/refresh" || text.startsWith("/refresh ")) {
     await handleRefresh(chatId, env);
@@ -145,7 +145,7 @@ Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, 
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
 • /refresh — chạy lại pipeline ngay.
-• /trends — xem tối đa 5 xu hướng kinh tế và thị trường trong 7 ngày gần nhất.
+• /trends — xem xu hướng tích luỹ.
 • /forget — xoá lịch sử hội thoại.
 • Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để hỏi riêng về mục đó.
 • Hoặc gõ thẳng câu hỏi tự do về digest gần nhất.
@@ -962,6 +962,18 @@ async function answerCallbackQuery(env, callbackQueryId) {
   }
 }
 
+function getTelegramDisplayName(message) {
+  const firstName = (message?.from?.first_name || "").trim();
+  const lastName = (message?.from?.last_name || "").trim();
+  const username = (message?.from?.username || "").trim();
+
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+
+  if (fullName) return fullName;
+  if (username) return `@${username}`;
+
+  return "bạn";
+}
 function truncate(text, maxLen) {
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen) + "... (cắt bớt)";
