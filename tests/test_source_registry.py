@@ -7,12 +7,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from sources.source_registry import get_domain, get_tier  # noqa: E402
+from sources.source_registry import get_display_name, get_domain, get_tier  # noqa: E402
 
 
 def test_known_tier1_domain():
     assert get_tier("arxiv.org") == 1
     assert get_tier("https://arxiv.org/abs/1234") == 1
+    assert get_tier("https://tuoitre.vn/kinh-te.htm") == 1
 
 
 def test_known_tier2_domain():
@@ -35,6 +36,10 @@ def test_get_domain_strips_scheme_and_www():
 
 def test_subdomain_of_known_tier1_inherits_tier():
     assert get_tier("blog.spectrum.ieee.org") == 1
+
+
+def test_vietnamese_source_has_readable_display_name():
+    assert get_display_name("https://tuoitre.vn/kinh-te.htm") == "Tuổi Trẻ"
 
 
 if __name__ == "__main__":
