@@ -1314,6 +1314,18 @@
         }
       ]
     },
+    "PAN Group": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Palantir": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -1473,6 +1485,18 @@
       ]
     },
     "SJC": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "SSI": {
       "count": 1,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
@@ -3971,6 +3995,12 @@
       "last_seen": "2026-07-08",
       "notes": []
     },
+    "FDI Policy": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Fintech & Payment Systems": {
       "count": 1,
       "first_seen": "2026-07-11",
@@ -3996,7 +4026,7 @@
       "notes": []
     },
     "Geopolitical Risk": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
       "notes": []
@@ -4017,6 +4047,12 @@
       "count": 1,
       "first_seen": "2026-07-04",
       "last_seen": "2026-07-04",
+      "notes": []
+    },
+    "Gold Market": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Hardware/Energy Efficiency": {
@@ -4167,6 +4203,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Personal Income Tax": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Physical Infrastructure Control": {
