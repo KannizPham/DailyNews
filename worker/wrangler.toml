@@ -15,4 +15,4 @@ GEMINI_MODEL = "gemini-3.5-flash"
 #   wrangler kv:namespace create DIGEST_KV
 [[kv_namespaces]]
 binding = "DIGEST_KV"
-id = "4e8fd4040a6f41e091a2b3dae49b33ac"
+id = "0ad7f43199aa41ae9ed5603c057557d7"
