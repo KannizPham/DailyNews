@@ -46,7 +46,8 @@ CONFIDENCE_EMOJI = {
 # Regex nhận diện claim "có số liệu cụ thể" (tiền, %, ngày) — dùng để quyết
 # định item có cần trích nguồn/link cụ thể mới được 🟢 hay không (§6b).
 NUMERIC_CLAIM_PATTERN = re.compile(
-    r"(\$\s?\d|[\d,.]+\s?(triệu|tỷ|billion|million|m\b|b\b)|%|\bUSD\b|\bVND\b)",
+    r"(\$\s?\d|[\d,.]+\s?(nghìn|triệu|tỷ|billion|million|m\b|b\b|đồng)|%|"
+    r"\bUSD\b|\bVND\b|\bbps?\b|điểm\s+cơ\s+bản)",
     re.IGNORECASE,
 )
 
@@ -56,6 +57,7 @@ STOPWORDS = {
     "the", "a", "an", "of", "to", "in", "on", "for", "and", "or", "is", "are",
     "with", "at", "by", "from", "as", "this", "that", "it", "its",
     "của", "và", "là", "cho", "với", "các", "một", "này", "có", "trong",
+    "sau", "trước", "đang", "được", "theo", "tại", "trên", "khi", "về",
 }
 
 
@@ -124,7 +126,7 @@ def compute_confidence(
     # Claim số liệu cụ thể bắt buộc trích được nguồn/link cụ thể (ở đây: phải
     # đến từ tier 1-2 hoặc cross-confirm) -> nếu không, ép 🔴 dù tier nào.
     if has_numeric_claim and not is_reasoning:
-        if source_tier in (1, 2) and (cross_confirmed or True):
+        if source_tier in (1, 2):
             # Claim số liệu từ nguồn tier 1-2 có link cụ thể trong raw_text
             # (đã được fetch trực tiếp từ nguồn đó) -> đạt điều kiện 🟢 nếu
             # cross_confirmed HOẶC là số liệu trích trực tiếp có link (chính
