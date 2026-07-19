@@ -96,16 +96,16 @@ def main() -> None:
     prompt = build_weekly_prompt(daily_archives, kb_summary)
 
     client = LLMClient()
-    if not client._engine_order():
-        msg = (
-            "[weekly.py KHÔNG chạy được] Thiếu GEMINI_API_KEY và DEEPSEEK_API_KEY "
-            "trong biến môi trường — không thể gọi LLM để tổng hợp tuần. Đã đọc "
-            f"được {len(daily_archives)} digest archive + kb.json thành công, "
-            "nhưng cần ít nhất 1 key để sinh bản tổng hợp."
-        )
-        logger.warning(msg)
-        deliver(msg, dry_run=dry_run)
-        return
+
+if not client._model_order():
+    msg = (
+        "[weekly.py KHÔNG chạy được] Thiếu GEMINI_API_KEY "
+        "trong biến môi trường — không thể gọi Gemini để tổng hợp tuần. "
+        f"Đã đọc được {len(daily_archives)} digest archive + kb.json thành công."
+    )
+    logger.warning(msg)
+    deliver(msg, dry_run=dry_run)
+    return
 
     try:
         response = client.generate(prompt, system=WEEKLY_SYSTEM_PROMPT)
