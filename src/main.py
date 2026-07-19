@@ -1,8 +1,8 @@
 """Entrypoint pipeline ngày — full pipeline theo §5/§12 brief.
 
-Stage 0 (fetch tất cả nguồn) -> Stage 1 (dedupe + heuristic + LLM batch
-ranking nếu có key, fallback heuristic thuần nếu không) -> Stage 1.5 (verify
-tự động, gắn nhãn 🟢🟡🔴) -> Stage 2 (LLM analyze 6 mục) -> Stage 3
+Stage 0 (fetch nguồn kinh tế Việt Nam + nguồn công nghệ hiện có) -> Stage 1
+(dedupe + heuristic + LLM batch ranking, fallback heuristic) -> Stage 1.5
+(verify, gắn nhãn 🟢🟡🔴) -> Stage 2 (bản tin tối đa 8 mục) -> Stage 3
 (accumulate vào kb.json + archive) -> Stage 4 (deliver Telegram).
 
 Chạy local:
@@ -28,10 +28,17 @@ from pipeline import (
     build_kb_summary,
     filter_stage1,
     llm_rank_and_select,
-    tag_outside_candidates,
 )
 from prompts import ANALYSIS_SYSTEM_PROMPT
-from sources import arxiv, deep_tech, funding, github_trending, hackernews, producthunt
+from sources import (
+    arxiv,
+    deep_tech,
+    funding,
+    github_trending,
+    hackernews,
+    producthunt,
+    vietnam_news,
+)
 from verify import verify_stage
 
 logging.basicConfig(
@@ -45,10 +52,8 @@ SEEN_PATH = REPO_ROOT / "state" / "seen.json"
 KB_PATH = REPO_ROOT / "knowledge" / "kb.json"
 ARCHIVE_DIR = REPO_ROOT / "archive"
 
-# Stage 1 cắt còn ~40 item (tăng từ 20): TARGET_ALLOCATION giờ cần tới 11
-# item/6 type, pool candidate cho LLM ranking phải rộng hơn để có lựa chọn
-# thật, không chỉ đủ khít số lượng allocation.
-STAGE1_KEEP_TOP_N = 40
+# Pool đủ rộng cho 6 category kinh tế nhưng vẫn nhỏ để chỉ gọi LLM một batch.
+STAGE1_KEEP_TOP_N = 64
 
 
 def load_thesis(path: Path = THESIS_PATH) -> ThesisConfig:
@@ -64,6 +69,9 @@ def load_thesis(path: Path = THESIS_PATH) -> ThesisConfig:
         deep_tech_tracking=raw.get("deep_tech_tracking", []) or [],
         keywords_boost=raw.get("keywords_boost", []) or [],
         outside_lane_domains=raw.get("outside_lane_domains", []) or [],
+        category_priorities=raw.get("category_priorities", {}) or {},
+        keywords_downrank=raw.get("keywords_downrank", []) or [],
+        what_counts_as_matters=raw.get("what_counts_as_matters", "") or "",
     )
 
 
@@ -80,6 +88,7 @@ def load_seen_ids(path: Path = SEEN_PATH) -> set[str]:
 
 
 SOURCE_FETCHERS = [
+    (vietnam_news.fetch, "vietnam_news"),
     (arxiv.fetch, "arxiv"),
     (hackernews.fetch, "hackernews"),
     (hackernews.fetch_show_hn, "hackernews_show_hn"),
@@ -141,12 +150,10 @@ def main() -> None:
     )
     logger.info("Stage 1 — còn lại %d item sau filter heuristic.", len(top_items))
 
-    # Không có nguồn nào tự emit type="outside" -> retag item match
-    # outside_lane_domains (xem pipeline.tag_outside_candidates để biết lý do).
-    top_items = tag_outside_candidates(top_items, thesis)
-
-    logger.info("Stage 1 — LLM batch ranking + chọn theo cơ cấu (2 research, "
-                "1 funding, 1 product, 1 deep_tech, 1 outside)...")
+    logger.info(
+        "Stage 1 — LLM ranking + chọn tối đa 8 tin (2 macro, 2 markets, "
+        "1 banking, 1 corporate, 1 technology, 1 geopolitics)..."
+    )
     selected_items = llm_rank_and_select(top_items, thesis, llm_client)
     logger.info("Stage 1 — đã chọn %d item cho Stage 1.5/2.", len(selected_items))
 
