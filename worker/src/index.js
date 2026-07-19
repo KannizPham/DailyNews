@@ -868,23 +868,40 @@ async function fetchLLMWithRetry(url, options, engine, env) {
   for (let attempt = 1; attempt <= LLM_MAX_ATTEMPTS; attempt += 1) {
     try {
       const response = await fetch(url, options);
-      if (LLM_RETRYABLE_STATUSES.has(response.status) && attempt < LLM_MAX_ATTEMPTS) {
+
+      if (
+        LLM_RETRYABLE_STATUSES.has(response.status) &&
+        attempt < LLM_MAX_ATTEMPTS
+      ) {
+        await response.body?.cancel();
+
+        const delayMs = 1000 * 2 ** (attempt - 1);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+
         continue;
       }
-      return { response };
+
+      return { response, error: null };
     } catch (err) {
       const safeError = sanitizeLLMError(err, env);
+
       if (attempt === LLM_MAX_ATTEMPTS) {
         return {
           response: null,
           error: `⚠️ ${engine} không kết nối được sau ${LLM_MAX_ATTEMPTS} lần thử: ${safeError}`,
         };
       }
+
+      const delayMs = 1000 * 2 ** (attempt - 1);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }
-  return { response: null, error: `⚠️ ${engine} request thất bại.` };
-}
 
+  return {
+    response: null,
+    error: `⚠️ ${engine} request thất bại.`,
+  };
+}
 function isModelUnavailableError(body) {
   return /model[^.\n]*(not found|unavailable|not available)|(not found|unavailable|not available)[^.\n]*model/i.test(
     body
@@ -974,6 +991,7 @@ function getTelegramDisplayName(message) {
 
   return "bạn";
 }
+
 function sanitizeSensitiveText(value, env) {
   let text = String(value ?? "");
 
@@ -989,7 +1007,6 @@ function sanitizeSensitiveText(value, env) {
     text = text.split(secret).join("[REDACTED]");
   }
 
-  // Che các chuỗi token phổ biến ngay cả khi env không có sẵn.
   text = text
     .replace(/sk-or-v1-[A-Za-z0-9_-]+/g, "[REDACTED_OPENROUTER_KEY]")
     .replace(/ghp_[A-Za-z0-9]+/g, "[REDACTED_GITHUB_TOKEN]")
@@ -998,6 +1015,16 @@ function sanitizeSensitiveText(value, env) {
 
   return text;
 }
+
+function sanitizeLLMError(error, env) {
+  const message =
+    error instanceof Error
+      ? error.message
+      : String(error ?? "Unknown error");
+
+  return sanitizeSensitiveText(message, env);
+}
+
 function truncate(text, maxLen) {
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen) + "... (cắt bớt)";
