@@ -9,7 +9,8 @@ from __future__ import annotations
 import os
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+import json
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
@@ -94,23 +95,102 @@ def test_write_items_to_kv_empty_list_returns_false(monkeypatch):
     assert write_items_to_kv([]) is False
 
 
-def test_build_trends_summary_sorts_by_count_desc_and_caps_top_n():
-    kb = {
-        "themes": {
-            "A": {"count": 1, "last_seen": "2026-06-19"},
-            "B": {"count": 5, "last_seen": "2026-06-20"},
-            "C": {"count": 3, "last_seen": "2026-06-21"},
-        },
-        "companies": {},
-        "tech": {},
-        "deep_tech": {},
-    }
+def _trend(summary: dict, topic_id: str) -> dict:
+    return next(item for item in summary["trends"] if item["topic_id"] == topic_id)
 
-    summary = build_trends_summary(kb)
 
-    assert [e["name"] for e in summary["themes"]] == ["B", "C", "A"]
-    assert summary["themes"][0] == {"name": "B", "count": 5, "last_seen": "2026-06-20"}
-    assert summary["companies"] == []
+def test_trends_repeated_keyword_in_one_digest_counts_once():
+    documents = [
+        ("2026-07-19", "VN-Index tăng. VN-Index lập đỉnh; Vietnam stocks tiếp tục tăng."),
+        ("2026-07-18", "Vietnamese equities ghi nhận thanh khoản cao."),
+    ]
+
+    summary = build_trends_summary(documents, as_of=date(2026, 7, 19))
+
+    assert _trend(summary, "vietnam_stock_market")["count"] == 2
+
+
+def test_old_ai_taxonomy_no_longer_appears():
+    documents = [
+        (
+            "2026-07-19",
+            "AI Application Layer, Agentic Infrastructure, Anthropic, OpenAI, LLM và AI Agents.",
+        )
+    ]
+
+    summary = build_trends_summary(documents, as_of=date(2026, 7, 19))
+    rendered = json.dumps(summary, ensure_ascii=False)
+
+    for old_label in (
+        "AI Application Layer",
+        "Agentic Infrastructure",
+        "Anthropic",
+        "OpenAI",
+        "LLM",
+        "AI Agents",
+    ):
+        assert old_label not in rendered
+
+
+def test_trends_count_only_last_seven_days_when_enough_digest_days_exist():
+    documents = [
+        ("2026-07-19", "Lạm phát CPI hạ nhiệt."),
+        ("2026-07-18", "Bản tin không có chủ đề taxonomy."),
+        ("2026-07-17", "Bản tin tổng hợp."),
+        ("2026-07-12", "Inflation tăng mạnh nhưng đã quá cửa sổ 7 ngày."),
+    ]
+
+    summary = build_trends_summary(documents, as_of=date(2026, 7, 19))
+
+    assert summary["window_days"] == 7
+    assert _trend(summary, "inflation")["count"] == 1
+
+
+def test_trend_direction_compares_recent_and_earlier_halves():
+    documents = [
+        ("2026-07-13", "Bản tin đầu kỳ."),
+        ("2026-07-14", "Bản tin đầu kỳ."),
+        ("2026-07-15", "Bản tin đầu kỳ."),
+        ("2026-07-16", "Lạm phát được công bố."),
+        ("2026-07-17", "CPI tiếp tục được theo dõi."),
+        ("2026-07-18", "Bản tin cuối kỳ."),
+        ("2026-07-19", "Bản tin cuối kỳ."),
+    ]
+
+    summary = build_trends_summary(documents, as_of=date(2026, 7, 19))
+
+    assert _trend(summary, "inflation")["direction"] == "Tăng"
+
+
+def test_trends_output_contains_no_more_than_five_topics():
+    text = " ".join(
+        (
+            "Lạm phát CPI",
+            "tỷ giá USD/VND",
+            "tăng trưởng GDP",
+            "tăng trưởng tín dụng",
+            "nợ xấu NPL",
+            "VN-Index",
+            "giá vàng",
+            "trái phiếu",
+        )
+    )
+    summary = build_trends_summary([("2026-07-19", text)], as_of=date(2026, 7, 19))
+
+    assert len(summary["trends"]) <= 5
+
+
+def test_trends_use_fourteen_days_only_when_fewer_than_three_recent_digests():
+    documents = [
+        ("2026-07-19", "Bản tin mới."),
+        ("2026-07-18", "Bản tin mới."),
+        ("2026-07-10", "NPL và nợ xấu ngân hàng."),
+    ]
+
+    summary = build_trends_summary(documents, as_of=date(2026, 7, 19))
+
+    assert summary["window_days"] == 14
+    assert _trend(summary, "bad_debt")["count"] == 1
 
 
 def test_write_trends_to_kv_graceful_degrade_when_missing_secrets(monkeypatch):
@@ -118,7 +198,6 @@ def test_write_trends_to_kv_graceful_degrade_when_missing_secrets(monkeypatch):
     monkeypatch.delenv("CLOUDFLARE_ACCOUNT_ID", raising=False)
     monkeypatch.delenv("CLOUDFLARE_KV_NAMESPACE_ID", raising=False)
 
-    kb = {"themes": {"X": {"count": 1, "last_seen": "2026-06-19"}}}
-    result = write_trends_to_kv(kb)  # không raise là pass
+    result = write_trends_to_kv({})  # không raise là pass
 
     assert result is False
