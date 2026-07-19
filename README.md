@@ -35,7 +35,7 @@ Quy tắc cứng cho hệ thống này:
 ## Cấu trúc
 
 ```
-newnews/
+DailyNews/
 ├── README.md
 ├── requirements.txt
 ├── morning-intel-agent-brief.md   # nguồn sự thật cho thiết kế/prompts/schema
@@ -91,7 +91,7 @@ Chạy unit test (không cần pytest, file tự chạy được trực tiếp; 
 dùng `pytest tests/`):
 
 ```bash
-cd /path/to/newnews
+cd /path/to/DailyNews
 source .venv/bin/activate
 python tests/test_verify.py
 python tests/test_source_registry.py
@@ -182,12 +182,13 @@ Lệnh trả về một `id` dạng chuỗi hex — copy giá trị này, dán v
 
 ### 3. Sửa `worker/wrangler.toml`
 
-Mở `worker/wrangler.toml`, thay 2 dòng vars:
+`worker/wrangler.toml` đã được cấu hình cho repository này:
 
 ```toml
 [vars]
-GITHUB_OWNER = "<github-username-của-bạn>"
-GITHUB_REPO = "<tên-repo-này>"
+GITHUB_OWNER = "KannizPham"
+GITHUB_REPO = "DailyNews"
+GEMINI_MODEL = "gemini-3.5-flash"
 ```
 
 ### 4. Set secrets cho Worker
@@ -213,7 +214,7 @@ cd worker
 wrangler deploy
 ```
 
-Lệnh trả về URL dạng `https://morning-intel-webhook.<subdomain>.workers.dev`
+Lệnh trả về URL dạng `https://ban-tin-kinh-te-thi-truong.<subdomain>.workers.dev`
 — copy lại URL này, dùng ở bước 6.
 
 ### 6. Set Telegram webhook
