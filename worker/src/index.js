@@ -88,9 +88,15 @@ async function handleMessage(message, env) {
   if (!chatId) return;
 
   if (text === "/start" || text.startsWith("/start ")) {
-    await sendMessage(env, chatId, WELCOME_TEXT, START_KEYBOARD);
-    return;
-  }
+  const displayName = getTelegramDisplayName(message);
+  await sendMessage(
+    env,
+    chatId,
+    buildWelcomeText(displayName),
+    START_KEYBOARD
+  );
+  return;
+}
 
   if (text === "/refresh" || text.startsWith("/refresh ")) {
     await handleRefresh(chatId, env);
@@ -136,7 +142,8 @@ async function handleMessage(message, env) {
   await handleFreeTextQuestion(chatId, text, env);
 }
 
-const WELCOME_TEXT = `👋 Chào operator!
+function buildWelcomeText(displayName) {
+  return `👋 Chào ${displayName}!
 
 Đây là Bản Tin Kinh Tế & Thị Trường.
 Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, chứng khoán, doanh nghiệp, công nghệ và địa chính trị.
@@ -144,12 +151,13 @@ Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, 
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
 • /refresh — chạy lại pipeline ngay (digest mới sẽ tới trong vài phút).
-• /trends — xem xu hướng tích luỹ (themes/companies/tech xuất hiện nhiều lần qua các ngày), không chỉ digest hôm nay.
-• /forget — xoá lịch sử hội thoại đã nhớ với bot, bắt đầu lại từ đầu.
-• Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để nhận phân tích mặc định — SAU ĐÓ có 10 phút để gõ tiếp câu hỏi RIÊNG của bạn về đúng item đó (vd "so với X thì sao?").
-• Hoặc gõ thẳng câu hỏi tự do (không vừa bấm nút) — bot dùng cả digest gần nhất làm nền, nhớ vài lượt hỏi-đáp gần nhất với bạn nên có thể hỏi tiếp/nối ý, không cần lặp lại context.
+• /trends — xem xu hướng tích luỹ qua các ngày.
+• /forget — xoá lịch sử hội thoại đã nhớ với bot.
+• Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để hỏi riêng về mục đó.
+• Hoặc gõ thẳng câu hỏi tự do về digest gần nhất.
 
 👇 Hoặc bấm nút nhanh dưới đây:`;
+}
 
 // Nút nhanh dưới /start — operator yêu cầu "easy to use giống các con bot
 // khác", không phải gõ lệnh tay mỗi lần. callback_data "refresh" dùng lại
@@ -751,6 +759,25 @@ async function answerCallbackQuery(env, callbackQueryId) {
     console.error("answerCallbackQuery lỗi:", err);
   }
 }
+function getTelegramDisplayName(message) {
+  const firstName = (message?.from?.first_name || "").trim();
+  const lastName = (message?.from?.last_name || "").trim();
+  const username = (message?.from?.username || "").trim();
+
+  const fullName = [firstName, lastName]
+    .filter(Boolean)
+    .join(" ");
+
+  if (fullName) {
+    return fullName;
+  }
+
+  if (username) {
+    return `@${username}`;
+  }
+
+  return "bạn";
+}
 function sanitizeSensitiveText(value, env) {
   let text = String(value ?? "");
 
@@ -778,6 +805,7 @@ function sanitizeSensitiveText(value, env) {
 
   return text;
 }
+
 function truncate(text, maxLen) {
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen) + "... (cắt bớt)";
