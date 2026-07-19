@@ -60,6 +60,18 @@
         }
       ]
     },
+    "ARK Invest": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "AWS": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -271,10 +283,15 @@
       ]
     },
     "BIDV": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
       "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
         {
           "date": "2026-07-19",
           "investors": [],
@@ -420,6 +437,18 @@
         }
       ]
     },
+    "Circle": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Clay Seal": {
       "count": 1,
       "first_seen": "2026-07-08",
@@ -427,6 +456,18 @@
       "rounds": [
         {
           "date": "2026-07-08",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Coinbase": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
           "investors": [],
           "round": null
         }
@@ -3738,6 +3779,12 @@
       "last_seen": "2026-07-17",
       "notes": []
     },
+    "Banking Leadership": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Biotech": {
       "count": 1,
       "first_seen": "2026-06-27",
@@ -3780,6 +3827,12 @@
       "last_seen": "2026-07-19",
       "notes": []
     },
+    "Commodity Prices": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Community-driven Development": {
       "count": 1,
       "first_seen": "2026-06-20",
@@ -3790,6 +3843,12 @@
       "count": 1,
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
+      "notes": []
+    },
+    "Crypto Market": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Cybersecurity": {
@@ -3943,7 +4002,7 @@
       "notes": []
     },
     "Geopolitics": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-19",
       "last_seen": "2026-07-19",
       "notes": []
