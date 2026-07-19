@@ -622,7 +622,7 @@ function formatConversationHistory(turns) {
 // LLM fallback (raw HTTP, không SDK)
 // ---------------------------------------------------------------------
 
-const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.0-flash", "gemini-2.5-flash"];
+const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3-flash-preview", "gemini-2.5-flash"];
 const LLM_RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504]);
 const LLM_MAX_ATTEMPTS = 2;
 
