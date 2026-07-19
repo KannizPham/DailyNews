@@ -87,10 +87,10 @@ async function handleMessage(message, env) {
   if (!chatId) return;
 
   if (text === "/start" || text.startsWith("/start ")) {
-  const displayName = getTelegramDisplayName(message);
-  await sendMessage(env, chatId, buildWelcomeText(displayName), START_KEYBOARD);
-  return;
-}
+    const displayName = getTelegramDisplayName(message);
+    await sendMessage(env, chatId, buildWelcomeText(displayName), START_KEYBOARD);
+    return;
+  }
 
   if (text === "/refresh" || text.startsWith("/refresh ")) {
     await handleRefresh(chatId, env);
@@ -145,25 +145,12 @@ Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, 
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
 • /refresh — chạy lại pipeline ngay.
-• /trends — xem xu hướng tích luỹ.
+• /trends — xem tối đa 5 xu hướng kinh tế và thị trường trong 7 ngày gần nhất.
 • /forget — xoá lịch sử hội thoại.
 • Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để hỏi riêng về mục đó.
 • Hoặc gõ thẳng câu hỏi tự do về digest gần nhất.
 
 👇 Hoặc bấm nút nhanh dưới đây:`;
-}
-
-function getTelegramDisplayName(message) {
-  const firstName = (message?.from?.first_name || "").trim();
-  const lastName = (message?.from?.last_name || "").trim();
-  const username = (message?.from?.username || "").trim();
-
-  const fullName = [firstName, lastName].filter(Boolean).join(" ");
-
-  if (fullName) return fullName;
-  if (username) return `@${username}`;
-
-  return "bạn";
 }
 
 // Nút nhanh dưới /start — operator yêu cầu "easy to use giống các con bot
@@ -868,40 +855,23 @@ async function fetchLLMWithRetry(url, options, engine, env) {
   for (let attempt = 1; attempt <= LLM_MAX_ATTEMPTS; attempt += 1) {
     try {
       const response = await fetch(url, options);
-
-      if (
-        LLM_RETRYABLE_STATUSES.has(response.status) &&
-        attempt < LLM_MAX_ATTEMPTS
-      ) {
-        await response.body?.cancel();
-
-        const delayMs = 1000 * 2 ** (attempt - 1);
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
-
+      if (LLM_RETRYABLE_STATUSES.has(response.status) && attempt < LLM_MAX_ATTEMPTS) {
         continue;
       }
-
-      return { response, error: null };
+      return { response };
     } catch (err) {
       const safeError = sanitizeLLMError(err, env);
-
       if (attempt === LLM_MAX_ATTEMPTS) {
         return {
           response: null,
           error: `⚠️ ${engine} không kết nối được sau ${LLM_MAX_ATTEMPTS} lần thử: ${safeError}`,
         };
       }
-
-      const delayMs = 1000 * 2 ** (attempt - 1);
-      await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }
-
-  return {
-    response: null,
-    error: `⚠️ ${engine} request thất bại.`,
-  };
+  return { response: null, error: `⚠️ ${engine} request thất bại.` };
 }
+
 function isModelUnavailableError(body) {
   return /model[^.\n]*(not found|unavailable|not available)|(not found|unavailable|not available)[^.\n]*model/i.test(
     body
@@ -984,45 +954,19 @@ function getTelegramDisplayName(message) {
   const lastName = (message?.from?.last_name || "").trim();
   const username = (message?.from?.username || "").trim();
 
-  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+  const fullName = [firstName, lastName]
+    .filter(Boolean)
+    .join(" ");
 
-  if (fullName) return fullName;
-  if (username) return `@${username}`;
-
-  return "bạn";
-}
-
-function sanitizeSensitiveText(value, env) {
-  let text = String(value ?? "");
-
-  const secrets = [
-    env.GEMINI_API_KEY,
-    env.OPENROUTER_API_KEY,
-    env.DEEPSEEK_API_KEY,
-    env.TELEGRAM_BOT_TOKEN,
-    env.GITHUB_PAT,
-  ].filter(Boolean);
-
-  for (const secret of secrets) {
-    text = text.split(secret).join("[REDACTED]");
+  if (fullName) {
+    return fullName;
   }
 
-  text = text
-    .replace(/sk-or-v1-[A-Za-z0-9_-]+/g, "[REDACTED_OPENROUTER_KEY]")
-    .replace(/ghp_[A-Za-z0-9]+/g, "[REDACTED_GITHUB_TOKEN]")
-    .replace(/github_pat_[A-Za-z0-9_]+/g, "[REDACTED_GITHUB_TOKEN]")
-    .replace(/\b\d{8,12}:[A-Za-z0-9_-]{20,}\b/g, "[REDACTED_TELEGRAM_TOKEN]");
+  if (username) {
+    return `@${username}`;
+  }
 
-  return text;
-}
-
-function sanitizeLLMError(error, env) {
-  const message =
-    error instanceof Error
-      ? error.message
-      : String(error ?? "Unknown error");
-
-  return sanitizeSensitiveText(message, env);
+  return "bạn";
 }
 
 function truncate(text, maxLen) {
