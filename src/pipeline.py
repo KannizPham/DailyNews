@@ -1,5 +1,4 @@
-"""Item dataclass chung + Stage 1 (filter rule-based, rẻ) + Stage 1 LLM batch
-ranking + Stage 2 (LLM analyze full 6 mục).
+"""Item schema, Stage 1 lọc/xếp hạng tối đa 8 tin và Stage 2 tạo bản tin.
 
 Bước 2+: pipeline.py phình thêm hàm khi build tiếp (đúng kế hoạch ban đầu),
 không tách file mới cho mỗi stage.
@@ -10,16 +9,26 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Optional
 
-from sources.source_registry import get_display_name
+from sources.source_registry import get_display_name, get_tier
 
 logger = logging.getLogger(__name__)
 
-# type ∈ {research, funding, product, deep_tech, outside}
-VALID_TYPES = {"research", "funding", "product", "deep_tech", "outside"}
+LEGACY_TYPES = {"research", "funding", "product", "deep_tech", "outside"}
+DAILY_TYPES = {
+    "macro",
+    "markets",
+    "banking",
+    "corporate",
+    "technology",
+    "geopolitics",
+}
+VALID_TYPES = LEGACY_TYPES | DAILY_TYPES
+DAILY_ITEM_LIMIT = 8
 
 
 @dataclass
@@ -68,6 +77,9 @@ class ThesisConfig:
     deep_tech_tracking: list[str] = field(default_factory=list)
     keywords_boost: list[str] = field(default_factory=list)
     outside_lane_domains: list[str] = field(default_factory=list)
+    category_priorities: dict[str, list[str]] = field(default_factory=dict)
+    keywords_downrank: list[str] = field(default_factory=list)
+    what_counts_as_matters: str = ""
 
 
 def score_item(item: Item, thesis: ThesisConfig, now: Optional[datetime] = None) -> float:
@@ -83,8 +95,16 @@ def score_item(item: Item, thesis: ThesisConfig, now: Optional[datetime] = None)
     score = 0.0
 
     # Khớp keyword thesis — mỗi từ khoá khớp +2 điểm.
+    category_keywords = [
+        keyword
+        for keywords in thesis.category_priorities.values()
+        for keyword in keywords
+    ]
     all_keywords = (
-        thesis.tracking + thesis.deep_tech_tracking + thesis.keywords_boost
+        thesis.tracking
+        + thesis.deep_tech_tracking
+        + thesis.keywords_boost
+        + category_keywords
     )
     for kw in all_keywords:
         # so khớp từng từ trong cụm keyword (đơn giản, không cần NLP ở bước 1)
@@ -92,10 +112,55 @@ def score_item(item: Item, thesis: ThesisConfig, now: Optional[datetime] = None)
         if kw_tokens and any(t in text for t in kw_tokens):
             score += 2.0
 
+    for phrase in thesis.keywords_downrank:
+        if phrase.lower() in text:
+            score -= 2.5
+
     # Độ mới: tuyến tính giảm từ +5 (vừa đăng) về 0 (24h trước).
     age_h = hours_since(item.published_at, now)
-    freshness = max(0.0, 5.0 * (1 - age_h / 24.0))
+    freshness = min(5.0, max(0.0, 5.0 * (1 - age_h / 24.0)))
     score += freshness
+
+    if item.type in DAILY_TYPES:
+        score += 1.0
+
+    if item.type == "technology":
+        economic_impact_terms = (
+            "năng suất",
+            "chi phí",
+            "doanh thu",
+            "lợi nhuận",
+            "việc làm",
+            "đầu tư",
+            "bán dẫn",
+            "semiconductor",
+            "chuỗi cung ứng",
+            "thị phần",
+            "capex",
+            "productivity",
+            "revenue",
+        )
+        pure_launch_terms = (
+            "launch",
+            "released",
+            "release",
+            "new model",
+            "chatbot",
+            "benchmark",
+            "leaderboard",
+            "version",
+        )
+        has_economic_impact = any(term in text for term in economic_impact_terms)
+        if has_economic_impact:
+            score += 3.0
+        elif any(term in text for term in pure_launch_terms):
+            score -= 3.0
+
+    source_tier = get_tier(item.source)
+    if source_tier == 1:
+        score += 1.5
+    elif source_tier == 2:
+        score += 0.75
 
     # HN points / nguồn đã chấm sẵn (item.score được set lúc fetch, ví dụ
     # points HN scale xuống). Cộng trực tiếp vào heuristic tổng.
@@ -116,18 +181,11 @@ def filter_stage1(
     keep_top_n: int = 20,
     now: Optional[datetime] = None,
 ) -> list[Item]:
-    """Stage 1 đầy đủ: dedupe -> chấm điểm heuristic -> cắt còn top N.
+    """Dedupe, chấm điểm và giữ một candidate pool cân bằng theo type.
 
-    Quyết định kỹ thuật (khác bước 1): cắt top N theo TỪNG type, không cắt
-    top N toàn cục. Lý do: từ bước 2 có thêm nhiều nguồn (funding, product,
-    deep_tech, github_trending...) với phân phối điểm rất khác nhau — ví dụ
-    GitHub Trending luôn được +5 điểm "độ mới" (vì feed không có ngày publish
-    theo từng repo, dùng now() làm published_at) nên có thể áp đảo hoàn toàn
-    top-20 toàn cục, khiến funding/deep_tech bị loại sạch trước khi tới bước
-    phân bổ theo cơ cấu (Stage 1 LLM ranking/allocation cần candidate từ MỌI
-    type). Cắt theo từng type đảm bảo mọi nhánh (research/funding/product/
-    deep_tech) đều có candidate sống sót để Stage 1 allocation chọn đúng cơ
-    cấu 2 research/1 funding/1 product/1 deep_tech/1 outside.
+    Giữ candidate theo từng type để nguồn công nghệ có lưu lượng lớn không
+    loại sạch macro, markets, banking, corporate hoặc geopolitics trước khi
+    áp dụng TARGET_ALLOCATION.
     """
     seen_ids = seen_ids or set()
     deduped = dedupe_against_seen(items, seen_ids)
@@ -140,13 +198,9 @@ def filter_stage1(
         by_type.setdefault(it.type, []).append(it)
 
     result: list[Item] = []
-    # Chia keep_top_n đều cho số type đang có mặt, tối thiểu 4/type để mỗi
-    # nhánh luôn có vài candidate cho LLM ranking lựa (không chỉ đúng 1).
     n_types = max(len(by_type), 1)
-    # Tối thiểu 8/type (tăng từ 4): TARGET_ALLOCATION giờ cần tới 3 item/type
-    # (research), nên pool candidate cho LLM ranking lựa phải rộng hơn allocation
-    # khá nhiều, không chỉ đủ vừa khít.
-    per_type_n = max(keep_top_n // n_types, 8)
+    # Tối thiểu 3/type để LLM còn có lựa chọn và loại được bài trùng sự kiện.
+    per_type_n = max((keep_top_n + n_types - 1) // n_types, 3)
 
     for item_type, type_items in by_type.items():
         type_items.sort(key=lambda it: it.score, reverse=True)
@@ -156,16 +210,15 @@ def filter_stage1(
     return result
 
 
-# Cơ cấu mục tiêu sau khi xếp hạng LLM batch (§5), MỞ RỘNG theo yêu cầu
-# operator (digest "đầy đủ hơn"): tăng từ tổng ~6 lên ~11 item, mỗi mục có
-# nhiều hơn 1 ví dụ để Stage 2 phân tích sâu/đa chiều hơn, không chỉ 1 lát
-# cắt mỗi mục.
+# Cơ cấu daily tối đa 8 tin. Category cũ vẫn hợp lệ để giữ tương thích dữ liệu
+# và tests, nhưng không có quota mặc định nên không thể lấn át bản tin kinh tế.
 TARGET_ALLOCATION: dict[str, int] = {
-    "research": 3,
-    "funding": 2,
-    "product": 2,
-    "deep_tech": 2,
-    "outside": 2,
+    "macro": 2,
+    "markets": 2,
+    "banking": 1,
+    "corporate": 1,
+    "technology": 1,
+    "geopolitics": 1,
 }
 
 
@@ -213,6 +266,44 @@ def tag_outside_candidates(items: list, thesis: "ThesisConfig") -> list:
     return tagged
 
 
+_EVENT_STOPWORDS = {
+    "the", "and", "for", "with", "from", "this", "that", "after", "into",
+    "của", "và", "cho", "với", "trong", "sau", "trước", "đang", "được",
+    "một", "những", "các", "khi", "về", "tại", "trên", "theo", "mới",
+}
+
+
+def _event_tokens(item: Item) -> set[str]:
+    tokens = re.findall(r"[0-9a-zA-ZÀ-ỹà-ỹ]+", item.title.lower())
+    return {
+        token
+        for token in tokens
+        if len(token) > 2 and token not in _EVENT_STOPWORDS
+    }
+
+
+def is_same_event(first: Item, second: Item) -> bool:
+    """Nhận diện gần-trùng xác định bằng title, không gọi LLM và không đổi URL."""
+    if first.id == second.id or first.url == second.url:
+        return True
+    first_tokens = _event_tokens(first)
+    second_tokens = _event_tokens(second)
+    if not first_tokens or not second_tokens:
+        return False
+    shared = first_tokens & second_tokens
+    similarity = len(shared) / len(first_tokens | second_tokens)
+    return len(shared) >= 3 and similarity >= 0.45
+
+
+def _append_distinct(selected: list[Item], candidate: Item) -> bool:
+    if len(selected) >= DAILY_ITEM_LIMIT:
+        return False
+    if any(is_same_event(candidate, existing) for existing in selected):
+        return False
+    selected.append(candidate)
+    return True
+
+
 def _select_by_allocation(
     items: list, allocation: dict[str, int]
 ) -> list:
@@ -230,9 +321,14 @@ def _select_by_allocation(
 
     for item_type, count in allocation.items():
         candidates = by_type.get(item_type, [])
-        selected.extend(candidates[:count])
+        chosen = 0
+        for candidate in candidates:
+            if _append_distinct(selected, candidate):
+                chosen += 1
+            if chosen >= count or len(selected) >= DAILY_ITEM_LIMIT:
+                break
 
-    return selected
+    return selected[:DAILY_ITEM_LIMIT]
 
 
 def _build_ranking_prompt(items: list, thesis: "ThesisConfig") -> str:
@@ -241,17 +337,26 @@ def _build_ranking_prompt(items: list, thesis: "ThesisConfig") -> str:
         f"- tracking: {', '.join(thesis.tracking)}",
         f"- deep_tech_tracking: {', '.join(thesis.deep_tech_tracking)}",
         f"- keywords_boost: {', '.join(thesis.keywords_boost)}",
+        f"- category_priorities: {json.dumps(thesis.category_priorities, ensure_ascii=False)}",
+        f"- điều được xem là quan trọng: {thesis.what_counts_as_matters}",
         "",
         "Dưới đây là danh sách item đã fetch, mỗi item có id số thứ tự, type, "
-        "title, source. Hãy xếp hạng lại độ liên quan với thesis TRONG TỪNG "
-        "type (không đổi type). Trả về DUY NHẤT một JSON object dạng "
-        '{"ranked_ids": {"research": [id,...], "funding": [id,...], '
-        '"product": [id,...], "deep_tech": [id,...], "outside": [id,...]}}, '
-        "id sắp theo độ liên quan giảm dần. Không thêm chữ nào ngoài JSON.",
+        "title, source và tuổi tin. Hãy xếp hạng trong từng type, ưu tiên tin "
+        "mới trong 24 giờ, nguồn đáng tin và tác động kinh tế cụ thể. Không xếp "
+        "nhiều bài về cùng một sự kiện. Với technology, hạ mạnh launch/model "
+        "release thuần túy nếu không có tác động tới năng suất, chi phí, doanh "
+        "nghiệp, thị trường hoặc chuỗi cung ứng. Trả về DUY NHẤT JSON dạng "
+        '{"ranked_ids": {"macro": [id,...], "markets": [id,...], '
+        '"banking": [id,...], "corporate": [id,...], "technology": [id,...], '
+        '"geopolitics": [id,...]}}. Không đổi type, không thêm chữ ngoài JSON.',
         "",
     ]
     for idx, it in enumerate(items):
-        lines.append(f"id={idx} type={it.type} source={it.source} title={it.title}")
+        age_h = max(0.0, hours_since(it.published_at))
+        lines.append(
+            f"id={idx} type={it.type} source={it.source} "
+            f"age_hours={age_h:.1f} title={it.title}"
+        )
     return "\n".join(lines)
 
 
@@ -294,6 +399,8 @@ def llm_rank_and_select(
 
         selected = []
         for item_type, count in allocation.items():
+            if len(selected) >= DAILY_ITEM_LIMIT:
+                break
             ids_for_type = ranked_ids.get(item_type, [])
             chosen = 0
             for idx in ids_for_type:
@@ -301,9 +408,9 @@ def llm_rank_and_select(
                     continue
                 if items[idx].type != item_type:
                     continue
-                selected.append(items[idx])
-                chosen += 1
-                if chosen >= count:
+                if _append_distinct(selected, items[idx]):
+                    chosen += 1
+                if chosen >= count or len(selected) >= DAILY_ITEM_LIMIT:
                     break
             if chosen < count:
                 # LLM không trả đủ id cho type này -> bù bằng heuristic score.
@@ -313,11 +420,11 @@ def llm_rank_and_select(
                 for it in by_type_fallback:
                     if it.id in already_ids:
                         continue
-                    selected.append(it)
-                    chosen += 1
-                    if chosen >= count:
+                    if _append_distinct(selected, it):
+                        chosen += 1
+                    if chosen >= count or len(selected) >= DAILY_ITEM_LIMIT:
                         break
-        return selected
+        return selected[:DAILY_ITEM_LIMIT]
     except Exception as exc:  # noqa: BLE001 - LLM lỗi không được sập Stage 1
         logger.warning(
             "llm_rank_and_select: LLM batch ranking lỗi (%s) -> fallback heuristic "
@@ -361,12 +468,13 @@ def _build_analysis_prompt(
     verified_items: list, thesis: "ThesisConfig", kb_summary: str
 ) -> str:
     """Build user prompt cho Stage 2 — system prompt riêng (prompts.py),
-    đây là phần "data" đưa vào: thesis + 6 item đã verify + kb summary."""
+    đây là phần data: thesis + tối đa 8 item đã verify + kb summary."""
     lines = [
         "=== THESIS (lăng kính phân tích) ===",
         f"tracking: {', '.join(thesis.tracking)}",
         f"deep_tech_tracking: {', '.join(thesis.deep_tech_tracking)}",
         f"keywords_boost: {', '.join(thesis.keywords_boost)}",
+        f"what_counts_as_matters: {thesis.what_counts_as_matters}",
         "",
         "=== KNOWLEDGE BASE HIỆN TẠI (pattern đang tích luỹ) ===",
         kb_summary,
@@ -434,7 +542,7 @@ def analyze_stage2(
     llm_client,
     system_prompt: str,
 ) -> AnalysisResult:
-    """Stage 2 — gọi LLM thật 1 lần với ~6 item đã verify + thesis + kb_summary.
+    """Stage 2 — gọi LLM một lần với tối đa 8 item + thesis + kb_summary.
 
     Nếu llm_client là None (thiếu cả GEMINI_API_KEY và DEEPSEEK_API_KEY) ->
     trả AnalysisResult với digest_text là thông báo rõ ràng "thiếu key", KHÔNG
@@ -444,7 +552,7 @@ def analyze_stage2(
         msg = (
             "[Stage 2 KHÔNG chạy được] Thiếu GEMINI_API_KEY và DEEPSEEK_API_KEY "
             "trong biến môi trường — không thể gọi LLM để phân tích. Đã fetch + "
-            "filter + verify thành công, nhưng digest đầy đủ 6 mục cần ít nhất 1 "
+            "filter + verify thành công, nhưng digest kinh tế cần ít nhất 1 "
             "trong 2 key trên. Thêm key vào .env hoặc GitHub Secrets rồi chạy lại."
         )
         logger.warning(msg)
