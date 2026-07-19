@@ -29,6 +29,8 @@ DAILY_TYPES = {
 }
 VALID_TYPES = LEGACY_TYPES | DAILY_TYPES
 DAILY_ITEM_LIMIT = 8
+MAX_DAILY_ITEM_AGE_HOURS = 48
+MAX_FUTURE_CLOCK_SKEW_HOURS = 6
 
 
 @dataclass
@@ -190,11 +192,29 @@ def filter_stage1(
     seen_ids = seen_ids or set()
     deduped = dedupe_against_seen(items, seen_ids)
 
-    for it in deduped:
+    # Freshness là điều kiện bắt buộc, không chỉ là điểm thưởng. Nếu chỉ cho
+    # bài mới thêm điểm thì một bài cũ có nhiều keyword/điểm nguồn vẫn có thể
+    # lọt vào top và xuất hiện lại nhiều tuần sau. Cho phép tối đa 48 giờ để
+    # không làm bản tin cuối tuần rỗng; timestamp tương lai quá 6 giờ cũng bị
+    # loại vì thường là feed lỗi múi giờ/ngày.
+    fresh_items: list[Item] = []
+    for item in deduped:
+        age_h = hours_since(item.published_at, now)
+        if age_h > MAX_DAILY_ITEM_AGE_HOURS or age_h < -MAX_FUTURE_CLOCK_SKEW_HOURS:
+            logger.info(
+                "Stage 1 bỏ bài ngoài cửa sổ freshness: age=%.1fh source=%s title=%s",
+                age_h,
+                item.source,
+                item.title[:100],
+            )
+            continue
+        fresh_items.append(item)
+
+    for it in fresh_items:
         it.score = score_item(it, thesis, now=now)
 
     by_type: dict[str, list[Item]] = {}
-    for it in deduped:
+    for it in fresh_items:
         by_type.setdefault(it.type, []).append(it)
 
     result: list[Item] = []
