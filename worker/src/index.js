@@ -633,37 +633,82 @@ function formatConversationHistory(turns) {
 
 async function callGemini(env, prompt) {
   if (!env.GEMINI_API_KEY) {
-    return { ok: false, error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời." };
+    return {
+      ok: false,
+      error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời.",
+    };
   }
 
   const model = env.GEMINI_MODEL || "gemini-3.5-flash";
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`;
+  const url =
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   try {
     const resp = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": env.GEMINI_API_KEY,
+      },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.3 },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: prompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.3,
+        },
       }),
     });
 
     if (!resp.ok) {
-      const body = await resp.text();
-      return { ok: false, error: `⚠️ Gemini lỗi (status ${resp.status}): ${truncate(body, 300)}` };
+      let safeMessage = `Gemini trả status ${resp.status}.`;
+
+      try {
+        const errorData = await resp.json();
+        const message = errorData?.error?.message;
+
+        if (typeof message === "string" && message.trim()) {
+          safeMessage += ` ${sanitizeSensitiveText(message, env)}`;
+        }
+      } catch {
+        // Không đưa raw response body vào Telegram vì có thể chứa dữ liệu nhạy cảm.
+      }
+
+      return {
+        ok: false,
+        error: `⚠️ ${truncate(safeMessage, 300)}`,
+      };
     }
 
     const data = await resp.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    const text = (data?.candidates?.[0]?.content?.parts || [])
+      .map((part) => (typeof part?.text === "string" ? part.text : ""))
+      .filter(Boolean)
+      .join("\n")
+      .trim();
 
     if (!text) {
-      return { ok: false, error: "⚠️ Gemini trả response không có nội dung." };
+      return {
+        ok: false,
+        error: "⚠️ Gemini trả response không có nội dung.",
+      };
     }
 
-    return { ok: true, text };
+    return {
+      ok: true,
+      text,
+    };
   } catch (err) {
-    return { ok: false, error: `⚠️ Lỗi gọi Gemini: ${escapeForTelegram(String(err))}` };
+    const safeError = sanitizeSensitiveText(String(err), env);
+
+    return {
+      ok: false,
+      error: `⚠️ Lỗi gọi Gemini: ${truncate(safeError, 300)}`,
+    };
   }
 }
 
@@ -706,7 +751,33 @@ async function answerCallbackQuery(env, callbackQueryId) {
     console.error("answerCallbackQuery lỗi:", err);
   }
 }
+function sanitizeSensitiveText(value, env) {
+  let text = String(value ?? "");
 
+  const secrets = [
+    env?.GEMINI_API_KEY,
+    env?.TELEGRAM_BOT_TOKEN,
+    env?.GITHUB_PAT,
+  ];
+
+  for (const secret of secrets) {
+    if (typeof secret === "string" && secret) {
+      text = text.split(secret).join("[REDACTED]");
+    }
+  }
+
+  text = text.replace(
+    /([?&](?:key|api_key|token)=)[^&\s]+/gi,
+    "$1[REDACTED]"
+  );
+
+  text = text.replace(
+    /(x-goog-api-key|authorization)\s*:\s*[^\s,;]+/gi,
+    "$1: [REDACTED]"
+  );
+
+  return text;
+}
 function truncate(text, maxLen) {
   if (text.length <= maxLen) return text;
   return text.slice(0, maxLen) + "... (cắt bớt)";
