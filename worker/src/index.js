@@ -6,10 +6,9 @@
  *   2. command /refresh HOẶC callback_query "refresh" (nút nhanh dưới /start)
  *      -> trigger lại pipeline qua GitHub repository_dispatch (event_type
  *      "refresh-digest"). Cả 2 đường dùng chung handleRefresh().
- *   3. command /trends         -> đọc tóm tắt kb.json (key "trends:latest",
- *      ghi bởi src/deliver.py::write_trends_to_kv sau Stage 3) -> trả top
- *      themes/companies/tech/deep_tech tích luỹ qua các ngày, KHÔNG cần gọi
- *      LLM (đọc thẳng số liệu, rẻ và xác định được).
+ *   3. command /trends         -> đọc rolling trend kinh tế/thị trường từ key
+ *      "trends:latest" (ghi bởi src/deliver.py::write_trends_to_kv) và trả
+ *      top 5 topic theo document frequency, KHÔNG gọi LLM.
  *   4. callback_query "qa:<key>" (bấm nút "🔍 Hỏi sâu thêm" dưới digest)
  *      -> đọc context item từ KV (key ghi bởi src/deliver.py qua
  *      write_items_to_kv), hỏi Gemini đào sâu thêm, reply.
@@ -88,7 +87,8 @@ async function handleMessage(message, env) {
   if (!chatId) return;
 
   if (text === "/start" || text.startsWith("/start ")) {
-    await sendMessage(env, chatId, WELCOME_TEXT, START_KEYBOARD);
+    const displayName = getTelegramDisplayName(message);
+    await sendMessage(env, chatId, buildWelcomeText(displayName), START_KEYBOARD);
     return;
   }
 
@@ -136,20 +136,35 @@ async function handleMessage(message, env) {
   await handleFreeTextQuestion(chatId, text, env);
 }
 
-const WELCOME_TEXT = `👋 Chào operator!
+function buildWelcomeText(displayName) {
+  return `👋 Chào ${displayName}!
 
 Đây là Bản Tin Kinh Tế & Thị Trường.
 Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, chứng khoán, doanh nghiệp, công nghệ và địa chính trị.
 
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
-• /refresh — chạy lại pipeline ngay (digest mới sẽ tới trong vài phút).
-• /trends — xem xu hướng tích luỹ (themes/companies/tech xuất hiện nhiều lần qua các ngày), không chỉ digest hôm nay.
-• /forget — xoá lịch sử hội thoại đã nhớ với bot, bắt đầu lại từ đầu.
-• Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để nhận phân tích mặc định — SAU ĐÓ có 10 phút để gõ tiếp câu hỏi RIÊNG của bạn về đúng item đó (vd "so với X thì sao?").
-• Hoặc gõ thẳng câu hỏi tự do (không vừa bấm nút) — bot dùng cả digest gần nhất làm nền, nhớ vài lượt hỏi-đáp gần nhất với bạn nên có thể hỏi tiếp/nối ý, không cần lặp lại context.
+• /refresh — chạy lại pipeline ngay.
+• /trends — xem tối đa 5 xu hướng kinh tế và thị trường trong 7 ngày gần nhất.
+• /forget — xoá lịch sử hội thoại.
+• Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để hỏi riêng về mục đó.
+• Hoặc gõ thẳng câu hỏi tự do về digest gần nhất.
 
 👇 Hoặc bấm nút nhanh dưới đây:`;
+}
+
+function getTelegramDisplayName(message) {
+  const firstName = (message?.from?.first_name || "").trim();
+  const lastName = (message?.from?.last_name || "").trim();
+  const username = (message?.from?.username || "").trim();
+
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+
+  if (fullName) return fullName;
+  if (username) return `@${username}`;
+
+  return "bạn";
+}
 
 // Nút nhanh dưới /start — operator yêu cầu "easy to use giống các con bot
 // khác", không phải gõ lệnh tay mỗi lần. callback_data "refresh" dùng lại
@@ -227,20 +242,6 @@ async function handleTrends(chatId, env) {
     }
   }
 
-  // Nếu pipeline chưa đồng bộ được KV, phục hồi từ knowledge/kb.json đã commit.
-  if (!trends) {
-    trends = await loadTrendsFromGitHub(env);
-    if (trends) {
-      try {
-        await env.DIGEST_KV.put("trends:latest", JSON.stringify(trends), {
-          expirationTtl: 30 * 24 * 3600,
-        });
-      } catch (err) {
-        // Vẫn trả dữ liệu vừa đọc; lỗi cache không được làm hỏng /trends.
-      }
-    }
-  }
-
   if (!trends || !hasTrendData(trends)) {
     await sendMessage(
       env,
@@ -253,79 +254,21 @@ async function handleTrends(chatId, env) {
   await sendMessage(env, chatId, buildTrendsMessage(trends));
 }
 
-async function loadTrendsFromGitHub(env) {
-  if (!env.GITHUB_OWNER || !env.GITHUB_REPO) return null;
-
-  const url = `https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/contents/knowledge/kb.json`;
-  const headers = {
-    Accept: "application/vnd.github+json",
-    "User-Agent": "ban-tin-kinh-te-thi-truong-webhook",
-  };
-  if (env.GITHUB_PAT) {
-    headers.Authorization = `Bearer ${env.GITHUB_PAT}`;
-  }
-
-  try {
-    const response = await fetch(url, { headers });
-    if (!response.ok) return null;
-
-    const payload = await response.json();
-    if (!payload || typeof payload.content !== "string") return null;
-
-    const binary = atob(payload.content.replace(/\s/g, ""));
-    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-    const kb = JSON.parse(new TextDecoder().decode(bytes));
-    return buildTrendsFromKnowledgeBase(kb);
-  } catch (err) {
-    return null;
-  }
-}
-
-function buildTrendsFromKnowledgeBase(kb) {
-  const topEntries = (section) =>
-    Object.entries(section || {})
-      .map(([name, value]) => ({
-        name,
-        count: Number(value?.count || 0),
-        last_seen: value?.last_seen || "",
-      }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 15);
-
-  return {
-    themes: topEntries(kb?.themes),
-    companies: topEntries(kb?.companies),
-    tech: topEntries(kb?.tech),
-    deep_tech: topEntries(kb?.deep_tech),
-  };
-}
-
 function hasTrendData(trends) {
-  return ["themes", "companies", "tech", "deep_tech"].some(
-    (key) => Array.isArray(trends?.[key]) && trends[key].length > 0
-  );
+  return trends?.schema_version === 2 && Array.isArray(trends?.trends) && trends.trends.length > 0;
 }
 
 function buildTrendsMessage(trends) {
-  const section = (emoji, label, list) => {
-    if (!list || !list.length) return `${emoji} ${label}: (chưa có dữ liệu)`;
-    const lines = list
-      .slice(0, 8)
-      .map((x, i) => `${i + 1}. ${x.name} — ${x.count} lần (gần nhất ${x.last_seen})`);
-    return `${emoji} ${label}:\n${lines.join("\n")}`;
-  };
-
-  return [
-    "📊 Xu hướng tích luỹ (toàn bộ lịch sử digest, không chỉ hôm nay):",
-    "",
-    section("🧠", "Themes", trends.themes),
-    "",
-    section("🏢", "Companies", trends.companies),
-    "",
-    section("🛠️", "Tech", trends.tech),
-    "",
-    section("🔬", "Deep tech", trends.deep_tech),
-  ].join("\n");
+  const windowDays = trends.window_days === 14 ? 14 : 7;
+  const items = trends.trends.slice(0, 5).map((item, index) =>
+    [
+      `${index + 1}. ${item.label_vi}`,
+      `   • Xuất hiện trong: ${item.count} bản tin`,
+      `   • Gần nhất: ${item.last_seen}`,
+      `   • Diễn biến: ${item.direction}`,
+    ].join("\n")
+  );
+  return [`📊 Xu hướng ${windowDays} ngày gần nhất`, "", ...items].join("\n\n");
 }
 
 // ---------------------------------------------------------------------
@@ -412,7 +355,7 @@ async function handleCallbackQuery(callbackQuery, env) {
   await sendMessage(env, chatId, `🔍 Hỏi sâu thêm: "${itemTitle}"\n⏳ Đang phân tích...`);
 
   const prompt = buildDeepDivePrompt(itemCtx);
-  const result = await callGemini(env, prompt);
+  const result = await callLLMWithFallback(env, prompt);
   if (!result.ok) {
     await sendMessage(env, chatId, result.error);
     return;
@@ -521,7 +464,7 @@ async function handleItemSpecificQuestion(chatId, itemKey, question, env) {
 
   const history = await getConversation(env, chatId);
   const prompt = buildItemQuestionPrompt(itemCtx, history, question);
-  const result = await callGemini(env, prompt);
+  const result = await callLLMWithFallback(env, prompt);
   if (!result.ok) {
     await sendMessage(env, chatId, result.error);
     return;
@@ -596,7 +539,7 @@ async function handleFreeTextQuestion(chatId, question, env) {
   }
 
   const prompt = buildFreeTextPrompt(items, trends, history, question);
-  const result = await callGemini(env, prompt);
+  const result = await callLLMWithFallback(env, prompt);
   if (!result.ok) {
     await sendMessage(env, chatId, result.error);
     return;
@@ -615,7 +558,7 @@ Raw: ${truncate(it.raw_text || "", 1200)}`;
     })
     .join("\n\n");
 
-  const trendsBlock = trends ? formatTrendsForPrompt(trends) : "(chưa có dữ liệu xu hướng tích luỹ)";
+  const trendsBlock = hasTrendData(trends) ? formatTrendsForPrompt(trends) : "(chưa có dữ liệu xu hướng gần đây)";
   const historyBlock = formatConversationHistory(history);
 
   return `Bạn là research analyst riêng của operator, đã trao đổi với operator nhiều lượt
@@ -626,14 +569,13 @@ operator đã biết rồi.
 LỊCH SỬ HỘI THOẠI GẦN ĐÂY (cũ nhất trước, mới nhất sau):
 ${historyBlock}
 
-DỮ LIỆU XU HƯỚNG TÍCH LUỸ (themes/companies/tech xuất hiện nhiều lần qua các ngày,
-KHÔNG chỉ digest hôm nay):
+DỮ LIỆU XU HƯỚNG KINH TẾ VÀ THỊ TRƯỜNG GẦN ĐÂY:
 ${trendsBlock}
 
 DIGEST GẦN NHẤT:
 ${itemsBlock}
 
-Trả lời ngắn gọn, tiếng Việt, CHỈ dựa trên nội dung trên (digest + xu hướng tích luỹ +
+Trả lời ngắn gọn, tiếng Việt, CHỈ dựa trên nội dung trên (digest + xu hướng gần đây +
 lịch sử hội thoại) — nếu không đủ thông tin để trả lời, nói thẳng "không đủ thông tin
 để trả lời câu này" thay vì bịa.
 
@@ -641,20 +583,14 @@ Câu hỏi mới của operator: ${question}`;
 }
 
 function formatTrendsForPrompt(trends) {
-  const section = (label, list) => {
-    if (!list || !list.length) return "";
-    const lines = list
-      .slice(0, 10)
-      .map((x) => `- ${x.name} (xuất hiện ${x.count} lần, gần nhất ${x.last_seen})`);
-    return `${label}:\n${lines.join("\n")}`;
-  };
-  const blocks = [
-    section("Themes", trends.themes),
-    section("Companies", trends.companies),
-    section("Tech", trends.tech),
-    section("Deep tech", trends.deep_tech),
-  ].filter(Boolean);
-  return blocks.length ? blocks.join("\n\n") : "(rỗng)";
+  const items = Array.isArray(trends?.trends) ? trends.trends.slice(0, 5) : [];
+  if (!items.length) return "(rỗng)";
+  return items
+    .map(
+      (item) =>
+        `- ${item.label_vi}: ${item.count} bản tin, gần nhất ${item.last_seen}, ${item.direction}`
+    )
+    .join("\n");
 }
 
 // ---------------------------------------------------------------------
@@ -696,43 +632,294 @@ function formatConversationHistory(turns) {
 }
 
 // ---------------------------------------------------------------------
-// Gemini call (raw HTTP, không SDK)
+// LLM fallback (raw HTTP, không SDK)
 // ---------------------------------------------------------------------
 
-async function callGemini(env, prompt) {
-  if (!env.GEMINI_API_KEY) {
-    return { ok: false, error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời." };
+const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash"];
+const LLM_RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504]);
+const LLM_MAX_ATTEMPTS = 2;
+
+async function callLLMWithFallback(env, prompt) {
+  const attempted = [];
+  let lastError = "không rõ nguyên nhân";
+
+  if (env.GEMINI_API_KEY) {
+    for (const model of GEMINI_MODELS) {
+      const result = await callGeminiModel(env, prompt, model);
+      attempted.push(model);
+      if (result.ok) return result;
+      lastError = result.error;
+      if (!result.allowFallback) return result;
+    }
   }
 
-  const model = env.GEMINI_MODEL || "gemini-3.5-flash";
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`;
+  if (env.OPENROUTER_API_KEY) {
+    const result = await callOpenRouter(env, prompt);
+    attempted.push("openrouter");
+    if (result.ok) return result;
+    lastError = result.error;
+    if (!result.allowFallback) return result;
+  }
 
-  try {
-    const resp = await fetch(url, {
+  if (env.DEEPSEEK_API_KEY) {
+    const result = await callDeepSeek(env, prompt);
+    attempted.push("deepseek");
+    if (result.ok) return result;
+    lastError = result.error;
+  }
+
+  if (!attempted.length) {
+    return {
+      ok: false,
+      error: "Worker thiếu GEMINI_API_KEY, OPENROUTER_API_KEY và DEEPSEEK_API_KEY — không gọi được LLM để trả lời.",
+    };
+  }
+
+  return {
+    ok: false,
+    error: sanitizeLLMError(
+      `⚠️ Tất cả LLM đều thất bại (đã thử: ${attempted.join(", ")}). Lỗi cuối: ${lastError}`,
+      env
+    ),
+  };
+}
+
+async function callGeminiModel(env, prompt, model) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  const request = await fetchLLMWithRetry(
+    url,
+    {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": env.GEMINI_API_KEY,
+      },
       body: JSON.stringify({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.3 },
       }),
-    });
-
-    if (!resp.ok) {
-      const body = await resp.text();
-      return { ok: false, error: `⚠️ Gemini lỗi (status ${resp.status}): ${truncate(body, 300)}` };
-    }
-
-    const data = await resp.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!text) {
-      return { ok: false, error: "⚠️ Gemini trả response không có nội dung." };
-    }
-
-    return { ok: true, text };
-  } catch (err) {
-    return { ok: false, error: `⚠️ Lỗi gọi Gemini: ${escapeForTelegram(String(err))}` };
+    },
+    model,
+    env
+  );
+  if (!request.response) {
+    return { ok: false, allowFallback: true, error: request.error };
   }
+
+  const body = await request.response.text();
+  if (!request.response.ok) {
+    const unavailable =
+      request.response.status === 404 || isModelUnavailableError(body);
+    const allowFallback =
+      unavailable || LLM_RETRYABLE_STATUSES.has(request.response.status);
+    return {
+      ok: false,
+      allowFallback,
+      error: sanitizeLLMError(
+        `⚠️ ${model} lỗi HTTP ${request.response.status}: ${providerErrorDetail(body)}`,
+        env
+      ),
+    };
+  }
+
+  try {
+    const data = JSON.parse(body);
+    const candidates = Array.isArray(data?.candidates) ? data.candidates : [];
+    const text = candidates
+      .flatMap((candidate) =>
+        Array.isArray(candidate?.content?.parts) ? candidate.content.parts : []
+      )
+      .map((part) => (typeof part?.text === "string" ? part.text : ""))
+      .join("")
+      .trim();
+    if (!text) {
+      return {
+        ok: false,
+        allowFallback: true,
+        error: `⚠️ ${model} trả response không có nội dung.`,
+      };
+    }
+    return { ok: true, text, engine: model };
+  } catch (err) {
+    return {
+      ok: false,
+      allowFallback: true,
+      error: sanitizeLLMError(`⚠️ ${model} trả response JSON không hợp lệ: ${err}`, env),
+    };
+  }
+}
+
+async function callOpenRouter(env, prompt) {
+  const request = await fetchLLMWithRetry(
+    "https://openrouter.ai/api/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openrouter/free",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.3,
+      }),
+    },
+    "openrouter",
+    env
+  );
+  if (!request.response) {
+    return { ok: false, allowFallback: true, error: request.error };
+  }
+
+  const body = await request.response.text();
+  if (!request.response.ok) {
+    return {
+      ok: false,
+      allowFallback: ![400, 401, 403].includes(request.response.status),
+      error: sanitizeLLMError(
+        `⚠️ openrouter lỗi HTTP ${request.response.status}: ${providerErrorDetail(body)}`,
+        env
+      ),
+    };
+  }
+
+  try {
+    const data = JSON.parse(body);
+    const content = data?.choices?.[0]?.message?.content;
+    const text = Array.isArray(content)
+      ? content
+          .map((part) => (typeof part?.text === "string" ? part.text : ""))
+          .join("")
+          .trim()
+      : typeof content === "string"
+        ? content.trim()
+        : "";
+    if (!text) {
+      return { ok: false, allowFallback: true, error: "⚠️ openrouter trả response không có nội dung." };
+    }
+    return { ok: true, text, engine: "openrouter" };
+  } catch (err) {
+    return {
+      ok: false,
+      allowFallback: true,
+      error: sanitizeLLMError(`⚠️ openrouter trả response JSON không hợp lệ: ${err}`, env),
+    };
+  }
+}
+
+async function callDeepSeek(env, prompt) {
+  const request = await fetchLLMWithRetry(
+    "https://api.deepseek.com/anthropic/v1/messages",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": env.DEEPSEEK_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: env.DEEPSEEK_MODEL || "deepseek-v4-flash",
+        max_tokens: 4096,
+        temperature: 0.3,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    },
+    "deepseek",
+    env
+  );
+  if (!request.response) {
+    return { ok: false, allowFallback: true, error: request.error };
+  }
+
+  const body = await request.response.text();
+  if (!request.response.ok) {
+    return {
+      ok: false,
+      allowFallback: ![400, 401, 403].includes(request.response.status),
+      error: sanitizeLLMError(
+        `⚠️ deepseek lỗi HTTP ${request.response.status}: ${providerErrorDetail(body)}`,
+        env
+      ),
+    };
+  }
+
+  try {
+    const data = JSON.parse(body);
+    const text = Array.isArray(data?.content)
+      ? data.content
+          .map((part) => (part?.type === "text" && typeof part.text === "string" ? part.text : ""))
+          .join("")
+          .trim()
+      : "";
+    if (!text) {
+      return { ok: false, allowFallback: true, error: "⚠️ deepseek trả response không có nội dung." };
+    }
+    return { ok: true, text, engine: "deepseek" };
+  } catch (err) {
+    return {
+      ok: false,
+      allowFallback: true,
+      error: sanitizeLLMError(`⚠️ deepseek trả response JSON không hợp lệ: ${err}`, env),
+    };
+  }
+}
+
+async function fetchLLMWithRetry(url, options, engine, env) {
+  for (let attempt = 1; attempt <= LLM_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (LLM_RETRYABLE_STATUSES.has(response.status) && attempt < LLM_MAX_ATTEMPTS) {
+        continue;
+      }
+      return { response };
+    } catch (err) {
+      const safeError = sanitizeLLMError(err, env);
+      if (attempt === LLM_MAX_ATTEMPTS) {
+        return {
+          response: null,
+          error: `⚠️ ${engine} không kết nối được sau ${LLM_MAX_ATTEMPTS} lần thử: ${safeError}`,
+        };
+      }
+    }
+  }
+  return { response: null, error: `⚠️ ${engine} request thất bại.` };
+}
+
+function isModelUnavailableError(body) {
+  return /model[^.\n]*(not found|unavailable|not available)|(not found|unavailable|not available)[^.\n]*model/i.test(
+    body
+  );
+}
+
+function providerErrorDetail(body) {
+  try {
+    const parsed = JSON.parse(body);
+    const message = parsed?.error?.message ?? parsed?.error;
+    if (typeof message === "string" && message.trim()) return truncate(message.trim(), 300);
+  } catch (err) {
+    // Body không phải JSON: chỉ dùng đoạn text ngắn đã được sanitize ở caller.
+  }
+  return truncate(body || "không có chi tiết", 300);
+}
+
+function sanitizeLLMError(value, env) {
+  let safe = String(value);
+  const secrets = [
+    env?.GEMINI_API_KEY,
+    env?.OPENROUTER_API_KEY,
+    env?.DEEPSEEK_API_KEY,
+    env?.TELEGRAM_BOT_TOKEN,
+    env?.GITHUB_PAT,
+  ];
+  for (const secret of secrets) {
+    if (typeof secret === "string" && secret) {
+      safe = safe.split(secret).join("[REDACTED]");
+    }
+  }
+  safe = safe.replace(/AIza[A-Za-z0-9_-]{16,}/g, "[REDACTED]");
+  safe = safe.replace(/sk-or-v1-[A-Za-z0-9_-]+/g, "[REDACTED]");
+  safe = safe.replace(/(authorization|x-goog-api-key|x-api-key)\s*[:=]\s*[^\s,;]+/gi, "$1: [REDACTED]");
+  return truncate(safe, 500);
 }
 
 // ---------------------------------------------------------------------
