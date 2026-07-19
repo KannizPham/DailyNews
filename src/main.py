@@ -114,20 +114,17 @@ def fetch_all_sources() -> list:
 
 
 def build_llm_client_or_none() -> LLMClient | None:
-    """Trả LLMClient nếu có ít nhất 1 key (Gemini/DeepSeek), ngược lại None.
+    """Trả LLMClient khi có GEMINI_API_KEY, ngược lại trả None."""
 
-    Quyết định: trả None thay vì instantiate client rồi luôn fail, để mọi nơi
-    gọi LLM trong main.py kiểm tra được rõ ràng "có key hay không" và degrade
-    gracefully, đúng yêu cầu không block khi thiếu key.
-    """
     client = LLMClient()
-    if not client._engine_order():
+
+    if not client._model_order():
         logger.warning(
-            "Không có GEMINI_API_KEY hoặc DEEPSEEK_API_KEY trong env -> mọi "
-            "bước cần LLM (Stage 1 batch ranking, Stage 2 analyze) sẽ fallback/"
-            "degrade gracefully, KHÔNG gọi LLM thật."
+            "Không có GEMINI_API_KEY trong env -> các bước cần LLM "
+            "sẽ degrade gracefully, không gọi Gemini."
         )
         return None
+
     return client
 
 
