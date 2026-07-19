@@ -1,24 +1,67 @@
 output_lang: vi
+
+# Lăng kính chính cho bản tin kinh tế - tài chính cá nhân.
 tracking:
-  - diffusion models / generative modeling
-  - optimal transport
-  - uncertainty / OOD / long-tailed learning
-  - quant trading & market microstructure
-  - SEA fintech / payments / startup ecosystem
-  - capital allocation / VC thesis / moats
-deep_tech_tracking:            # góc nhìn KỸ THUẬT, không phải tin tức bề mặt
-  - xe điện & tự lái (battery chemistry, sensor stack, autonomy stack)
-  - năng lượng & pin (battery tech, grid, energy storage)
-  - vật liệu mới (semiconductor, advanced materials)
-  - robotics (actuators, control, manipulation)
+  - kinh tế Việt Nam, tăng trưởng GDP, lạm phát và đầu tư công
+  - chính sách tiền tệ, lãi suất, tỷ giá, thanh khoản và tăng trưởng tín dụng
+  - ngân hàng Việt Nam, chất lượng tài sản, NIM, CASA và nợ xấu
+  - VN-Index, trái phiếu, hàng hóa, ngoại hối và thị trường vốn
+  - kết quả kinh doanh, dòng tiền, biên lợi nhuận và định giá doanh nghiệp
+  - CFA, phân bổ tài sản, quản trị danh mục và quản trị rủi ro
+  - kinh tế Mỹ, Trung Quốc và ASEAN
+  - thương mại quốc tế, chuỗi cung ứng và địa chính trị
+
+# AI/deep tech vẫn được giữ, nhưng chỉ ưu tiên khi có tác động kinh tế rõ ràng.
+deep_tech_tracking:
+  - AI và tự động hóa tác động tới năng suất, việc làm hoặc chi phí doanh nghiệp
+  - bán dẫn, chip, thiết bị sản xuất và kiểm soát xuất khẩu
+  - hạ tầng dữ liệu, điện toán đám mây và an ninh mạng có tác động kinh tế
+  - pin, năng lượng, robotics và công nghệ công nghiệp
+
+category_priorities:
+  macro:
+    - GDP, CPI, lạm phát, PMI, đầu tư công, ngân sách, thuế
+    - lãi suất, tỷ giá, tín dụng, thanh khoản, chính sách tiền tệ
+  markets:
+    - VN-Index, cổ phiếu, trái phiếu, lợi suất, ngoại hối, hàng hóa
+    - S&P 500, Nasdaq, Dow Jones, Fed, ECB, PBOC
+  banking:
+    - ngân hàng, NIM, CASA, nợ xấu, tín dụng, huy động, Basel
+  corporate:
+    - kết quả kinh doanh, doanh thu, lợi nhuận, dòng tiền, biên lợi nhuận
+    - P/E, P/B, EV/EBITDA, định giá, cổ tức, M&A
+  technology:
+    - AI, bán dẫn hoặc công nghệ có tác động tới năng suất, chi phí và chuỗi cung ứng
+  geopolitics:
+    - Mỹ, Trung Quốc, ASEAN, thuế quan, trừng phạt, chiến tranh thương mại
+
 what_counts_as_matters: >
-  Ưu tiên cái thay đổi cách một thị trường/bài toán vận hành, hoặc lộ ra một
-  bet về tương lai. Với deep tech: ưu tiên giải thích được NGUYÊN LÝ KỸ THUẬT
-  tại sao nó khó / tại sao nó work, không chỉ tin ra mắt sản phẩm. Bỏ qua tin
-  PR, version bump, drama.
-outside_lane_domains:        # nguồn cho mục "mở rộng góc nhìn"
-  - biotech / synthetic bio
-  - energy / climate tech (nếu không trùng deep_tech_tracking)
-  - geopolitics & trade
-  - design / consumer behavior
-keywords_boost: [moat, distribution, why now, unit economics, defensibility]
+  Ưu tiên thông tin mới trong 24 giờ có thể thay đổi triển vọng tăng trưởng,
+  lạm phát, lãi suất, tỷ giá, lợi nhuận doanh nghiệp, định giá tài sản hoặc mức
+  rủi ro danh mục. Với AI/công nghệ, chỉ ưu tiên khi có kênh truyền dẫn kinh tế
+  rõ ràng; không ưu tiên launch sản phẩm, benchmark hoặc model release thuần túy.
+
+outside_lane_domains:
+  - địa chính trị và thương mại quốc tế
+  - năng lượng, khí hậu và chuỗi cung ứng
+
+keywords_boost:
+  - GDP
+  - CPI
+  - lãi suất
+  - tỷ giá
+  - tín dụng
+  - VN-Index
+  - lợi nhuận
+  - định giá
+  - dòng tiền
+  - quản trị rủi ro
+  - bán dẫn
+  - thuế quan
+
+keywords_downrank:
+  - model launch
+  - product launch
+  - benchmark leaderboard
+  - chatbot release
+  - version update
