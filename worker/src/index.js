@@ -88,15 +88,9 @@ async function handleMessage(message, env) {
   if (!chatId) return;
 
   if (text === "/start" || text.startsWith("/start ")) {
-  const displayName = getTelegramDisplayName(message);
-  await sendMessage(
-    env,
-    chatId,
-    buildWelcomeText(displayName),
-    START_KEYBOARD
-  );
-  return;
-}
+    await sendMessage(env, chatId, WELCOME_TEXT, START_KEYBOARD);
+    return;
+  }
 
   if (text === "/refresh" || text.startsWith("/refresh ")) {
     await handleRefresh(chatId, env);
@@ -142,8 +136,7 @@ async function handleMessage(message, env) {
   await handleFreeTextQuestion(chatId, text, env);
 }
 
-function buildWelcomeText(displayName) {
-  return `👋 Chào ${displayName}!
+const WELCOME_TEXT = `👋 Chào operator!
 
 Đây là Bản Tin Kinh Tế & Thị Trường.
 Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, chứng khoán, doanh nghiệp, công nghệ và địa chính trị.
@@ -151,13 +144,12 @@ Bot tổng hợp và phân tích tin tức kinh tế, tài chính, ngân hàng, 
 Lệnh có sẵn:
 • /start — xem lại hướng dẫn này.
 • /refresh — chạy lại pipeline ngay (digest mới sẽ tới trong vài phút).
-• /trends — xem xu hướng tích luỹ qua các ngày.
-• /forget — xoá lịch sử hội thoại đã nhớ với bot.
-• Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để hỏi riêng về mục đó.
-• Hoặc gõ thẳng câu hỏi tự do về digest gần nhất.
+• /trends — xem xu hướng tích luỹ (themes/companies/tech xuất hiện nhiều lần qua các ngày), không chỉ digest hôm nay.
+• /forget — xoá lịch sử hội thoại đã nhớ với bot, bắt đầu lại từ đầu.
+• Bấm nút "🔍 Hỏi sâu thêm" dưới mỗi mục digest để nhận phân tích mặc định — SAU ĐÓ có 10 phút để gõ tiếp câu hỏi RIÊNG của bạn về đúng item đó (vd "so với X thì sao?").
+• Hoặc gõ thẳng câu hỏi tự do (không vừa bấm nút) — bot dùng cả digest gần nhất làm nền, nhớ vài lượt hỏi-đáp gần nhất với bạn nên có thể hỏi tiếp/nối ý, không cần lặp lại context.
 
 👇 Hoặc bấm nút nhanh dưới đây:`;
-}
 
 // Nút nhanh dưới /start — operator yêu cầu "easy to use giống các con bot
 // khác", không phải gõ lệnh tay mỗi lần. callback_data "refresh" dùng lại
@@ -226,24 +218,92 @@ async function handleTrends(chatId, env) {
     return;
   }
 
-  if (!raw) {
+  let trends = null;
+  if (raw) {
+    try {
+      trends = JSON.parse(raw);
+    } catch (err) {
+      trends = null;
+    }
+  }
+
+  // Nếu pipeline chưa đồng bộ được KV, phục hồi từ knowledge/kb.json đã commit.
+  if (!trends) {
+    trends = await loadTrendsFromGitHub(env);
+    if (trends) {
+      try {
+        await env.DIGEST_KV.put("trends:latest", JSON.stringify(trends), {
+          expirationTtl: 30 * 24 * 3600,
+        });
+      } catch (err) {
+        // Vẫn trả dữ liệu vừa đọc; lỗi cache không được làm hỏng /trends.
+      }
+    }
+  }
+
+  if (!trends || !hasTrendData(trends)) {
     await sendMessage(
       env,
       chatId,
-      "Chưa có dữ liệu xu hướng tích luỹ (cần ít nhất 1 lần pipeline chạy xong Stage 3 — xem src/deliver.py::write_trends_to_kv)."
+      "Chưa có dữ liệu xu hướng. Hãy chạy workflow ngày ít nhất một lần và kiểm tra cấu hình Cloudflare KV."
     );
     return;
   }
 
-  let trends;
-  try {
-    trends = JSON.parse(raw);
-  } catch (err) {
-    await sendMessage(env, chatId, "Dữ liệu xu hướng trong KV bị hỏng (không parse được JSON).");
-    return;
+  await sendMessage(env, chatId, buildTrendsMessage(trends));
+}
+
+async function loadTrendsFromGitHub(env) {
+  if (!env.GITHUB_OWNER || !env.GITHUB_REPO) return null;
+
+  const url = `https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/contents/knowledge/kb.json`;
+  const headers = {
+    Accept: "application/vnd.github+json",
+    "User-Agent": "ban-tin-kinh-te-thi-truong-webhook",
+  };
+  if (env.GITHUB_PAT) {
+    headers.Authorization = `Bearer ${env.GITHUB_PAT}`;
   }
 
-  await sendMessage(env, chatId, buildTrendsMessage(trends));
+  try {
+    const response = await fetch(url, { headers });
+    if (!response.ok) return null;
+
+    const payload = await response.json();
+    if (!payload || typeof payload.content !== "string") return null;
+
+    const binary = atob(payload.content.replace(/\s/g, ""));
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    const kb = JSON.parse(new TextDecoder().decode(bytes));
+    return buildTrendsFromKnowledgeBase(kb);
+  } catch (err) {
+    return null;
+  }
+}
+
+function buildTrendsFromKnowledgeBase(kb) {
+  const topEntries = (section) =>
+    Object.entries(section || {})
+      .map(([name, value]) => ({
+        name,
+        count: Number(value?.count || 0),
+        last_seen: value?.last_seen || "",
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 15);
+
+  return {
+    themes: topEntries(kb?.themes),
+    companies: topEntries(kb?.companies),
+    tech: topEntries(kb?.tech),
+    deep_tech: topEntries(kb?.deep_tech),
+  };
+}
+
+function hasTrendData(trends) {
+  return ["themes", "companies", "tech", "deep_tech"].some(
+    (key) => Array.isArray(trends?.[key]) && trends[key].length > 0
+  );
 }
 
 function buildTrendsMessage(trends) {
@@ -641,82 +701,37 @@ function formatConversationHistory(turns) {
 
 async function callGemini(env, prompt) {
   if (!env.GEMINI_API_KEY) {
-    return {
-      ok: false,
-      error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời.",
-    };
+    return { ok: false, error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời." };
   }
 
   const model = env.GEMINI_MODEL || "gemini-3.5-flash";
-  const url =
-    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`;
 
   try {
     const resp = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": env.GEMINI_API_KEY,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: prompt }],
-          },
-        ],
-        generationConfig: {
-          temperature: 0.3,
-        },
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.3 },
       }),
     });
 
     if (!resp.ok) {
-      let safeMessage = `Gemini trả status ${resp.status}.`;
-
-      try {
-        const errorData = await resp.json();
-        const message = errorData?.error?.message;
-
-        if (typeof message === "string" && message.trim()) {
-          safeMessage += ` ${sanitizeSensitiveText(message, env)}`;
-        }
-      } catch {
-        // Không đưa raw response body vào Telegram vì có thể chứa dữ liệu nhạy cảm.
-      }
-
-      return {
-        ok: false,
-        error: `⚠️ ${truncate(safeMessage, 300)}`,
-      };
+      const body = await resp.text();
+      return { ok: false, error: `⚠️ Gemini lỗi (status ${resp.status}): ${truncate(body, 300)}` };
     }
 
     const data = await resp.json();
-
-    const text = (data?.candidates?.[0]?.content?.parts || [])
-      .map((part) => (typeof part?.text === "string" ? part.text : ""))
-      .filter(Boolean)
-      .join("\n")
-      .trim();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) {
-      return {
-        ok: false,
-        error: "⚠️ Gemini trả response không có nội dung.",
-      };
+      return { ok: false, error: "⚠️ Gemini trả response không có nội dung." };
     }
 
-    return {
-      ok: true,
-      text,
-    };
+    return { ok: true, text };
   } catch (err) {
-    const safeError = sanitizeSensitiveText(String(err), env);
-
-    return {
-      ok: false,
-      error: `⚠️ Lỗi gọi Gemini: ${truncate(safeError, 300)}`,
-    };
+    return { ok: false, error: `⚠️ Lỗi gọi Gemini: ${escapeForTelegram(String(err))}` };
   }
 }
 
@@ -758,52 +773,6 @@ async function answerCallbackQuery(env, callbackQueryId) {
   } catch (err) {
     console.error("answerCallbackQuery lỗi:", err);
   }
-}
-function getTelegramDisplayName(message) {
-  const firstName = (message?.from?.first_name || "").trim();
-  const lastName = (message?.from?.last_name || "").trim();
-  const username = (message?.from?.username || "").trim();
-
-  const fullName = [firstName, lastName]
-    .filter(Boolean)
-    .join(" ");
-
-  if (fullName) {
-    return fullName;
-  }
-
-  if (username) {
-    return `@${username}`;
-  }
-
-  return "bạn";
-}
-function sanitizeSensitiveText(value, env) {
-  let text = String(value ?? "");
-
-  const secrets = [
-    env?.GEMINI_API_KEY,
-    env?.TELEGRAM_BOT_TOKEN,
-    env?.GITHUB_PAT,
-  ];
-
-  for (const secret of secrets) {
-    if (typeof secret === "string" && secret) {
-      text = text.split(secret).join("[REDACTED]");
-    }
-  }
-
-  text = text.replace(
-    /([?&](?:key|api_key|token)=)[^&\s]+/gi,
-    "$1[REDACTED]"
-  );
-
-  text = text.replace(
-    /(x-goog-api-key|authorization)\s*:\s*[^\s,;]+/gi,
-    "$1: [REDACTED]"
-  );
-
-  return text;
 }
 
 function truncate(text, maxLen) {
