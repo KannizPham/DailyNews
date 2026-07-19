@@ -97,14 +97,19 @@
       ]
     },
     "Alibaba": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-07",
-      "last_seen": "2026-07-07",
+      "last_seen": "2026-07-19",
       "rounds": [
         {
           "date": "2026-07-07",
           "investors": "not_specified",
           "round": "not_specified"
+        },
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": "N/A"
         }
       ]
     },
@@ -898,6 +903,18 @@
             "Lightspeed (in talks)"
           ],
           "round": "$200M"
+        }
+      ]
+    },
+    "MoonshotAI": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": "N/A"
         }
       ]
     },
@@ -2454,9 +2471,9 @@
       "notes": []
     },
     "AI Agents": {
-      "count": 26,
+      "count": 27,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-07-18",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "AI Education": {
@@ -2619,6 +2636,12 @@
       "count": 1,
       "first_seen": "2026-06-28",
       "last_seen": "2026-06-28",
+      "notes": []
+    },
+    "CLI Agents": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Causality Theory": {
@@ -2808,9 +2831,9 @@
       "notes": []
     },
     "LLM": {
-      "count": 23,
+      "count": 24,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-18",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "LLM (Codex)": {
@@ -3301,6 +3324,12 @@
       "last_seen": "2026-07-18",
       "notes": []
     },
+    "AI Cost Optimization": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "AI Education": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -3308,9 +3337,9 @@
       "notes": []
     },
     "AI Engineering": {
-      "count": 25,
+      "count": 26,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-07-18",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "AI Infrastructure": {
@@ -3683,6 +3712,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Open-Weight Models": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Payment Infrastructure Efficiency": {
