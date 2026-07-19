@@ -622,7 +622,7 @@ function formatConversationHistory(turns) {
 // LLM fallback (raw HTTP, không SDK)
 // ---------------------------------------------------------------------
 
-const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash"];
+const GEMINI_MODELS = ["gemini-3.5-flash", "gemini-3.0-flash", "gemini-2.5-flash"];
 const LLM_RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504]);
 const LLM_MAX_ATTEMPTS = 2;
 
@@ -640,32 +640,17 @@ async function callLLMWithFallback(env, prompt) {
     }
   }
 
-  if (env.OPENROUTER_API_KEY) {
-    const result = await callOpenRouter(env, prompt);
-    attempted.push("openrouter");
-    if (result.ok) return result;
-    lastError = result.error;
-    if (!result.allowFallback) return result;
-  }
-
-  if (env.DEEPSEEK_API_KEY) {
-    const result = await callDeepSeek(env, prompt);
-    attempted.push("deepseek");
-    if (result.ok) return result;
-    lastError = result.error;
-  }
-
   if (!attempted.length) {
     return {
       ok: false,
-      error: "Worker thiếu GEMINI_API_KEY, OPENROUTER_API_KEY và DEEPSEEK_API_KEY — không gọi được LLM để trả lời.",
+      error: "Worker thiếu GEMINI_API_KEY — không gọi được Gemini để trả lời.",
     };
   }
 
   return {
     ok: false,
     error: sanitizeLLMError(
-      `⚠️ Tất cả LLM đều thất bại (đã thử: ${attempted.join(", ")}). Lỗi cuối: ${lastError}`,
+      `⚠️ Tất cả Gemini model đều thất bại (đã thử: ${attempted.join(", ")}). Lỗi cuối: ${lastError}`,
       env
     ),
   };
@@ -736,126 +721,16 @@ async function callGeminiModel(env, prompt, model) {
   }
 }
 
-async function callOpenRouter(env, prompt) {
-  const request = await fetchLLMWithRetry(
-    "https://openrouter.ai/api/v1/chat/completions",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "openrouter/free",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.3,
-      }),
-    },
-    "openrouter",
-    env
-  );
-  if (!request.response) {
-    return { ok: false, allowFallback: true, error: request.error };
-  }
-
-  const body = await request.response.text();
-  if (!request.response.ok) {
-    return {
-      ok: false,
-      allowFallback: ![400, 401, 403].includes(request.response.status),
-      error: sanitizeLLMError(
-        `⚠️ openrouter lỗi HTTP ${request.response.status}: ${providerErrorDetail(body)}`,
-        env
-      ),
-    };
-  }
-
-  try {
-    const data = JSON.parse(body);
-    const content = data?.choices?.[0]?.message?.content;
-    const text = Array.isArray(content)
-      ? content
-          .map((part) => (typeof part?.text === "string" ? part.text : ""))
-          .join("")
-          .trim()
-      : typeof content === "string"
-        ? content.trim()
-        : "";
-    if (!text) {
-      return { ok: false, allowFallback: true, error: "⚠️ openrouter trả response không có nội dung." };
-    }
-    return { ok: true, text, engine: "openrouter" };
-  } catch (err) {
-    return {
-      ok: false,
-      allowFallback: true,
-      error: sanitizeLLMError(`⚠️ openrouter trả response JSON không hợp lệ: ${err}`, env),
-    };
-  }
-}
-
-async function callDeepSeek(env, prompt) {
-  const request = await fetchLLMWithRetry(
-    "https://api.deepseek.com/anthropic/v1/messages",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": env.DEEPSEEK_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: env.DEEPSEEK_MODEL || "deepseek-v4-flash",
-        max_tokens: 4096,
-        temperature: 0.3,
-        messages: [{ role: "user", content: prompt }],
-      }),
-    },
-    "deepseek",
-    env
-  );
-  if (!request.response) {
-    return { ok: false, allowFallback: true, error: request.error };
-  }
-
-  const body = await request.response.text();
-  if (!request.response.ok) {
-    return {
-      ok: false,
-      allowFallback: ![400, 401, 403].includes(request.response.status),
-      error: sanitizeLLMError(
-        `⚠️ deepseek lỗi HTTP ${request.response.status}: ${providerErrorDetail(body)}`,
-        env
-      ),
-    };
-  }
-
-  try {
-    const data = JSON.parse(body);
-    const text = Array.isArray(data?.content)
-      ? data.content
-          .map((part) => (part?.type === "text" && typeof part.text === "string" ? part.text : ""))
-          .join("")
-          .trim()
-      : "";
-    if (!text) {
-      return { ok: false, allowFallback: true, error: "⚠️ deepseek trả response không có nội dung." };
-    }
-    return { ok: true, text, engine: "deepseek" };
-  } catch (err) {
-    return {
-      ok: false,
-      allowFallback: true,
-      error: sanitizeLLMError(`⚠️ deepseek trả response JSON không hợp lệ: ${err}`, env),
-    };
-  }
-}
-
 async function fetchLLMWithRetry(url, options, engine, env) {
   for (let attempt = 1; attempt <= LLM_MAX_ATTEMPTS; attempt += 1) {
     try {
       const response = await fetch(url, options);
-      if (LLM_RETRYABLE_STATUSES.has(response.status) && attempt < LLM_MAX_ATTEMPTS) {
+      // Quota 429 chuyển model ngay; chỉ retry giới hạn với lỗi máy chủ.
+      if (
+        response.status !== 429 &&
+        LLM_RETRYABLE_STATUSES.has(response.status) &&
+        attempt < LLM_MAX_ATTEMPTS
+      ) {
         continue;
       }
       return { response };
@@ -893,8 +768,6 @@ function sanitizeLLMError(value, env) {
   let safe = String(value);
   const secrets = [
     env?.GEMINI_API_KEY,
-    env?.OPENROUTER_API_KEY,
-    env?.DEEPSEEK_API_KEY,
     env?.TELEGRAM_BOT_TOKEN,
     env?.GITHUB_PAT,
   ];
@@ -904,8 +777,7 @@ function sanitizeLLMError(value, env) {
     }
   }
   safe = safe.replace(/AIza[A-Za-z0-9_-]{16,}/g, "[REDACTED]");
-  safe = safe.replace(/sk-or-v1-[A-Za-z0-9_-]+/g, "[REDACTED]");
-  safe = safe.replace(/(authorization|x-goog-api-key|x-api-key)\s*[:=]\s*[^\s,;]+/gi, "$1: [REDACTED]");
+  safe = safe.replace(/(authorization|x-goog-api-key)\s*[:=]\s*[^\s,;]+/gi, "$1: [REDACTED]");
   return truncate(safe, 500);
 }
 
