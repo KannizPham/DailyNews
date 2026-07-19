@@ -179,7 +179,7 @@ async function handleRefresh(chatId, env) {
       headers: {
         Authorization: `Bearer ${env.GITHUB_PAT}`,
         Accept: "application/vnd.github+json",
-        "User-Agent": "morning-intel-webhook",
+        "User-Agent": "ban-tin-kinh-te-thi-truong-webhook",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ event_type: "refresh-digest" }),
@@ -636,7 +636,7 @@ async function callGemini(env, prompt) {
     return { ok: false, error: "Worker thiếu GEMINI_API_KEY — không gọi được LLM để trả lời." };
   }
 
-  const model = env.GEMINI_MODEL || "gemini-2.5-flash";
+  const model = env.GEMINI_MODEL || "gemini-3.5-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`;
 
   try {
