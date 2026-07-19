@@ -1,4 +1,4 @@
-# Personal Morning Intelligence Agent
+# Bản Tin Kinh Tế & Thị Trường
 
 Pipeline cá nhân, chạy bằng GitHub Actions, gửi digest mỗi sáng 6h (giờ VN)
 qua Telegram. Không VPS, không database — state lưu bằng file commit ngược
