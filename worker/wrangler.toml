@@ -1,4 +1,4 @@
-name = "morning-intel-webhook"
+name = "ban-tin-kinh-te-thi-truong"
 main = "src/index.js"
 compatibility_date = "2024-09-01"
 
@@ -6,9 +6,9 @@ compatibility_date = "2024-09-01"
 # Secret thật (GEMINI_API_KEY, TELEGRAM_BOT_TOKEN, GITHUB_PAT) set bằng
 # `wrangler secret put <NAME>`, KHÔNG để ở đây (xem README phần Cloudflare).
 [vars]
-GITHUB_OWNER = "Duckduck-05"
-GITHUB_REPO = "Newnews"
-GEMINI_MODEL = "gemini-2.5-flash"
+GITHUB_OWNER = "KannizPham"
+GITHUB_REPO = "DailyNews"
+GEMINI_MODEL = "gemini-3.5-flash"
 
 # KV namespace dùng để đọc context item digest do main.py ghi vào (xem
 # src/deliver.py::write_items_to_kv). id phải điền sau khi chạy:
