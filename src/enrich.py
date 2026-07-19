@@ -33,7 +33,7 @@ ENRICH_THRESHOLD_CHARS = 300
 MAX_ENRICHED_TEXT_CHARS = 2000
 USER_AGENT = (
     "Mozilla/5.0 (compatible; MorningIntelBot/1.0; "
-    "+https://github.com/Duckduck-05/Newnews)"
+    "+https://github.com/KannizPham/DailyNews)"
 )
 
 
