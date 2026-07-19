@@ -336,6 +336,30 @@
         }
       ]
     },
+    "Bách Hóa Xanh": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Bảo Tín Minh Châu": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Capital One": {
       "count": 1,
       "first_seen": "2026-07-17",
@@ -521,6 +545,18 @@
         }
       ]
     },
+    "GKitchen": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "GamesOfArcadia": {
       "count": 1,
       "first_seen": "2026-07-11",
@@ -592,6 +628,18 @@
         {
           "date": "2026-06-23",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "Homefarm": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
           "round": null
         }
       ]
@@ -694,6 +742,18 @@
         }
       ]
     },
+    "Japfa Best": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Kimi": {
       "count": 1,
       "first_seen": "2026-07-16",
@@ -715,6 +775,18 @@
           "date": "2026-07-18",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "Kingfoodmart": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -866,6 +938,18 @@
         {
           "date": "2026-07-05",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "Mi Hồng": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
           "round": null
         }
       ]
@@ -1251,6 +1335,18 @@
         }
       ]
     },
+    "SJC": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Sakana AI": {
       "count": 1,
       "first_seen": "2026-06-27",
@@ -1323,6 +1419,18 @@
         }
       ]
     },
+    "Standard Chartered": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "StartupWiki": {
       "count": 1,
       "first_seen": "2026-06-20",
@@ -1356,6 +1464,18 @@
           "date": "2026-06-19",
           "investors": "not clear",
           "round": "early access"
+        }
+      ]
+    },
+    "T&T Group": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -1444,6 +1564,18 @@
       ]
     },
     "Vietnam Airlines": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "WinMart+": {
       "count": 1,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
@@ -3486,6 +3618,12 @@
       "last_seen": "2026-07-06",
       "notes": []
     },
+    "Chính sách tiền tệ": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Community-driven Development": {
       "count": 1,
       "first_seen": "2026-06-20",
@@ -3670,6 +3808,12 @@
       "count": 1,
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
+      "notes": []
+    },
+    "Kinh tế cửa khẩu": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "LLM": {
@@ -3924,6 +4068,18 @@
       "last_seen": "2026-07-03",
       "notes": []
     },
+    "Thị trường bán lẻ": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
+    "Thị trường vàng": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Time Series Foundation Models": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -3970,6 +4126,12 @@
       "count": 1,
       "first_seen": "2026-07-13",
       "last_seen": "2026-07-13",
+      "notes": []
+    },
+    "Địa chính trị": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     }
   }
