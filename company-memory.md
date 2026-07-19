@@ -1,6 +1,6 @@
 # Company Memory — cross-agent decisions
 
-## 2026-06-19 Engineering: Bản Tin Kinh Tế & Thị Trường — full pipeline build (§1-9 brief) | Context: khi tiếp tục/maintain dự án newnews, hoặc build pipeline multi-source + LLM tương tự
+## 2026-06-19 Engineering: Bản Tin Kinh Tế & Thị Trường — full pipeline build (§1-9 brief) | Context: khi tiếp tục/maintain dự án DailyNews, hoặc build pipeline multi-source + LLM tương tự
 
 - Build toàn bộ pipeline trong 1 lần (bước 2-9 của §12 brief), theo yêu cầu operator "làm hết, không dừng giữa chừng". Mọi stage thiếu API key (Gemini/DeepSeek/Telegram/ProductHunt) đều graceful-degrade: log warning rõ "thiếu key X", KHÔNG crash, vẫn chạy hết các stage còn lại.
 - Quyết định kỹ thuật quan trọng nhất phát hiện giữa quá trình build: Stage 1 filter PHẢI cắt top-N theo TỪNG type (research/funding/product/deep_tech/outside) thay vì cắt top-N toàn cục trước khi phân bổ theo cơ cấu — nếu không, 1 nguồn có bias điểm hệ thống (GitHub Trending luôn +5 "freshness" vì không có ngày publish per-repo) sẽ áp đảo và loại sạch funding/deep_tech trước khi Stage 1 LLM ranking/allocation kịp chọn.
