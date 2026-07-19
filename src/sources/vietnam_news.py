@@ -155,6 +155,17 @@ def _parse_entry_published(entry: Any) -> Optional[datetime]:
         return None
 
 
+def _parse_tuoitre_url_published(url: str) -> Optional[datetime]:
+    """Tuổi Trẻ thường nhúng YYYYMMDD vào ID cuối URL bài viết."""
+    match = re.search(r"(?<!\d)(20\d{6})(?:\d{6,})?(?!\d)", url)
+    if not match:
+        return None
+    try:
+        return datetime.strptime(match.group(1), "%Y%m%d").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
 def classify_item(text: str, default_type: str) -> str:
     """Phân loại xác định bằng keyword; không gọi LLM ở bước lấy nguồn."""
     normalized = text.lower()
@@ -209,9 +220,17 @@ def _fetch_one_feed(
             if not title or not url:
                 continue
 
-            published_at = _parse_entry_published(entry) or datetime.now(
-                timezone.utc
-            )
+            # URL date đáng tin hơn pubDate khi báo đưa lại bài cũ lên RSS.
+            # Nếu cả URL lẫn RSS đều không có ngày thì bỏ bài: giả định "now"
+            # sẽ biến bài cũ thành bài mới và phá freshness của bản tin.
+            published_at = _parse_tuoitre_url_published(url) or _parse_entry_published(entry)
+            if published_at is None:
+                logger.info(
+                    "vietnam_news.py: bỏ entry không xác định được ngày trong %s: %s",
+                    feed_name,
+                    title,
+                )
+                continue
             if published_at < cutoff:
                 continue
 
