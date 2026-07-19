@@ -96,6 +96,18 @@
         }
       ]
     },
+    "Agribank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Alibaba": {
       "count": 2,
       "first_seen": "2026-07-07",
@@ -136,6 +148,18 @@
             "EDBI"
           ],
           "round": "Series D"
+        }
+      ]
+    },
+    "Ancarat": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -243,6 +267,18 @@
             "Asia United Bank"
           ],
           "round": "wholesale facility"
+        }
+      ]
+    },
+    "BIDV": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -432,6 +468,18 @@
         }
       ]
     },
+    "DOJI": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Dassault Systèmes": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -615,6 +663,18 @@
       "rounds": [
         {
           "date": "2026-07-15",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "HDBank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
           "investors": [],
           "round": null
         }
@@ -838,6 +898,18 @@
         {
           "date": "2026-06-23",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "MB": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
           "round": null
         }
       ]
@@ -1213,6 +1285,18 @@
         }
       ]
     },
+    "Phú Quý": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "PinLeads": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1331,6 +1415,18 @@
         {
           "date": "2026-07-04",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "SACOMBANK-SBJ": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
           "round": null
         }
       ]
@@ -1479,6 +1575,18 @@
         }
       ]
     },
+    "TPBank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Tailscale": {
       "count": 1,
       "first_seen": "2026-07-11",
@@ -1488,6 +1596,18 @@
           "date": "2026-07-11",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "Techcombank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -1560,6 +1680,42 @@
           "date": "2026-06-22",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "VPBank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Vietcombank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "VietinBank": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "rounds": [
+        {
+          "date": "2026-07-19",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -3787,9 +3943,9 @@
       "notes": []
     },
     "Geopolitics": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-19",
-      "last_seen": "2026-06-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Geopolitics & Tech": {
@@ -3954,6 +4110,12 @@
       "last_seen": "2026-06-28",
       "notes": []
     },
+    "Precious Metals": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
+      "notes": []
+    },
     "Privacy-focused Products": {
       "count": 1,
       "first_seen": "2026-07-03",
@@ -4042,6 +4204,12 @@
       "count": 1,
       "first_seen": "2026-07-06",
       "last_seen": "2026-07-06",
+      "notes": []
+    },
+    "Social Housing Credit": {
+      "count": 1,
+      "first_seen": "2026-07-19",
+      "last_seen": "2026-07-19",
       "notes": []
     },
     "Sovereign AI": {
