@@ -24,7 +24,9 @@ import json
 import logging
 import os
 import re
-from datetime import datetime
+import unicodedata
+from datetime import date, datetime, timedelta
+from pathlib import Path
 from typing import Optional
 
 import requests
@@ -293,45 +295,201 @@ def write_items_to_kv(verified_items: list) -> bool:
     return all_ok
 
 
-# Top-N mỗi mục (themes/companies/tech/deep_tech) ghi lên KV cho lệnh
-# Telegram "/trends" — kb.json đầy đủ sẽ phình to theo thời gian, không nên
-# đẩy nguyên file lên KV (free tier giới hạn dung lượng value, và Worker
-# chỉ cần top items để trả lời, không cần toàn bộ lịch sử).
-KB_TRENDS_TOP_N = 15
-# "trends:latest" là lớp tích luỹ dài hạn (khác item context 48h) — giữ
-# TTL dài (30 ngày) để vẫn còn dữ liệu nếu pipeline lỡ 1-2 ngày không chạy,
-# nhưng không set vĩnh viễn (key sẽ được pipeline ngày mai ghi đè lại).
+# Dữ liệu xu hướng được tính theo document frequency trên từng digest archive,
+# không dùng count tích luỹ trong kb.json. Mỗi topic chỉ được tính tối đa một
+# lần cho một ngày, dù từ khoá lặp lại bao nhiêu lần trong digest đó.
+TREND_SCHEMA_VERSION = 2
+TREND_TOP_N = 5
+TREND_WINDOW_DAYS = 7
+TREND_FALLBACK_WINDOW_DAYS = 14
+TREND_MIN_DIGEST_DAYS = 3
 KB_TRENDS_TTL_SECONDS = 30 * 24 * 3600
+DEFAULT_ARCHIVE_DIR = Path(__file__).resolve().parents[1] / "archive"
+
+# Regex chạy trên text đã lower-case và bỏ dấu tiếng Việt. Các pattern ngắn
+# như "AI" không được dùng độc lập để OpenAI/AI Agents không tự biến thành
+# một xu hướng công nghệ; AI chỉ được tính khi có ngữ cảnh đầu tư/chi tiêu.
+TREND_TAXONOMY = (
+    ("inflation", "Lạm phát", "Macro", (r"\binflation\b", r"\bcpi\b", r"lam phat", r"consumer prices?")),
+    ("interest_rates", "Lãi suất", "Macro", (r"interest rates?", r"policy rates?", r"lai suat dieu hanh", r"lai suat chinh sach", r"cat giam lai suat", r"tang lai suat", r"fed funds?")),
+    ("exchange_rates", "Tỷ giá", "Macro", (r"usd\s*[/\-]?\s*vnd", r"exchange rates?", r"ty gia", r"currency depreciation", r"dong tien mat gia", r"vnd mat gia")),
+    ("gdp_growth", "Tăng trưởng GDP", "Macro", (r"\bgdp\b", r"gross domestic product", r"tang truong kinh te", r"tang truong tong san pham")),
+    ("fiscal_policy", "Chính sách tài khóa", "Macro", (r"fiscal polic", r"chinh sach tai khoa", r"government spending", r"chi tieu cong", r"ngan sach nha nuoc", r"budget deficit", r"tham hut ngan sach")),
+    ("monetary_policy", "Chính sách tiền tệ", "Macro", (r"monetary polic", r"chinh sach tien te", r"money supply", r"cung tien")),
+    ("employment", "Việc làm", "Macro", (r"employment", r"unemployment", r"labor market", r"labour market", r"viec lam", r"that nghiep", r"thi truong lao dong")),
+    ("commodity_prices", "Giá hàng hóa", "Macro", (r"commodity prices?", r"gia hang hoa", r"hang hoa co ban", r"commodity index")),
+    ("credit_growth", "Tăng trưởng tín dụng", "Banking", (r"credit growth", r"tang truong tin dung", r"tin dung tang", r"credit expansion")),
+    ("deposit_rates", "Lãi suất tiền gửi", "Banking", (r"deposit rates?", r"lai suat tien gui", r"lai suat huy dong")),
+    ("bad_debt", "Nợ xấu", "Banking", (r"\bnpl(?:s)?\b", r"non[- ]performing loans?", r"bad debt", r"no xau")),
+    ("liquidity", "Thanh khoản ngân hàng", "Banking", (r"bank(?:ing)? liquidity", r"thanh khoan ngan hang", r"interbank liquidity", r"thanh khoan lien ngan hang")),
+    ("capital_adequacy", "An toàn vốn", "Banking", (r"capital adequacy", r"capital ratio", r"he so an toan von", r"ty le an toan von", r"\bcar\b")),
+    ("central_bank_policy", "Chính sách ngân hàng trung ương", "Banking", (r"central bank polic", r"chinh sach ngan hang trung uong", r"open market operations?", r"nghiep vu thi truong mo", r"reserve requirements?", r"du tru bat buoc")),
+    ("vietnam_stock_market", "Thị trường chứng khoán Việt Nam", "Markets", (r"vn[- ]?index", r"vietnam(?:ese)? equities", r"vietnam(?:ese)? stocks?", r"chung khoan viet nam", r"co phieu viet nam")),
+    ("global_equities", "Chứng khoán quốc tế", "Markets", (r"global equities", r"global stocks?", r"chung khoan quoc te", r"s&p\s*500", r"nasdaq", r"dow jones", r"nikkei")),
+    ("bonds", "Trái phiếu", "Markets", (r"\bbonds?\b", r"trai phieu", r"government yields?", r"treasury yields?")),
+    ("gold", "Vàng", "Markets", (r"\bgold\b", r"gia vang", r"vang sjc")),
+    ("oil", "Dầu mỏ", "Markets", (r"crude oil", r"brent", r"\bwti\b", r"gia dau", r"dau mo")),
+    ("foreign_flows", "Dòng vốn ngoại", "Markets", (r"foreign flows?", r"foreign investors?", r"foreign net (?:buying|selling)", r"dong von ngoai", r"khoi ngoai", r"nha dau tu nuoc ngoai")),
+    ("market_valuation", "Định giá thị trường", "Markets", (r"market valuation", r"dinh gia thi truong", r"market p/?e", r"forward p/?e")),
+    ("earnings", "Kết quả kinh doanh", "Corporate", (r"\bearnings\b", r"business results?", r"ket qua kinh doanh", r"doanh thu", r"loi nhuan")),
+    ("ma", "Mua bán và sáp nhập", "Corporate", (r"\bm\s*&\s*a\b", r"mergers? and acquisitions?", r"mua ban va sap nhap", r"thau tom")),
+    ("capital_raising", "Huy động vốn", "Corporate", (r"capital raising", r"raise[ds]? capital", r"huy dong von", r"phat hanh them co phieu")),
+    ("corporate_debt", "Nợ doanh nghiệp", "Corporate", (r"corporate debt", r"no doanh nghiep", r"corporate bonds?", r"trai phieu doanh nghiep")),
+    ("valuation", "Định giá doanh nghiệp", "Corporate", (r"company valuation", r"enterprise valuation", r"dinh gia doanh nghiep", r"dinh gia cong ty")),
+    ("business_restructuring", "Tái cấu trúc doanh nghiệp", "Corporate", (r"business restructuring", r"corporate restructuring", r"tai cau truc doanh nghiep", r"tai co cau doanh nghiep")),
+    ("trade_tensions", "Căng thẳng thương mại", "Geopolitics", (r"trade tensions?", r"trade war", r"cang thang thuong mai", r"chien tranh thuong mai")),
+    ("tariffs", "Thuế quan", "Geopolitics", (r"\btariffs?\b", r"thue quan")),
+    ("sanctions", "Trừng phạt", "Geopolitics", (r"\bsanctions?\b", r"trung phat kinh te", r"lenh trung phat")),
+    ("supply_chains", "Chuỗi cung ứng", "Geopolitics", (r"supply chains?", r"chuoi cung ung")),
+    ("regional_conflict", "Xung đột khu vực", "Geopolitics", (r"regional conflicts?", r"xung dot khu vuc", r"military conflict", r"xung dot quan su")),
+    ("ai_investment", "Đầu tư AI", "Technology", (r"ai investment", r"investment in ai", r"ai spending", r"ai capex", r"dau tu (?:vao )?ai", r"chi tieu (?:cho )?ai")),
+    ("semiconductors", "Bán dẫn", "Technology", (r"semiconductors?", r"chipmaking", r"chip industry", r"ban dan", r"nganh chip")),
+    ("fintech", "Công nghệ tài chính", "Technology", (r"\bfintech\b", r"financial technology", r"cong nghe tai chinh")),
+    ("digital_banking", "Ngân hàng số", "Technology", (r"digital banking", r"digital banks?", r"ngan hang so")),
+    ("technology_regulation", "Quản lý công nghệ", "Technology", (r"technology regulation", r"tech regulation", r"ai regulation", r"quan ly cong nghe", r"quy dinh ve ai", r"luat ai")),
+)
 
 
-def build_trends_summary(kb: dict) -> dict:
-    """Tóm tắt kb.json thành top-N theo count mỗi mục (themes/companies/tech/
-    deep_tech), dùng làm dữ liệu cho lệnh "/trends" và làm RAG context bổ
-    sung cho free-text Q&A ở Worker (xem worker/src/index.js)."""
+def _normalize_trend_text(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text.lower())
+    return "".join(ch for ch in normalized if not unicodedata.combining(ch))
 
-    def top_n(section: dict, n: int = KB_TRENDS_TOP_N) -> list[dict]:
-        entries = [
+
+def _topics_in_digest(text: str) -> set[str]:
+    normalized = _normalize_trend_text(text)
+    matched = {
+        topic_id
+        for topic_id, _label, _category, patterns in TREND_TAXONOMY
+        if any(re.search(pattern, normalized) for pattern in patterns)
+    }
+
+    # Fed/SBV/ECB/ngân hàng trung ương được phân loại theo ngữ cảnh: nếu đi
+    # cùng tín hiệu lãi suất thì là Lãi suất, nếu không thì là chính sách NHTW.
+    central_bank = re.search(
+        r"\b(?:fed|federal reserve|sbv|ecb|central bank|state bank of vietnam)\b|"
+        r"ngan hang (?:nha nuoc|trung uong)",
+        normalized,
+    )
+    rate_context = re.search(
+        r"interest rates?|policy rates?|rate (?:cut|hike)s?|lai suat|fed funds?",
+        normalized,
+    )
+    if central_bank:
+        matched.add("interest_rates" if rate_context else "central_bank_policy")
+
+    return matched
+
+
+def load_digest_documents(archive_dir: Path = DEFAULT_ARCHIVE_DIR) -> list[tuple[date, str]]:
+    """Đọc archive daily; mỗi file lỗi được bỏ qua độc lập."""
+    if not archive_dir.exists():
+        return []
+
+    documents: list[tuple[date, str]] = []
+    for path in archive_dir.glob("*.md"):
+        match = re.fullmatch(r"(\d{4}-\d{2}-\d{2})\.md", path.name)
+        if not match:
+            continue
+        try:
+            digest_date = date.fromisoformat(match.group(1))
+            documents.append((digest_date, path.read_text(encoding="utf-8")))
+        except (OSError, UnicodeError, ValueError) as exc:
+            logger.warning("deliver.py: bỏ qua archive lỗi %s: %s", path, exc)
+    return documents
+
+
+def _trend_direction(recent_count: int, earlier_count: int) -> str:
+    if recent_count >= earlier_count + 1:
+        return "Tăng"
+    if earlier_count >= recent_count + 1:
+        return "Giảm"
+    return "Ổn định"
+
+
+def build_trends_summary(
+    documents: list[tuple[date | str, str]],
+    as_of: Optional[date] = None,
+) -> dict:
+    """Tính top trend theo số digest có nhắc topic trong rolling window."""
+    as_of = as_of or datetime.now().astimezone().date()
+
+    # Gom theo ngày để một topic không bao giờ được đếm quá một lần/digest day.
+    by_day: dict[date, list[str]] = {}
+    for raw_date, text in documents:
+        try:
+            digest_date = raw_date if isinstance(raw_date, date) else date.fromisoformat(raw_date)
+        except (TypeError, ValueError):
+            continue
+        if digest_date > as_of:
+            continue
+        by_day.setdefault(digest_date, []).append(text or "")
+
+    def select(window_days: int) -> dict[date, list[str]]:
+        start = as_of - timedelta(days=window_days - 1)
+        return {day: texts for day, texts in by_day.items() if start <= day <= as_of}
+
+    window_days = TREND_WINDOW_DAYS
+    selected = select(window_days)
+    if len(selected) < TREND_MIN_DIGEST_DAYS:
+        window_days = TREND_FALLBACK_WINDOW_DAYS
+        selected = select(window_days)
+
+    topics_by_day = {
+        day: _topics_in_digest("\n".join(texts))
+        for day, texts in selected.items()
+    }
+    recent_days = (window_days + 1) // 2
+    recent_start = as_of - timedelta(days=recent_days - 1)
+    taxonomy_by_id = {
+        topic_id: (label, category)
+        for topic_id, label, category, _patterns in TREND_TAXONOMY
+    }
+
+    trends: list[dict] = []
+    for topic_id, (label, category) in taxonomy_by_id.items():
+        mention_days = sorted(day for day, topics in topics_by_day.items() if topic_id in topics)
+        if not mention_days:
+            continue
+        recent_count = sum(day >= recent_start for day in mention_days)
+        earlier_count = len(mention_days) - recent_count
+        trends.append(
             {
-                "name": name,
-                "count": v.get("count", 0),
-                "last_seen": v.get("last_seen", ""),
+                "topic_id": topic_id,
+                "label_vi": label,
+                "category": category,
+                "count": len(mention_days),
+                "last_seen": mention_days[-1].isoformat(),
+                "direction": _trend_direction(recent_count, earlier_count),
             }
-            for name, v in section.items()
-        ]
-        entries.sort(key=lambda x: x["count"], reverse=True)
-        return entries[:n]
+        )
 
+    trends.sort(
+        key=lambda item: (
+            item["count"],
+            sum(
+                day >= recent_start
+                for day, topics in topics_by_day.items()
+                if item["topic_id"] in topics
+            ),
+            item["last_seen"],
+            item["label_vi"],
+        ),
+        reverse=True,
+    )
     return {
-        "themes": top_n(kb.get("themes", {})),
-        "companies": top_n(kb.get("companies", {})),
-        "tech": top_n(kb.get("tech", {})),
-        "deep_tech": top_n(kb.get("deep_tech", {})),
+        "schema_version": TREND_SCHEMA_VERSION,
+        "window_days": window_days,
+        "digest_days": len(selected),
+        "as_of": as_of.isoformat(),
+        "trends": trends[:TREND_TOP_N],
     }
 
 
-def write_trends_to_kv(kb: dict) -> bool:
-    """Ghi tóm tắt kb.json (build_trends_summary) lên Cloudflare KV key
-    "trends:latest" để Worker trả lời lệnh "/trends" và làm RAG context.
+def write_trends_to_kv(_kb: Optional[dict] = None, archive_dir: Path = DEFAULT_ARCHIVE_DIR) -> bool:
+    """Ghi rolling trend summary từ archive lên KV key ``trends:latest``.
+
+    ``_kb`` được giữ để tương thích với call site hiện tại; count lịch sử trong
+    kb.json không còn tham gia tính xu hướng.
 
     OPTIONAL: thiếu secret Cloudflare -> log warning, trả False, KHÔNG
     raise (đúng nguyên tắc graceful-degrade của project)."""
@@ -347,7 +505,7 @@ def write_trends_to_kv(kb: dict) -> bool:
         )
         return False
 
-    summary = build_trends_summary(kb)
+    summary = build_trends_summary(load_digest_documents(archive_dir))
     ok = _kv_put(
         key="trends:latest",
         value=json.dumps(summary, ensure_ascii=False),
@@ -358,8 +516,9 @@ def write_trends_to_kv(kb: dict) -> bool:
     )
     if ok:
         logger.info(
-            "deliver.py: đã ghi 'trends:latest' (top %d mỗi mục) lên Cloudflare KV.",
-            KB_TRENDS_TOP_N,
+            "deliver.py: đã ghi 'trends:latest' (%d ngày, top %d) lên Cloudflare KV.",
+            summary["window_days"],
+            TREND_TOP_N,
         )
     return ok
 
