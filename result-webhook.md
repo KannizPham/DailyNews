@@ -2,7 +2,7 @@
 
 ## What was implemented
 
-1. **`worker/wrangler.toml`** — config Cloudflare Worker (`morning-intel-webhook`),
+1. **`worker/wrangler.toml`** — config Cloudflare Worker (`ban-tin-kinh-te-thi-truong`),
    binding KV `DIGEST_KV`, vars `GITHUB_OWNER`/`GITHUB_REPO`/`GEMINI_MODEL`.
    Operator phải điền `id` namespace KV và owner/repo thật trước khi deploy.
 
