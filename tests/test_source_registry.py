@@ -11,14 +11,15 @@ from sources.source_registry import get_display_name, get_domain, get_tier  # no
 
 
 def test_known_tier1_domain():
-    assert get_tier("arxiv.org") == 1
-    assert get_tier("https://arxiv.org/abs/1234") == 1
-    assert get_tier("https://tuoitre.vn/kinh-te.htm") == 1
+    assert get_tier("sbv.gov.vn") == 1
+    assert get_tier("https://www.federalreserve.gov/feeds/press_monetary.xml") == 1
+    assert get_tier("https://search.worldbank.org/api/v3/wds") == 1
 
 
 def test_known_tier2_domain():
-    assert get_tier("e27.co") == 2
-    assert get_tier("www.dealstreetasia.com") == 2
+    assert get_tier("vietnamplus.vn") == 2
+    assert get_tier("www.vnexpress.net") == 2
+    assert get_tier("https://tuoitre.vn/kinh-te.htm") == 2
 
 
 def test_known_tier3_domain():
@@ -35,7 +36,7 @@ def test_get_domain_strips_scheme_and_www():
 
 
 def test_subdomain_of_known_tier1_inherits_tier():
-    assert get_tier("blog.spectrum.ieee.org") == 1
+    assert get_tier("search.worldbank.org") == 1
 
 
 def test_vietnamese_source_has_readable_display_name():

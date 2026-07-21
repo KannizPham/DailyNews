@@ -36,7 +36,7 @@ def configure_common(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, item: Item
     monkeypatch.setattr(daily_main, "KB_PATH", tmp_path / "knowledge" / "kb.json")
     monkeypatch.setattr(daily_main, "ARCHIVE_DIR", tmp_path / "archive")
     monkeypatch.setattr(daily_main, "build_llm_client_or_none", lambda: object())
-    monkeypatch.setattr(daily_main, "fetch_all_sources", lambda: [item])
+    monkeypatch.setattr(daily_main, "fetch_all_sources", lambda _seen_ids=None: [item])
     monkeypatch.setattr(daily_main, "filter_stage1", lambda *args, **kwargs: [item])
     monkeypatch.setattr(daily_main, "llm_rank_and_select", lambda *args, **kwargs: [item])
     verified = SimpleNamespace(

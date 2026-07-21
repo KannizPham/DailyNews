@@ -89,12 +89,12 @@ def test_tier3_with_cross_confirmation_not_forced_red_but_not_green():
 
 def test_tier1_cross_confirmed_fact_is_green():
     item_a = make_item(
-        "OpenAI announces new model release today",
-        source="arxiv.org",  # tier 1
+        "Central bank announces interest rate decision today",
+        source="federalreserve.gov",  # official tier 1
     )
     item_b = make_item(
-        "OpenAI announces new model release today",
-        source="techcrunch.com",  # tier 1, domain khác -> đủ điều kiện cross-confirm
+        "Central bank announces interest rate decision today",
+        source="imf.org",  # official tier 1, domain khác -> cross-confirm
     )
     result = verify_item(item_a, [item_a, item_b])
 
@@ -107,8 +107,8 @@ def test_tier1_cross_confirmed_fact_is_green():
 def test_tier1_no_cross_confirmation_not_green():
     """tier 1 nhưng không cross-confirm được -> không đủ để 🟢 (§6b)."""
     lone_item = make_item(
-        "A completely unique research finding nobody else reports",
-        source="arxiv.org",
+        "A completely unique labor statistics release",
+        source="bls.gov",
     )
     result = verify_item(lone_item, [lone_item])
 
@@ -142,7 +142,7 @@ def test_vietnamese_numeric_claim_and_new_category_are_supported():
 
     assert result.item.type == "banking"
     assert result.has_numeric_claim is True
-    assert result.source_tier == 1
+    assert result.source_tier == 2
 
 
 def test_compute_confidence_reasoning_never_green():
