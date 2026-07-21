@@ -311,7 +311,7 @@ Ngắn, đậm đặc, không liệt kê lại tin. Đây là phần phản tư,
 - Dùng `permissions: contents: write` để commit ngược.
 
 ## 10. Secrets (GitHub Secrets / .env)
-`GEMINI_API_KEY`, `DEEPSEEK_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`,
+`GEMINI_API_KEY`, `GEMINI_MODELS`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_IDS`,
 `PRODUCTHUNT_TOKEN` (nếu dùng). README hướng dẫn cách lấy từng cái.
 
 ---

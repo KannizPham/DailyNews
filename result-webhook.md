@@ -3,7 +3,7 @@
 ## What was implemented
 
 1. **`worker/wrangler.toml`** — config Cloudflare Worker (`ban-tin-kinh-te-thi-truong`),
-   binding KV `DIGEST_KV`, vars `GITHUB_OWNER`/`GITHUB_REPO`/`GEMINI_MODEL`.
+   binding KV `DIGEST_KV`, vars `GITHUB_OWNER`/`GITHUB_REPO`/`GEMINI_MODELS`.
    Operator phải điền `id` namespace KV và owner/repo thật trước khi deploy.
 
 2. **`worker/src/index.js`** — JS thuần (không build step), xử lý:

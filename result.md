@@ -67,6 +67,6 @@ tests/test_memory.py:           8/8 passed
 ## Next steps (gợi ý, không phải bắt buộc)
 
 - Operator add `GEMINI_API_KEY` để chạy thử Stage 1 LLM ranking + Stage 2 analyze thật, kiểm tra chất lượng digest 6 mục.
-- Add `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` để test gửi thật (set `DRY_RUN=false` cục bộ 1 lần để xác nhận).
+- Add `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_IDS` để test gửi thật (set `DRY_RUN=false` cục bộ 1 lần để xác nhận).
 - Nếu muốn thêm Sifted/Tech in Asia/KrASIA vào funding.py, chỉ cần thêm dòng vào `FEEDS` dict trong `funding.py` (domain đã có tier sẵn trong `source_registry.py`).
 - Sau khi có >=7 ngày archive thật, chạy `weekly.py` với key thật để xác nhận chất lượng tổng hợp tuần.

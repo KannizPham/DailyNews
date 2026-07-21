@@ -1,7 +1,13 @@
 .venv/
+.pip-cache/
+work-tmp/
 __pycache__/
 *.pyc
 .env
 
 worker/.wrangler/
+worker/.build/
+worker/.xdg/
+worker/node_modules/
+worker/wrangler.log
 .claude/

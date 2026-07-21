@@ -7,9 +7,9 @@ vào repo.
 > Trạng thái hiện tại: **đầy đủ §1-9 của build brief** (`morning-intel-agent-brief.md`).
 > Toàn bộ pipeline (fetch → filter → verify → analyze → accumulate → deliver)
 > chạy bằng 1 lệnh `DRY_RUN=true python src/main.py`, không cần input giữa
-> chừng. Nếu thiếu `GEMINI_API_KEY`/`DEEPSEEK_API_KEY`, các bước cần LLM
-> (Stage 1 batch ranking, Stage 2 analyze) tự fallback/degrade — pipeline vẫn
-> chạy hết, không crash, chỉ in cảnh báo rõ ràng thiếu key gì.
+> chừng. Stage 1 mặc định dùng heuristic; Stage 2 chỉ gọi Gemini. Nếu thiếu key
+> hoặc Gemini lỗi, pipeline gửi thông báo vận hành rồi dừng trước khi thay đổi
+> archive, knowledge base hay `seen.json`.
 
 ---
 
@@ -26,9 +26,7 @@ Quy tắc cứng cho hệ thống này:
 - `config/thesis.yaml` chỉ nên chứa **chủ đề** quan tâm (ví dụ "diffusion
   models", "SEA fintech"), không chứa thông tin định danh hay chiến lược kinh
   doanh cụ thể.
-- Nếu cần riêng tư tuyệt đối, đổi `LLM_ENGINE=deepseek` và chỉ dùng DeepSeek
-  (đọc kỹ chính sách dữ liệu của DeepSeek trước khi quyết định) — nhưng mặc
-  định hệ thống vẫn ưu tiên Gemini trước vì free tier rộng hơn.
+- Không đưa dữ liệu riêng tư vào prompt hoặc conversation memory của bot.
 
 ---
 
@@ -50,7 +48,7 @@ DailyNews/
 │   │                               # quy tắc confidence cứng (🟢🟡🔴)
 │   ├── memory.py                  # Stage 3 — kb.json, archive, seen.json
 │   ├── deliver.py                 # Stage 4 — format + gửi Telegram
-│   ├── llm_client.py              # Gemini (chính) + DeepSeek (fallback)
+│   ├── llm_client.py              # Gemini models.list + model fallback
 │   ├── prompts.py                 # ANALYSIS_SYSTEM_PROMPT, WEEKLY_SYSTEM_PROMPT
 │   └── sources/
 │       ├── arxiv.py               # arXiv API (cs.LG, cs.AI, stat.ML, q-fin)
@@ -98,11 +96,9 @@ python tests/test_source_registry.py
 python tests/test_memory.py
 ```
 
-**Không cần API key nào để DRY_RUN chạy hết pipeline** — nếu thiếu
-`GEMINI_API_KEY`/`DEEPSEEK_API_KEY`, Stage 1 batch ranking fallback về
-heuristic score thuần, Stage 2 analyze in ra thông báo rõ "thiếu key X, Y"
-thay vì sinh digest 6 mục, nhưng Stage 0/1/1.5/3/4 vẫn chạy đầy đủ
-(fetch/filter/verify/lưu archive+kb.json+seen.json/in console).
+**Không cần API key để chạy unit test.** Chạy `main.py` cần `GEMINI_API_KEY`
+cho Stage 2. Nếu thiếu key, pipeline dừng an toàn: không tạo archive, không cập
+nhật KB/seen/KV và không biến thông báo kỹ thuật thành digest.
 
 ---
 
@@ -114,17 +110,18 @@ thay vì sinh digest 6 mục, nhưng Stage 0/1/1.5/3/4 vẫn chạy đầy đủ
 | Secret | Bắt buộc? | Cách lấy |
 |---|---|---|
 | `GEMINI_API_KEY` | Khuyến nghị (engine chính) | Vào [Google AI Studio](https://aistudio.google.com/app/apikey) → "Create API key". Free tier đủ dùng cho 1-2 lần gọi/ngày của hệ thống này. |
-| `DEEPSEEK_API_KEY` | Khuyến nghị (fallback khi Gemini lỗi/429) | Vào [platform.deepseek.com](https://platform.deepseek.com/api_keys) → tạo API key. Dùng endpoint Anthropic-compatible `https://api.deepseek.com/anthropic`. |
+| `GEMINI_MODELS` | Tuỳ chọn | Danh sách model ưu tiên, phân tách bằng dấu phẩy. Code giao danh sách này với `models.list`; để trống thì tự chọn model hỗ trợ `generateContent`, Flash/stable trước. |
 | `TELEGRAM_BOT_TOKEN` | Cần để gửi thật (không cần cho DRY_RUN) | Chat với [@BotFather](https://t.me/BotFather) trên Telegram → `/newbot` → đặt tên → BotFather trả về token dạng `123456:ABC-DEF...`. |
-| `TELEGRAM_CHAT_ID` | Cần để gửi thật | Chat với bot vừa tạo (gửi bất kỳ tin gì), sau đó mở `https://api.telegram.org/bot<TOKEN>/getUpdates` trên browser, tìm field `"chat":{"id": ...}` trong JSON trả về — đó là chat_id của bạn. |
+| `TELEGRAM_CHAT_IDS` | Cần để gửi thật | Danh sách chat nhận digest, phân tách bằng dấu phẩy; hỗ trợ group ID âm. |
+| `ADMIN_CHAT_IDS` | Cần cho `/refresh` | Chỉ các chat ID này được trigger workflow. |
+| `ALLOWED_CHAT_IDS` | Cần cho Worker | Các chat được dùng `/start`, `/trends`, `/forget` và hỏi đáp. Admin luôn được phép. |
 | `PRODUCTHUNT_TOKEN` | Tuỳ chọn | Vào [api.producthunt.com/v2/oauth/applications](https://api.producthunt.com/v2/oauth/applications) → tạo application → lấy "Developer Token". **Nếu không set, `producthunt.py` tự bỏ qua nguồn này (log warning), không block pipeline.** |
 | `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `CLOUDFLARE_KV_NAMESPACE_ID` | Tuỳ chọn (chỉ cần cho tương tác real-time) | Xem mục "Thiết lập tương tác real-time (Cloudflare Workers)" phía dưới — cần làm cùng bước thiết lập Worker. **Nếu không set, `deliver.py::write_items_to_kv` tự bỏ qua (log warning), không block pipeline.** |
 
 Không có key nào trong bảng trên là bắt buộc để pipeline **chạy được** (DRY_RUN
 hoặc thật) — pipeline luôn degrade gracefully và log rõ thiếu gì. Nhưng để có
-digest 6 mục đầy đủ (Stage 2 analyze) và gửi Telegram thật, cần ít nhất:
-`GEMINI_API_KEY` hoặc `DEEPSEEK_API_KEY` (1 trong 2), và
-`TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (cả 2).
+digest đầy đủ (Stage 2 analyze) và gửi Telegram thật, cần:
+`GEMINI_API_KEY`, `TELEGRAM_BOT_TOKEN` và `TELEGRAM_CHAT_IDS`.
 
 ### Set secrets trên GitHub Actions
 
@@ -142,10 +139,10 @@ Phần này thêm webhook serverless free (Cloudflare Workers) để bot nhận 
 Telegram **ngay lập tức** (không polling chậm):
 
 - `/start` — xem hướng dẫn.
-- `/refresh` — chạy lại pipeline ngay qua GitHub `repository_dispatch`.
-- `/trends` — xem xu hướng tích luỹ (themes/companies/tech/deep_tech xuất
-  hiện nhiều lần qua các ngày, đọc thẳng từ kb.json, không qua LLM) — "1 nơi"
-  để nắm bắt xu hướng dài hạn, không chỉ digest hôm nay.
+- `/refresh` — chỉ admin; kiểm tra run đang hoạt động rồi mới gọi GitHub
+  `repository_dispatch`.
+- `/trends` — rolling 7 ngày (fallback 14 ngày khi ít dữ liệu), document
+  frequency theo taxonomy kinh tế; không đọc count lịch sử từ `kb.json`.
 - `/forget` — xoá lịch sử hội thoại đã nhớ với bot (xem mục Q&A dưới), bắt
   đầu lại từ đầu.
 - Nút **"🔍 Hỏi sâu thêm"** dưới mỗi mục digest — hỏi sâu riêng item đó (đọc
@@ -188,7 +185,10 @@ Lệnh trả về một `id` dạng chuỗi hex — copy giá trị này, dán v
 [vars]
 GITHUB_OWNER = "KannizPham"
 GITHUB_REPO = "DailyNews"
-GEMINI_MODEL = "gemini-3.5-flash"
+GEMINI_MODELS = ""       # optional; để rỗng = auto từ models.list
+LLM_MAX_ATTEMPTS = "1"
+ADMIN_CHAT_IDS = "123456789"
+ALLOWED_CHAT_IDS = "123456789,-1001234567890"
 ```
 
 ### 4. Set secrets cho Worker
@@ -259,7 +259,7 @@ secret**, thêm:
 |---|---|
 | `CLOUDFLARE_API_TOKEN` | Token từ bước 8 |
 | `CLOUDFLARE_ACCOUNT_ID` | Account ID từ bước 8 |
-| `CLOUDFLARE_KV_NAMESPACE_ID` | Namespace ID từ bước 2 |
+| `CLOUDFLARE_KV_NAMESPACE_ID` | Namespace ID từ bước 2; phải trùng `worker/wrangler.toml` |
 
 Thiếu 1 trong 3 secret này KHÔNG làm sập pipeline — `main.py` log warning và
 bỏ qua bước ghi KV (nút "Hỏi sâu thêm"/"/refresh"/"/trends" sẽ không hoạt
@@ -380,7 +380,8 @@ web-search thật).
 
 ## GitHub Actions
 
-- `daily.yml`: cron `0 23 * * *` UTC (= 6h sáng giờ VN), chạy `python
+- `daily.yml`: cron `0 23 * * *` UTC (= 6h sáng giờ VN), có concurrency group
+  `daily-digest`, chạy `python
   src/main.py`, commit + push `state/`, `archive/`, `knowledge/` ngược vào
   repo. Cần `permissions: contents: write` (đã set trong workflow). Cũng nhận
   trigger `repository_dispatch` (event_type `refresh-digest`) — đây là cách
@@ -395,6 +396,6 @@ Cả 2 đều có `workflow_dispatch` để chạy thủ công từ tab Actions 
 ## Chi phí
 
 - Hạ tầng: $0 (GitHub Actions free tier dư cho 1-2 lần chạy/ngày).
-- LLM: Gemini Flash-Lite free tier — log số token mỗi lần gọi (xem log
+- LLM: Gemini model được xác nhận động qua `models.list` — log model và số token (xem log
   "input_tokens=... output_tokens=..." trong output) để tự kiểm chứng chi
-  phí thực tế ~$0/tháng. Fallback DeepSeek chỉ tốn phí khi Gemini lỗi/429.
+  phí thực tế; `LLM_MAX_ATTEMPTS=1` là mặc định để hạn chế quota.
