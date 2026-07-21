@@ -16,8 +16,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from deliver import (  # noqa: E402
+    _kv_put,
     build_inline_keyboard,
     build_trends_summary,
+    deliver,
+    get_telegram_chat_ids,
     write_items_to_kv,
     write_trends_to_kv,
 )
@@ -201,3 +204,40 @@ def test_write_trends_to_kv_graceful_degrade_when_missing_secrets(monkeypatch):
     result = write_trends_to_kv({})  # không raise là pass
 
     assert result is False
+
+
+def test_kv_ttl_is_query_parameter_and_success_json_required(monkeypatch):
+    calls = []
+
+    class Response:
+        status_code = 200
+        text = '{"success":true}'
+
+        def json(self):
+            return {"success": True}
+
+    def fake_put(url, **kwargs):
+        calls.append({"url": url, **kwargs})
+        return Response()
+
+    monkeypatch.setattr("deliver.requests.put", fake_put)
+    assert _kv_put("key", "value", "account", "namespace", "token", ttl_seconds=123)
+    assert calls[0]["params"] == {"expiration_ttl": 123}
+    assert calls[0]["data"] == b"value"
+    assert "files" not in calls[0]
+
+
+def test_group_chat_ids_and_multi_chat_delivery(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
+    monkeypatch.setenv("TELEGRAM_CHAT_IDS", "123,-1001234567890,123")
+    assert get_telegram_chat_ids() == ["123", "-1001234567890"]
+
+    calls = []
+
+    def fake_send(token, chat_id, text, reply_markup=None):
+        calls.append(chat_id)
+        return chat_id != "123"
+
+    monkeypatch.setattr("deliver.send_telegram_message", fake_send)
+    assert deliver("digest hợp lệ", dry_run=False) is False
+    assert calls == ["123", "-1001234567890"]
