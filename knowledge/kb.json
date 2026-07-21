@@ -497,6 +497,18 @@
         }
       ]
     },
+    "Công ty Chứng khoán ACB": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "DHL": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -578,6 +590,18 @@
           "date": "2026-06-30",
           "investors": "Creandum",
           "round": "Series A"
+        }
+      ]
+    },
+    "FTSE Russell": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -3952,9 +3976,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-21",
       "notes": []
     },
     "Commodity Prices": {
@@ -4180,7 +4204,7 @@
       "notes": []
     },
     "Kinh tế vĩ mô": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
       "notes": []
@@ -4377,6 +4401,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Quản trị doanh nghiệp": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
     "Recursive Inference": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -4471,6 +4501,12 @@
       "count": 1,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
+      "notes": []
+    },
+    "Thị trường chứng khoán": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
       "notes": []
     },
     "Thị trường năng lượng": {
