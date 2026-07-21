@@ -1326,6 +1326,18 @@
         }
       ]
     },
+    "PKF-TTG": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Palantir": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -1761,12 +1773,17 @@
       ]
     },
     "Vietcombank": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-21",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-21",
           "investors": [],
           "round": null
         }
@@ -1779,6 +1796,30 @@
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Vietinbank": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Vietlott": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
           "investors": [],
           "round": null
         }
@@ -4079,6 +4120,12 @@
       "last_seen": "2026-07-19",
       "notes": []
     },
+    "Kinh tế vĩ mô": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
     "LLM": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -4379,6 +4426,18 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Tăng trưởng GDP": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Tỷ giá": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
     "Uncertainty": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -4416,9 +4475,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-21",
       "notes": []
     }
   }
