@@ -16,6 +16,7 @@ from pipeline import (  # noqa: E402
     Item,
     ThesisConfig,
     _select_by_allocation,
+    filter_stage1,
     is_same_event,
     score_item,
 )
@@ -84,3 +85,34 @@ def test_economic_technology_beats_pure_model_launch():
     )
 
     assert score_item(impact, thesis) > score_item(launch, thesis)
+
+
+def test_filter_stage1_excludes_legacy_taxonomy_from_daily_digest():
+    legacy = make_item("legacy", "research", "New AI benchmark is released")
+    economic = make_item("macro", "macro", "Việt Nam công bố số liệu CPI tháng 7")
+
+    selected = filter_stage1(
+        [legacy, economic],
+        ThesisConfig(),
+        seen_ids=set(),
+        keep_top_n=20,
+    )
+
+    assert [item.id for item in selected] == ["macro"]
+
+
+def test_selection_fills_missing_category_quota_from_other_economic_types():
+    items = [
+        make_item("macro-1", "macro", "Việt Nam công bố số liệu CPI tháng 7"),
+        make_item("macro-2", "macro", "Tỷ giá USD giảm trong phiên sáng"),
+        make_item("market-1", "markets", "VN-Index tăng nhờ dòng vốn ngoại"),
+    ]
+    for index, item in enumerate(items):
+        item.score = 10 - index
+
+    selected = _select_by_allocation(
+        items,
+        {"macro": 1, "banking": 1},
+    )
+
+    assert [item.id for item in selected] == ["macro-1", "macro-2", "market-1"]
