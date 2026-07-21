@@ -1,6 +1,6 @@
 """Entrypoint pipeline ngày — full pipeline theo §5/§12 brief.
 
-Stage 0 (fetch nguồn kinh tế Việt Nam + nguồn công nghệ hiện có) -> Stage 1
+Stage 0 (fetch registry nguồn kinh tế đa dạng) -> Stage 1
 (dedupe + heuristic + LLM batch ranking, fallback heuristic) -> Stage 1.5
 (verify, gắn nhãn 🟢🟡🔴) -> Stage 2 (bản tin tối đa 8 mục) -> Stage 3
 (accumulate vào kb.json + archive) -> Stage 4 (deliver Telegram).
@@ -42,15 +42,7 @@ from pipeline import (
     llm_rank_and_select,
 )
 from prompts import ANALYSIS_SYSTEM_PROMPT
-from sources import (
-    arxiv,
-    deep_tech,
-    funding,
-    github_trending,
-    hackernews,
-    producthunt,
-    vietnam_news,
-)
+from sources import economic_news
 from verify import verify_stage
 
 logging.basicConfig(
@@ -87,30 +79,61 @@ def load_thesis(path: Path = THESIS_PATH) -> ThesisConfig:
     )
 
 
-SOURCE_FETCHERS = [
-    (vietnam_news.fetch, "vietnam_news"),
-    (arxiv.fetch, "arxiv"),
-    (hackernews.fetch, "hackernews"),
-    (hackernews.fetch_show_hn, "hackernews_show_hn"),
-    (funding.fetch, "funding"),
-    (github_trending.fetch, "github_trending"),
-    (producthunt.fetch, "producthunt"),
-    (deep_tech.fetch, "deep_tech"),
-]
+SOURCE_FETCHERS = [(economic_news.fetch, "economic_news")]
 
 
-def fetch_all_sources() -> list:
-    """Stage 0 — gọi mọi nguồn, gộp lại. Mỗi nguồn fail độc lập (1 nguồn lỗi
-    không sập pipeline, log warning, tiếp tục với nguồn còn lại)."""
+def _optional_legacy_fetchers() -> list[tuple[object, str]]:
+    """Legacy tech/startup sources are opt-in and economically filtered."""
+    if os.environ.get("ENABLE_OPTIONAL_ECONOMIC_TECH_SOURCES", "false").lower() != "true":
+        return []
+
+    # Lazy import keeps the default economic pipeline independent from arXiv,
+    # HN, Product Hunt, GitHub Trending and generic startup/deep-tech feeds.
+    from sources import arxiv, deep_tech, funding, github_trending, hackernews, producthunt
+
+    return [
+        (arxiv.fetch, "arxiv_optional"),
+        (hackernews.fetch, "hackernews_optional"),
+        (hackernews.fetch_show_hn, "hackernews_show_hn_optional"),
+        (funding.fetch, "funding_optional"),
+        (github_trending.fetch, "github_trending_optional"),
+        (producthunt.fetch, "producthunt_optional"),
+        (deep_tech.fetch, "deep_tech_optional"),
+    ]
+
+
+def fetch_all_sources(seen_ids: set[str] | None = None) -> list:
+    """Stage 0 — fetch the economic registry and optional impact-only feeds."""
     items = []
     for fetch_fn, name in SOURCE_FETCHERS:
         try:
-            fetched = fetch_fn()
-            items.extend(fetched)
-            logger.info("Stage 0 — nguồn %s: %d item.", name, len(fetched))
+            batch = fetch_fn(seen_ids=seen_ids or set())
+            items.extend(batch.items)
+            logger.info("Stage 0 — registry %s: %d item được chấp nhận.", name, len(batch.items))
         except Exception as exc:  # noqa: BLE001 - 1 nguồn lỗi không sập pipeline
             logger.warning("Nguồn %s lỗi, bỏ qua: %s", name, exc)
-    return items
+
+    for fetch_fn, name in _optional_legacy_fetchers():
+        try:
+            fetched = fetch_fn()
+            accepted = []
+            for item in fetched:
+                item_type = economic_news.classify_item(
+                    f"{item.title} {item.raw_text}", "technology"
+                )
+                if item_type == "technology":
+                    item.type = "technology"
+                    accepted.append(item)
+            items.extend(accepted)
+            logger.info(
+                "Stage 0 — nguồn optional %s: fetched=%d accepted=%d (economic impact only).",
+                name,
+                len(fetched),
+                len(accepted),
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Nguồn optional %s lỗi, bỏ qua: %s", name, exc)
+    return economic_news.deduplicate_and_cap_items(items)
 
 
 def build_llm_client_or_none() -> LLMClient | None:
@@ -138,7 +161,7 @@ def main() -> None:
     llm_client = build_llm_client_or_none()
 
     logger.info("Stage 0 — fetch tất cả nguồn...")
-    raw_items = fetch_all_sources()
+    raw_items = fetch_all_sources(seen_ids)
     logger.info("Stage 0 — tổng %d item thô từ mọi nguồn.", len(raw_items))
 
     logger.info("Stage 1 — dedupe + heuristic score + cắt top %d...", STAGE1_KEEP_TOP_N)
