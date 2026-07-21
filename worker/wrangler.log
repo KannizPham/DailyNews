@@ -1,0 +1,272 @@
+
+--- 2026-07-21T07:25:49.299Z debug
+🪵  Writing logs to "C:\Users\phamk\Documents\Codex\2026-07-21\b-n-ang-ti-p-qu\work\DailyNews\worker\wrangler.log"
+---
+
+--- 2026-07-21T07:25:49.299Z debug
+.env file not found at "C:\Users\phamk\Documents\Codex\2026-07-21\b-n-ang-ti-p-qu\work\DailyNews\worker\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-07-21T07:25:49.300Z debug
+.env file not found at "C:\Users\phamk\Documents\Codex\2026-07-21\b-n-ang-ti-p-qu\work\DailyNews\worker\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-07-21T07:25:49.405Z log
+
+ ⛅️ wrangler 4.112.0
+────────────────────
+---
+
+--- 2026-07-21T07:25:49.442Z debug
+Running autoconfig detection in C:\Users\phamk\Documents\Codex\2026-07-21\b-n-ang-ti-p-qu\work\DailyNews\worker...
+---
+
+--- 2026-07-21T07:25:49.505Z log
+
+---
+
+--- 2026-07-21T07:25:49.578Z error
+X [ERROR] Build failed with 2 errors:
+
+  X [ERROR] Cannot read directory "../../../../../../..": Access is denied.
+  
+  
+  X [ERROR] Could not resolve "C:\\Users\\phamk\\Documents\\Codex\\2026-07-21\\b-n-ang-ti-p-qu\\work\\DailyNews\\worker\\src\\index.js"
+  
+  
+
+
+---
+
+--- 2026-07-21T07:25:50.080Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"wrangler command started","timestamp":1784618750080,"properties":{"amplitude_session_id":1784618749416,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":true,"configFileType":"toml","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","argsUsed":["dryRun","noBundle"],"argsCombination":"dryRun, noBundle","sanitizedCommand":"deploy","sanitizedArgs":{"dryRun":true,"noBundle":false},"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:25:50.103Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_process_started","timestamp":1784618750103,"properties":{"amplitude_session_id":1784618749441,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"d3760ff1-157c-4d70-896f-3883234d6a2c","command":"wrangler deploy","dryRun":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:25:50.105Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_detection_started","timestamp":1784618750105,"properties":{"amplitude_session_id":1784618749442,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"d3760ff1-157c-4d70-896f-3883234d6a2c","command":"wrangler deploy","currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:25:50.107Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_detection_completed","timestamp":1784618750107,"properties":{"amplitude_session_id":1784618749442,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"d3760ff1-157c-4d70-896f-3883234d6a2c","configured":true,"success":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:25:50.108Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_process_ended","timestamp":1784618750108,"properties":{"amplitude_session_id":1784618749443,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"d3760ff1-157c-4d70-896f-3883234d6a2c","command":"wrangler deploy","dryRun":true,"success":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:25:50.109Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"wrangler command errored","timestamp":1784618750109,"properties":{"amplitude_session_id":1784618749416,"amplitude_event_id":1,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":true,"configFileType":"toml","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","argsUsed":["dryRun","noBundle"],"argsCombination":"dryRun, noBundle","sanitizedCommand":"deploy","sanitizedArgs":{"dryRun":true,"noBundle":false},"durationMs":202,"errorType":"BuildFailure","currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.739Z debug
+🪵  Writing logs to "R:\wrangler.log"
+---
+
+--- 2026-07-21T07:27:05.739Z debug
+.env file not found at "R:\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-07-21T07:27:05.740Z debug
+.env file not found at "R:\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-07-21T07:27:05.754Z log
+
+ ⛅️ wrangler 4.112.0
+────────────────────
+---
+
+--- 2026-07-21T07:27:05.763Z log
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+---
+
+--- 2026-07-21T07:27:05.793Z debug
+Running autoconfig detection in R:\...
+---
+
+--- 2026-07-21T07:27:05.795Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"wrangler command started","timestamp":1784618825795,"properties":{"amplitude_session_id":1784618825762,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"toml","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","argsUsed":["dryRun"],"argsCombination":"dryRun","sanitizedCommand":"deploy","sanitizedArgs":{"dryRun":true},"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.803Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_process_started","timestamp":1784618825803,"properties":{"amplitude_session_id":1784618825792,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"7dddece5-4201-41a5-8edb-3df7afed1b27","command":"wrangler deploy","dryRun":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.805Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_detection_started","timestamp":1784618825805,"properties":{"amplitude_session_id":1784618825793,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"7dddece5-4201-41a5-8edb-3df7afed1b27","command":"wrangler deploy","currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.806Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_detection_completed","timestamp":1784618825806,"properties":{"amplitude_session_id":1784618825793,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"7dddece5-4201-41a5-8edb-3df7afed1b27","configured":true,"success":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.818Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_process_ended","timestamp":1784618825818,"properties":{"amplitude_session_id":1784618825794,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"7dddece5-4201-41a5-8edb-3df7afed1b27","command":"wrangler deploy","dryRun":true,"success":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.939Z log
+Total Upload: 33.07 KiB / gzip: 8.43 KiB
+---
+
+--- 2026-07-21T07:27:05.942Z log
+Your Worker has access to the following bindings:
+---
+
+--- 2026-07-21T07:27:05.942Z log
+Binding                                                      Resource                  
+---
+
+--- 2026-07-21T07:27:05.942Z log
+env.DIGEST_KV (0ad7f43199aa41ae9ed5603c057557d7)             KV Namespace              
+---
+
+--- 2026-07-21T07:27:05.942Z log
+env.GITHUB_OWNER ("KannizPham")                              Environment Variable      
+---
+
+--- 2026-07-21T07:27:05.943Z log
+env.GITHUB_REPO ("DailyNews")                                Environment Variable      
+---
+
+--- 2026-07-21T07:27:05.943Z log
+env.GEMINI_MODELS ("")                                       Environment Variable      
+---
+
+--- 2026-07-21T07:27:05.943Z log
+env.LLM_MAX_ATTEMPTS ("1")                                   Environment Variable      
+---
+
+--- 2026-07-21T07:27:05.943Z log
+env.ADMIN_CHAT_IDS ("")                                      Environment Variable      
+---
+
+--- 2026-07-21T07:27:05.943Z log
+env.ALLOWED_CHAT_IDS ("")                                    Environment Variable      
+---
+
+--- 2026-07-21T07:27:05.943Z log
+
+---
+
+--- 2026-07-21T07:27:05.943Z log
+--dry-run: exiting now.
+---
+
+--- 2026-07-21T07:27:05.945Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"deploy worker script","timestamp":1784618825945,"properties":{"amplitude_session_id":1784618825943,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","usesTypeScript":false,"durationMs":89,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.952Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"wrangler command completed","timestamp":1784618825952,"properties":{"amplitude_session_id":1784618825762,"amplitude_event_id":1,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"toml","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","argsUsed":["dryRun"],"argsCombination":"dryRun","sanitizedCommand":"deploy","sanitizedArgs":{"dryRun":true},"durationMs":205,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:27:05.954Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"skills_install_skipped","timestamp":1784618825954,"properties":{"amplitude_session_id":1784618825953,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","reason":"Non-interactive terminal","command":"deploy","currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.677Z debug
+🪵  Writing logs to "R:\wrangler.log"
+---
+
+--- 2026-07-21T07:32:26.677Z debug
+.env file not found at "R:\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-07-21T07:32:26.678Z debug
+.env file not found at "R:\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-07-21T07:32:26.689Z log
+
+ ⛅️ wrangler 4.112.0
+────────────────────
+---
+
+--- 2026-07-21T07:32:26.710Z debug
+Running autoconfig detection in R:\...
+---
+
+--- 2026-07-21T07:32:26.711Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"wrangler command started","timestamp":1784619146711,"properties":{"amplitude_session_id":1784619146696,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"toml","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","argsUsed":["dryRun"],"argsCombination":"dryRun","sanitizedCommand":"deploy","sanitizedArgs":{"dryRun":true},"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.719Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_process_started","timestamp":1784619146719,"properties":{"amplitude_session_id":1784619146710,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"80a01b56-a9bd-41ff-8502-3a7b53eed5dc","command":"wrangler deploy","dryRun":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.720Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_detection_started","timestamp":1784619146720,"properties":{"amplitude_session_id":1784619146710,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"80a01b56-a9bd-41ff-8502-3a7b53eed5dc","command":"wrangler deploy","currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.722Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_detection_completed","timestamp":1784619146721,"properties":{"amplitude_session_id":1784619146710,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"80a01b56-a9bd-41ff-8502-3a7b53eed5dc","configured":true,"success":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.733Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"autoconfig_process_ended","timestamp":1784619146733,"properties":{"amplitude_session_id":1784619146711,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","autoConfigId":"80a01b56-a9bd-41ff-8502-3a7b53eed5dc","command":"wrangler deploy","dryRun":true,"success":true,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.834Z log
+Total Upload: 33.37 KiB / gzip: 8.49 KiB
+---
+
+--- 2026-07-21T07:32:26.837Z log
+Your Worker has access to the following bindings:
+---
+
+--- 2026-07-21T07:32:26.837Z log
+Binding                                                      Resource                  
+---
+
+--- 2026-07-21T07:32:26.837Z log
+env.DIGEST_KV (0ad7f43199aa41ae9ed5603c057557d7)             KV Namespace              
+---
+
+--- 2026-07-21T07:32:26.837Z log
+env.GITHUB_OWNER ("KannizPham")                              Environment Variable      
+---
+
+--- 2026-07-21T07:32:26.838Z log
+env.GITHUB_REPO ("DailyNews")                                Environment Variable      
+---
+
+--- 2026-07-21T07:32:26.838Z log
+env.GEMINI_MODELS ("")                                       Environment Variable      
+---
+
+--- 2026-07-21T07:32:26.838Z log
+env.LLM_MAX_ATTEMPTS ("1")                                   Environment Variable      
+---
+
+--- 2026-07-21T07:32:26.838Z log
+env.ADMIN_CHAT_IDS ("")                                      Environment Variable      
+---
+
+--- 2026-07-21T07:32:26.838Z log
+env.ALLOWED_CHAT_IDS ("")                                    Environment Variable      
+---
+
+--- 2026-07-21T07:32:26.838Z log
+
+---
+
+--- 2026-07-21T07:32:26.838Z log
+--dry-run: exiting now.
+---
+
+--- 2026-07-21T07:32:26.840Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"deploy worker script","timestamp":1784619146840,"properties":{"amplitude_session_id":1784619146838,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","usesTypeScript":false,"durationMs":71,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.846Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"wrangler command completed","timestamp":1784619146846,"properties":{"amplitude_session_id":1784619146696,"amplitude_event_id":1,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"toml","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","argsUsed":["dryRun"],"argsCombination":"dryRun","sanitizedCommand":"deploy","sanitizedArgs":{"dryRun":true},"durationMs":162,"currentAgentSkillsInstalled":false}}
+---
+
+--- 2026-07-21T07:32:26.848Z debug
+Metrics dispatcher: Posting data {"deviceId":"759fc807-ff34-4c66-9865-79d0e4e0a89a","event":"skills_install_skipped","timestamp":1784619146848,"properties":{"amplitude_session_id":1784619146847,"amplitude_event_id":0,"wranglerVersion":"4.112.0","wranglerMajorVersion":4,"wranglerMinorVersion":112,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":"codex","category":"Workers","os":"win32:x64","reason":"Non-interactive terminal","command":"deploy","currentAgentSkillsInstalled":false}}
+---

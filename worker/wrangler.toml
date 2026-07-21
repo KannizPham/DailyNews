@@ -8,7 +8,12 @@ compatibility_date = "2024-09-01"
 [vars]
 GITHUB_OWNER = "KannizPham"
 GITHUB_REPO = "DailyNews"
-GEMINI_MODEL = "gemini-3.5-flash"
+# Danh sách model là optional; để rỗng thì Worker tự chọn từ models.list.
+GEMINI_MODELS = ""
+LLM_MAX_ATTEMPTS = "1"
+# Phải điền chat ID thật trước khi deploy. Group ID âm được hỗ trợ.
+ADMIN_CHAT_IDS = ""
+ALLOWED_CHAT_IDS = ""
 
 # KV namespace dùng để đọc context item digest do main.py ghi vào (xem
 # src/deliver.py::write_items_to_kv). id phải điền sau khi chạy:
