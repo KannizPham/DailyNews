@@ -11,6 +11,10 @@ on:
   repository_dispatch:
     types: [refresh-digest]
 
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -33,7 +37,11 @@ jobs:
         env:
           DRY_RUN: "false"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+          ENABLE_LLM_RANKING: ${{ vars.ENABLE_LLM_RANKING || 'false' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
+          # Legacy fallback trong lúc migration; có thể xoá sau khi CHAT_IDS hoạt động.
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PRODUCTHUNT_TOKEN: ${{ secrets.PRODUCTHUNT_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -48,5 +56,5 @@ jobs:
           git config user.name "morning-intel-bot"
           git config user.email "actions@github.com"
           git add state/ archive/ knowledge/
-          git diff --cached --quiet || git commit -m "chore: daily digest $(date -u +%Y-%m-%d)"
+          git diff --cached --quiet || TZ=Asia/Ho_Chi_Minh git commit -m "chore: daily digest $(TZ=Asia/Ho_Chi_Minh date +%Y-%m-%d)"
           git push
