@@ -19,6 +19,7 @@ SOURCE_TIERS: dict[str, int] = {
     "sequoiacap.com": 1,
     "a16z.com": 1,
     "stratechery.com": 1,
+    "tuoitre.vn": 1,
     # tier 2 — uy tín trong ngành/khu vực, editorial có nhưng nhỏ hơn
     "sifted.eu": 2,
     "e27.co": 2,
@@ -48,6 +49,7 @@ SOURCE_DISPLAY_NAMES: dict[str, str] = {
     "sequoiacap.com": "Sequoia Capital",
     "a16z.com": "a16z",
     "stratechery.com": "Stratechery",
+    "tuoitre.vn": "Tuổi Trẻ",
     "sifted.eu": "Sifted",
     "e27.co": "e27",
     "techinasia.com": "Tech in Asia",
