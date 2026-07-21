@@ -213,6 +213,20 @@ def filter_stage1(
             continue
         fresh_items.append(item)
 
+    # Các fetcher legacy vẫn còn trong repository để tương thích dữ liệu và
+    # test cũ, nhưng daily digest kinh tế chỉ được phép đi tiếp với taxonomy
+    # hiện hành. Nếu không lọc tại đây, một pool toàn research/product/funding
+    # vẫn được xem là "có tin", rồi _select_by_allocation trả về rỗng vì các
+    # type đó không có quota — chính là nguyên nhân bot báo mơ hồ rằng không có
+    # tin đủ điều kiện.
+    legacy_count = sum(1 for item in fresh_items if item.type not in DAILY_TYPES)
+    if legacy_count:
+        logger.info(
+            "Stage 1 bỏ %d item thuộc taxonomy legacy khỏi daily digest kinh tế.",
+            legacy_count,
+        )
+    fresh_items = [item for item in fresh_items if item.type in DAILY_TYPES]
+
     for it in fresh_items:
         it.score = score_item(it, thesis, now=now)
 
@@ -349,6 +363,23 @@ def _select_by_allocation(
             if _append_distinct(selected, candidate):
                 chosen += 1
             if chosen >= count or len(selected) >= DAILY_ITEM_LIMIT:
+                break
+
+    # Nếu một category thiếu tin, bù bằng tin kinh tế hợp lệ có score cao từ
+    # category khác. Không dùng item legacy và vẫn chống lặp cùng sự kiện.
+    if len(selected) < DAILY_ITEM_LIMIT:
+        remaining = sorted(
+            (
+                item
+                for item in items
+                if item.type in DAILY_TYPES and item not in selected
+            ),
+            key=lambda item: item.score,
+            reverse=True,
+        )
+        for candidate in remaining:
+            _append_distinct(selected, candidate)
+            if len(selected) >= DAILY_ITEM_LIMIT:
                 break
 
     return selected[:DAILY_ITEM_LIMIT]

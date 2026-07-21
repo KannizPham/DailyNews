@@ -147,7 +147,10 @@ def main() -> None:
     )
     logger.info("Stage 1 — còn lại %d item sau filter heuristic.", len(top_items))
     if not top_items:
-        notify_operator("Không có tin mới kể từ lần chạy gần nhất.", dry_run=dry_run)
+        notify_operator(
+            "Không có tin kinh tế/thị trường mới kể từ lần chạy gần nhất.",
+            dry_run=dry_run,
+        )
         logger.info("Dừng sớm: không gọi Gemini và không cập nhật archive/KB/seen/KV.")
         return
 
