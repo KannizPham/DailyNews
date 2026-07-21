@@ -9,12 +9,15 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import os
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Optional
 
 from sources.source_registry import get_display_name, get_tier
+from llm_client import sanitize_sensitive_text
+from memory import is_valid_digest_text
 
 logger = logging.getLogger(__name__)
 
@@ -393,10 +396,15 @@ def llm_rank_and_select(
     Đây là phần "tăng dần, fallback an toàn" theo yêu cầu: pipeline KHÔNG được
     crash chỉ vì thiếu API key — fallback graceful, log rõ.
     """
-    if llm_client is None:
-        logger.warning(
-            "llm_rank_and_select: không có llm_client (thiếu key) -> fallback "
-            "heuristic score thuần, không gọi LLM batch ranking."
+    if not items:
+        return []
+
+    llm_ranking_enabled = os.environ.get("ENABLE_LLM_RANKING", "false").strip().lower() == "true"
+    if not llm_ranking_enabled or llm_client is None:
+        reason = "ENABLE_LLM_RANKING không bật" if not llm_ranking_enabled else "thiếu API key"
+        logger.info(
+            "llm_rank_and_select: %s -> dùng heuristic, không gọi LLM cho Stage 1.",
+            reason,
         )
         return _select_by_allocation(items, allocation)
 
@@ -521,6 +529,8 @@ def _build_analysis_prompt(
 @dataclass
 class AnalysisResult:
     digest_text: str
+    success: bool = False
+    error_code: Optional[str] = None
     kb_update: Optional[dict] = None
     engine: Optional[str] = None
     input_tokens: Optional[int] = None
@@ -564,27 +574,30 @@ def analyze_stage2(
 ) -> AnalysisResult:
     """Stage 2 — gọi LLM một lần với tối đa 8 item + thesis + kb_summary.
 
-    Nếu llm_client là None (thiếu cả GEMINI_API_KEY và DEEPSEEK_API_KEY) ->
-    trả AnalysisResult với digest_text là thông báo rõ ràng "thiếu key", KHÔNG
-    crash pipeline (yêu cầu: degrade gracefully).
+    Nếu không có client/key hoặc provider lỗi, trả trạng thái thất bại rõ ràng;
+    thông báo kỹ thuật không bao giờ được đặt vào ``digest_text``.
     """
     if llm_client is None:
-        msg = (
-            "[Stage 2 KHÔNG chạy được] Thiếu GEMINI_API_KEY và DEEPSEEK_API_KEY "
-            "trong biến môi trường — không thể gọi LLM để phân tích. Đã fetch + "
-            "filter + verify thành công, nhưng digest kinh tế cần ít nhất 1 "
-            "trong 2 key trên. Thêm key vào .env hoặc GitHub Secrets rồi chạy lại."
-        )
-        logger.warning(msg)
-        return AnalysisResult(digest_text=msg, kb_update=None, json_parse_error="missing_llm_key")
+        logger.warning("Stage 2 không chạy: thiếu GEMINI_API_KEY.")
+        return AnalysisResult(digest_text="", success=False, error_code="missing_llm_key")
+
+    if not verified_items:
+        logger.warning("Stage 2 không chạy: danh sách verified_items rỗng.")
+        return AnalysisResult(digest_text="", success=False, error_code="empty_items")
 
     prompt = _build_analysis_prompt(verified_items, thesis, kb_summary)
     try:
         response = llm_client.generate(prompt, system=system_prompt)
     except Exception as exc:  # noqa: BLE001 - Stage 2 lỗi không được sập toàn pipeline
-        msg = f"[Stage 2 LỖI] Gọi LLM thất bại: {exc}"
-        logger.error(msg)
-        return AnalysisResult(digest_text=msg, kb_update=None, json_parse_error=str(exc))
+        safe_error = sanitize_sensitive_text(exc, getattr(llm_client, "gemini_api_key", None))
+        logger.error("Stage 2 gọi Gemini thất bại: %s", safe_error)
+        return AnalysisResult(
+            digest_text="",
+            success=False,
+            error_code=getattr(exc, "error_code", None) or "llm_error",
+            kb_update=None,
+            json_parse_error=safe_error,
+        )
 
     logger.info(
         "Stage 2 analyze [%s]: input_tokens=%s output_tokens=%s (log để kiểm "
@@ -598,8 +611,21 @@ def analyze_stage2(
     if parse_error:
         logger.warning("Stage 2: %s", parse_error)
 
+    if not is_valid_digest_text(digest_text):
+        logger.error("Stage 2 trả digest rỗng hoặc giống thông báo kỹ thuật; từ chối persistence.")
+        return AnalysisResult(
+            digest_text="",
+            success=False,
+            error_code="invalid_digest",
+            engine=response.engine,
+            input_tokens=response.input_tokens,
+            output_tokens=response.output_tokens,
+            json_parse_error=parse_error,
+        )
+
     return AnalysisResult(
         digest_text=digest_text,
+        success=True,
         kb_update=kb_update,
         engine=response.engine,
         input_tokens=response.input_tokens,

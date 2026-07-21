@@ -28,10 +28,15 @@ import unicodedata
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 import requests
 
+from llm_client import sanitize_sensitive_text
+from memory import is_valid_digest_text
+
 logger = logging.getLogger(__name__)
+VIETNAM_TZ = ZoneInfo("Asia/Ho_Chi_Minh")
 
 TELEGRAM_API_URL = "https://api.telegram.org/bot{token}/sendMessage"
 TELEGRAM_PHOTO_API_URL = "https://api.telegram.org/bot{token}/sendPhoto"
@@ -56,7 +61,12 @@ WEEKDAY_VI = [
 
 
 def format_header(now: Optional[datetime] = None) -> str:
-    now = now or datetime.now()
+    if now is None:
+        now = datetime.now(VIETNAM_TZ)
+    elif now.tzinfo is None:
+        now = now.replace(tzinfo=VIETNAM_TZ)
+    else:
+        now = now.astimezone(VIETNAM_TZ)
     weekday = WEEKDAY_VI[now.weekday()]
     return (
         "📰 Bản Tin Kinh Tế & Thị Trường — "
@@ -132,12 +142,15 @@ def send_telegram_message(
         resp = requests.post(url, json=payload, timeout=DEFAULT_TIMEOUT_S)
         if resp.status_code != 200:
             logger.warning(
-                "deliver.py: Telegram trả status %s: %s", resp.status_code, resp.text
+                "deliver.py: Telegram chat=%s trả status %s: %s",
+                chat_id,
+                resp.status_code,
+                sanitize_sensitive_text(resp.text, token),
             )
             return False
         return True
     except requests.RequestException as exc:
-        logger.warning("deliver.py: lỗi gọi Telegram API: %s", exc)
+        logger.warning("deliver.py: lỗi gọi Telegram API chat=%s: %s", chat_id, sanitize_sensitive_text(exc, token))
         return False
 
 
@@ -156,12 +169,12 @@ def send_telegram_photo(token: str, chat_id: str, photo_url: str, caption: str) 
             logger.warning(
                 "deliver.py: Telegram sendPhoto trả status %s: %s — bỏ qua ảnh, "
                 "vẫn gửi digest text bình thường.",
-                resp.status_code, resp.text,
+                resp.status_code, sanitize_sensitive_text(resp.text, token),
             )
             return False
         return True
     except requests.RequestException as exc:
-        logger.warning("deliver.py: lỗi gọi Telegram sendPhoto: %s — bỏ qua ảnh.", exc)
+        logger.warning("deliver.py: lỗi gọi Telegram sendPhoto: %s — bỏ qua ảnh.", sanitize_sensitive_text(exc, token))
         return False
 
 
@@ -198,32 +211,35 @@ def _kv_put(
 ) -> bool:
     url = CLOUDFLARE_KV_URL.format(account_id=account_id, namespace_id=namespace_id, key=key)
     try:
-        # QUAN TRỌNG: API Cloudflare KV (PUT .../values/{key}) yêu cầu body
-        # multipart/form-data cho field "value"/"expiration_ttl" (xem docs
-        # Cloudflare "Write key-value pair"). Dùng requests.put(..., data=dict)
-        # gửi application/x-www-form-urlencoded -> Cloudflare KHÔNG parse được
-        # field, lưu nguyên văn chuỗi "value=...&expiration_ttl=..." làm value
-        # (bug thật đã phát hiện: Worker đọc lại bị "JSON.parse" lỗi vì value
-        # không phải JSON nữa). Dùng `files=` với tuple (None, x) để buộc
-        # requests encode đúng multipart/form-data, không phải url-encoded.
         resp = requests.put(
             url,
-            headers={"Authorization": f"Bearer {api_token}"},
-            files={
-                "value": (None, value),
-                "expiration_ttl": (None, str(ttl_seconds)),
+            headers={
+                "Authorization": f"Bearer {api_token}",
+                "Content-Type": "text/plain; charset=utf-8",
             },
+            params={"expiration_ttl": ttl_seconds},
+            data=value.encode("utf-8"),
             timeout=DEFAULT_TIMEOUT_S,
         )
-        if resp.status_code != 200:
+        try:
+            result = resp.json()
+        except ValueError:
+            result = None
+        if resp.status_code != 200 or not isinstance(result, dict) or result.get("success") is not True:
             logger.warning(
                 "deliver.py: Cloudflare KV PUT key=%s trả status %s: %s",
-                key, resp.status_code, resp.text,
+                key,
+                resp.status_code,
+                sanitize_sensitive_text(resp.text, api_token),
             )
             return False
         return True
     except requests.RequestException as exc:
-        logger.warning("deliver.py: lỗi gọi Cloudflare KV API (key=%s): %s", key, exc)
+        logger.warning(
+            "deliver.py: lỗi gọi Cloudflare KV API (key=%s): %s",
+            key,
+            sanitize_sensitive_text(exc, api_token),
+        )
         return False
 
 
@@ -392,7 +408,11 @@ def load_digest_documents(archive_dir: Path = DEFAULT_ARCHIVE_DIR) -> list[tuple
             continue
         try:
             digest_date = date.fromisoformat(match.group(1))
-            documents.append((digest_date, path.read_text(encoding="utf-8")))
+            content = path.read_text(encoding="utf-8")
+            if not is_valid_digest_text(content):
+                logger.warning("deliver.py: bỏ archive không hợp lệ khỏi trends: %s", path)
+                continue
+            documents.append((digest_date, content))
         except (OSError, UnicodeError, ValueError) as exc:
             logger.warning("deliver.py: bỏ qua archive lỗi %s: %s", path, exc)
     return documents
@@ -411,7 +431,7 @@ def build_trends_summary(
     as_of: Optional[date] = None,
 ) -> dict:
     """Tính top trend theo số digest có nhắc topic trong rolling window."""
-    as_of = as_of or datetime.now().astimezone().date()
+    as_of = as_of or datetime.now(VIETNAM_TZ).date()
 
     # Gom theo ngày để một topic không bao giờ được đếm quá một lần/digest day.
     by_day: dict[date, list[str]] = {}
@@ -480,6 +500,8 @@ def build_trends_summary(
         "schema_version": TREND_SCHEMA_VERSION,
         "window_days": window_days,
         "digest_days": len(selected),
+        "minimum_digest_days": TREND_MIN_DIGEST_DAYS,
+        "needed_digest_days": max(0, TREND_MIN_DIGEST_DAYS - len(selected)),
         "as_of": as_of.isoformat(),
         "trends": trends[:TREND_TOP_N],
     }
@@ -505,8 +527,24 @@ def write_trends_to_kv(_kb: Optional[dict] = None, archive_dir: Path = DEFAULT_A
         )
         return False
 
-    summary = build_trends_summary(load_digest_documents(archive_dir))
-    ok = _kv_put(
+    documents = load_digest_documents(archive_dir)
+    summary = build_trends_summary(documents)
+    as_of = summary["as_of"]
+    today_text = "\n".join(text for day, text in documents if day.isoformat() == as_of)
+    snapshot = {
+        "schema_version": TREND_SCHEMA_VERSION,
+        "date": as_of,
+        "topic_ids": sorted(_topics_in_digest(today_text)),
+    }
+    snapshot_ok = _kv_put(
+        key=f"trend-day:{as_of}",
+        value=json.dumps(snapshot, ensure_ascii=False),
+        account_id=account_id,
+        namespace_id=namespace_id,
+        api_token=api_token,
+        ttl_seconds=KB_TRENDS_TTL_SECONDS,
+    )
+    latest_ok = _kv_put(
         key="trends:latest",
         value=json.dumps(summary, ensure_ascii=False),
         account_id=account_id,
@@ -514,13 +552,47 @@ def write_trends_to_kv(_kb: Optional[dict] = None, archive_dir: Path = DEFAULT_A
         api_token=api_token,
         ttl_seconds=KB_TRENDS_TTL_SECONDS,
     )
-    if ok:
+    if snapshot_ok and latest_ok:
         logger.info(
             "deliver.py: đã ghi 'trends:latest' (%d ngày, top %d) lên Cloudflare KV.",
             summary["window_days"],
             TREND_TOP_N,
         )
-    return ok
+    return snapshot_ok and latest_ok
+
+
+def get_telegram_chat_ids() -> list[str]:
+    """Đọc danh sách chat, giữ chat ID âm của group và loại trùng ổn định."""
+    raw = (os.environ.get("TELEGRAM_CHAT_IDS") or "").strip()
+    if not raw:
+        raw = (os.environ.get("TELEGRAM_CHAT_ID") or "").strip()
+    result: list[str] = []
+    for value in raw.split(","):
+        chat_id = value.strip()
+        if not chat_id:
+            continue
+        if not re.fullmatch(r"-?\d+", chat_id):
+            logger.warning("deliver.py: bỏ TELEGRAM_CHAT_IDS không hợp lệ: %s", chat_id)
+            continue
+        if chat_id not in result:
+            result.append(chat_id)
+    return result
+
+
+def notify_operator(text: str, *, dry_run: bool = False) -> bool:
+    """Gửi thông báo vận hành plain-text tới mọi chat cấu hình."""
+    if dry_run:
+        print(f"[DRY_RUN operator notice] {text}")
+        return True
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chat_ids = get_telegram_chat_ids()
+    if not token or not chat_ids:
+        logger.warning("deliver.py: thiếu TELEGRAM_BOT_TOKEN hoặc TELEGRAM_CHAT_IDS cho operator notice.")
+        return False
+    all_ok = True
+    for chat_id in chat_ids:
+        all_ok = send_telegram_message(token, chat_id, text) and all_ok
+    return all_ok
 
 
 def deliver(
@@ -559,25 +631,26 @@ def deliver(
         return True
 
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+    chat_ids = get_telegram_chat_ids()
 
-    if not token or not chat_id:
+    if not token or not chat_ids:
         logger.warning(
-            "deliver.py: thiếu TELEGRAM_BOT_TOKEN hoặc TELEGRAM_CHAT_ID trong "
+            "deliver.py: thiếu TELEGRAM_BOT_TOKEN hoặc TELEGRAM_CHAT_IDS trong "
             "env -> không gửi được, in ra console thay thế (không crash)."
         )
         for chunk in chunks:
             print(chunk)
         return False
 
-    if photo_url:
-        send_telegram_photo(token, chat_id, photo_url, caption=format_header(now))
-
     all_ok = True
-    last_idx = len(chunks) - 1
-    for i, chunk in enumerate(chunks):
-        markup = reply_markup if i == last_idx else None
-        ok = send_telegram_message(token, chat_id, chunk, reply_markup=markup)
-        all_ok = all_ok and ok
+    for chat_id in chat_ids:
+        if photo_url:
+            send_telegram_photo(token, chat_id, photo_url, caption=format_header(now))
+        last_idx = len(chunks) - 1
+        chat_ok = True
+        for i, chunk in enumerate(chunks):
+            markup = reply_markup if i == last_idx else None
+            chat_ok = send_telegram_message(token, chat_id, chunk, reply_markup=markup) and chat_ok
+        all_ok = chat_ok and all_ok
 
     return all_ok

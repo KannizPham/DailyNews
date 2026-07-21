@@ -8,11 +8,26 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, timezone
+import os
+import re
+import tempfile
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 logger = logging.getLogger(__name__)
+VIETNAM_TZ = ZoneInfo("Asia/Ho_Chi_Minh")
+
+INVALID_DIGEST_MARKERS = (
+    "[stage 2 lỗi]",
+    "[stage 2 không chạy được]",
+    "[weekly.py lỗi]",
+    "tất cả gemini model",
+    "raw provider error",
+    "hiện tại chưa có dữ liệu mới được cập nhật",
+    "không có tin mới kể từ lần chạy gần nhất",
+)
 
 EMPTY_KB = {
     "themes": {},
@@ -40,14 +55,40 @@ def load_kb(path: Path) -> dict:
 
 
 def save_kb(kb: dict, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(kb, f, ensure_ascii=False, indent=2, sort_keys=True)
-        f.write("\n")
+    text = json.dumps(kb, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+    atomic_write_text(path, text)
 
 
 def _today_str() -> str:
-    return datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d")
+    return datetime.now(VIETNAM_TZ).strftime("%Y-%m-%d")
+
+
+def atomic_write_text(path: Path, text: str) -> None:
+    """Ghi cùng filesystem rồi ``os.replace`` để không để lại file dở dang."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_name, path)
+    except Exception:
+        try:
+            os.unlink(temp_name)
+        except OSError:
+            pass
+        raise
+
+
+def is_valid_digest_text(digest_text: object) -> bool:
+    """Chặn digest rỗng/thông báo vận hành/lỗi kỹ thuật khỏi persistent state."""
+    if not isinstance(digest_text, str) or not digest_text.strip():
+        return False
+    normalized = " ".join(digest_text.lower().split())
+    if any(marker in normalized for marker in INVALID_DIGEST_MARKERS):
+        return False
+    return not re.search(r"\bhttp\s*[45]\d{2}\b|gemini api (?:lỗi|error)", normalized)
 
 
 def _merge_simple_list(kb_section: dict, names: list, today: str) -> None:
@@ -147,26 +188,34 @@ def merge_kb_update(kb: dict, kb_update: Optional[dict], today: Optional[str] = 
 
 
 def save_archive(digest_text: str, archive_dir: Path, date_str: Optional[str] = None) -> Path:
-    """Lưu digest vào archive/YYYY-MM-DD.md."""
+    """Lưu atomic digest hợp lệ theo ngày Việt Nam vào archive/YYYY-MM-DD.md."""
+    if not is_valid_digest_text(digest_text):
+        raise ValueError("Từ chối lưu archive vì digest rỗng hoặc là thông báo lỗi/vận hành.")
     date_str = date_str or _today_str()
-    archive_dir.mkdir(parents=True, exist_ok=True)
     path = archive_dir / f"{date_str}.md"
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(digest_text.rstrip() + "\n")
+    atomic_write_text(path, digest_text.rstrip() + "\n")
     logger.info("memory.py: đã lưu digest vào %s", path)
     return path
 
 
-def load_seen_ids(path: Path) -> set[str]:
+def load_seen_id_list(path: Path) -> list[str]:
     if not path.exists():
-        return set()
+        return []
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        return set(data.get("seen_ids", []))
+        raw_ids = data.get("seen_ids", [])
+        if not isinstance(raw_ids, list):
+            return []
+        # Dedupe nhưng giữ nguyên thứ tự lần đầu xuất hiện.
+        return list(dict.fromkeys(value for value in raw_ids if isinstance(value, str) and value))
     except (json.JSONDecodeError, OSError) as exc:
         logger.warning("memory.py: không đọc được %s, coi như rỗng: %s", path, exc)
-        return set()
+        return []
+
+
+def load_seen_ids(path: Path) -> set[str]:
+    return set(load_seen_id_list(path))
 
 
 def update_seen_ids(
@@ -175,14 +224,17 @@ def update_seen_ids(
     """Thêm new_ids vào state/seen.json. Giới hạn max_keep để file không phình
     vô hạn theo thời gian (giữ id mới nhất — quyết định kỹ thuật vì brief
     không nói rõ chiến lược trim)."""
-    existing = load_seen_ids(path)
-    merged = list(existing) + [i for i in new_ids if i not in existing]
+    existing_list = load_seen_id_list(path)
+    existing = set(existing_list)
+    merged = list(existing_list)
+    for item_id in new_ids:
+        if item_id and item_id not in existing:
+            merged.append(item_id)
+            existing.add(item_id)
     if len(merged) > max_keep:
         merged = merged[-max_keep:]
 
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump({"seen_ids": merged}, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    text = json.dumps({"seen_ids": merged}, ensure_ascii=False, indent=2) + "\n"
+    atomic_write_text(path, text)
 
     return set(merged)

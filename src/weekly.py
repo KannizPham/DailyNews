@@ -11,12 +11,14 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
-from deliver import deliver
-from llm_client import LLMClient
-from memory import load_kb
+from deliver import deliver, notify_operator
+from llm_client import LLMClient, sanitize_sensitive_text
+from memory import atomic_write_text, is_valid_digest_text, load_kb
 from pipeline import build_kb_summary
 from prompts import WEEKLY_SYSTEM_PROMPT
 
@@ -24,6 +26,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
 )
 logger = logging.getLogger("weekly")
+VIETNAM_TZ = ZoneInfo("Asia/Ho_Chi_Minh")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ARCHIVE_DIR = REPO_ROOT / "archive"
@@ -41,21 +44,23 @@ def load_recent_daily_archives(archive_dir: Path = ARCHIVE_DIR, n: int = DAILY_A
         logger.warning("weekly.py: %s chưa tồn tại, không có archive để đọc.", archive_dir)
         return []
 
-    daily_files = [
-        p for p in archive_dir.glob("*.md") if not p.name.startswith("weekly-")
-    ]
+    daily_files = [p for p in archive_dir.glob("*.md") if re.fullmatch(r"\d{4}-\d{2}-\d{2}\.md", p.name)]
     # Tên file dạng YYYY-MM-DD.md sort lexicographic == sort theo ngày.
     daily_files.sort(key=lambda p: p.stem)
-    recent = daily_files[-n:]
-
     results = []
-    for p in recent:
+    for p in reversed(daily_files):
         try:
             content = p.read_text(encoding="utf-8")
+            if not is_valid_digest_text(content):
+                logger.warning("weekly.py: bỏ archive không hợp lệ %s.", p)
+                continue
             results.append((p.stem, content))
+            if len(results) >= n:
+                break
         except OSError as exc:
             logger.warning("weekly.py: lỗi đọc %s, bỏ qua: %s", p, exc)
             continue
+    results.reverse()
     return results
 
 
@@ -81,14 +86,14 @@ def main() -> None:
     if dry_run:
         logger.info("DRY_RUN=true — chạy weekly, không gửi Telegram.")
 
-    daily_archives = load_recent_daily_archives()
+    daily_archives = load_recent_daily_archives(ARCHIVE_DIR)
     if not daily_archives:
         msg = (
             "[weekly.py KHÔNG chạy được] Không có file archive/YYYY-MM-DD.md nào "
             "để tổng hợp. Chạy main.py vài ngày trước rồi chạy lại weekly.py."
         )
         logger.warning(msg)
-        deliver(msg, dry_run=dry_run)
+        notify_operator(msg, dry_run=dry_run)
         return
 
     kb = load_kb(KB_PATH)
@@ -97,22 +102,25 @@ def main() -> None:
 
     client = LLMClient()
 
-if not client._model_order():
-    msg = (
-        "[weekly.py KHÔNG chạy được] Thiếu GEMINI_API_KEY "
-        "trong biến môi trường — không thể gọi Gemini để tổng hợp tuần. "
-        f"Đã đọc được {len(daily_archives)} digest archive + kb.json thành công."
-    )
-    logger.warning(msg)
-    deliver(msg, dry_run=dry_run)
-    return
+    if not client.has_api_key:
+        msg = (
+            "Không tạo được bản tin tuần vì thiếu GEMINI_API_KEY. "
+            "Không có weekly archive nào được ghi."
+        )
+        logger.warning(msg)
+        notify_operator(msg, dry_run=dry_run)
+        return
 
     try:
         response = client.generate(prompt, system=WEEKLY_SYSTEM_PROMPT)
     except Exception as exc:  # noqa: BLE001 - lỗi LLM không được crash weekly.py
-        msg = f"[weekly.py LỖI] Gọi LLM thất bại: {exc}"
-        logger.error(msg)
-        deliver(msg, dry_run=dry_run)
+        safe_error = sanitize_sensitive_text(exc, client.gemini_api_key)
+        logger.error("weekly.py: Gemini thất bại: %s", safe_error)
+        notify_operator(
+            "Không tạo được bản tin tuần do Gemini tạm thời không khả dụng. "
+            "Weekly archive chưa bị thay đổi.",
+            dry_run=dry_run,
+        )
         return
 
     logger.info(
@@ -124,15 +132,19 @@ if not client._model_order():
     )
 
     weekly_text = response.text.strip()
+    if not is_valid_digest_text(weekly_text):
+        logger.error("weekly.py: response rỗng/không hợp lệ; từ chối delivery và archive.")
+        notify_operator("Không tạo được bản tin tuần vì nội dung trả về không hợp lệ.", dry_run=dry_run)
+        return
 
-    now = datetime.now()
+    now = datetime.now(VIETNAM_TZ)
     week_str = _week_str(now)
-    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
     weekly_path = ARCHIVE_DIR / f"weekly-{week_str}.md"
-    weekly_path.write_text(weekly_text + "\n", encoding="utf-8")
-    logger.info("weekly.py: đã lưu tổng hợp tuần vào %s", weekly_path)
-
-    deliver(weekly_text, dry_run=dry_run, now=now)
+    if not deliver(weekly_text, dry_run=dry_run, now=now):
+        logger.error("weekly.py: delivery thất bại; không ghi weekly archive.")
+        return
+    atomic_write_text(weekly_path, weekly_text + "\n")
+    logger.info("weekly.py: đã gửi và lưu tổng hợp tuần vào %s", weekly_path)
 
 
 if __name__ == "__main__":
