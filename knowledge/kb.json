@@ -299,6 +299,18 @@
         }
       ]
     },
+    "BVBank": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Basis Set Ventures": {
       "count": 1,
       "first_seen": "2026-06-23",
@@ -434,6 +446,18 @@
           "date": "2026-06-19",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "Chứng khoán Bảo Minh": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -734,12 +758,17 @@
       ]
     },
     "HDBank": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-22",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-22",
           "investors": [],
           "round": null
         }
@@ -1252,6 +1281,18 @@
         }
       ]
     },
+    "OCB": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "OMOWAY": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -1557,9 +1598,9 @@
       ]
     },
     "SSI": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-07-22",
       "rounds": [
         {
           "date": "2026-07-19",
@@ -1568,6 +1609,11 @@
         },
         {
           "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-22",
           "investors": [],
           "round": null
         }
@@ -1581,6 +1627,18 @@
         {
           "date": "2026-06-27",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "SeABank": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
           "round": null
         }
       ]
@@ -1706,12 +1764,17 @@
       ]
     },
     "TPBank": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-22",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-22",
           "investors": [],
           "round": null
         }
@@ -3976,9 +4039,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-07-22",
       "notes": []
     },
     "Commodity Prices": {
@@ -4231,6 +4294,12 @@
       "count": 1,
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29",
+      "notes": []
+    },
+    "Lãi suất": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
       "notes": []
     },
     "Market Microstructure": {
@@ -4497,10 +4566,22 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Thuế quan": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "notes": []
+    },
     "Thị trường bán lẻ": {
       "count": 1,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
+      "notes": []
+    },
+    "Thị trường bất động sản": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
       "notes": []
     },
     "Thị trường chứng khoán": {
