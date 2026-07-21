@@ -10,24 +10,33 @@ from __future__ import annotations
 from urllib.parse import urlparse
 
 SOURCE_TIERS: dict[str, int] = {
-    # tier 1 — chính chủ, editorial mạnh, hoặc primary source
-    "arxiv.org": 1,
-    "ieee.org": 1,
-    "spectrum.ieee.org": 1,
-    "techcrunch.com": 1,
-    "crunchbase.com": 1,
-    "sequoiacap.com": 1,
-    "a16z.com": 1,
-    "stratechery.com": 1,
-    "tuoitre.vn": 1,
-    # tier 2 — uy tín trong ngành/khu vực, editorial có nhưng nhỏ hơn
-    "sifted.eu": 2,
-    "e27.co": 2,
-    "techinasia.com": 2,
-    "dealstreetasia.com": 2,
-    "kr-asia.com": 2,
-    "ycombinator.com": 2,
-    # tier 3 — aggregator/forum, dùng được nhưng phải cross-check
+    # tier 1 — cơ quan nhà nước/tổ chức quốc tế, dữ liệu và công bố gốc
+    "sbv.gov.vn": 1,
+    "nso.gov.vn": 1,
+    "gso.gov.vn": 1,
+    "baochinhphu.vn": 1,
+    "ssc.gov.vn": 1,
+    "hnx.vn": 1,
+    "federalreserve.gov": 1,
+    "imf.org": 1,
+    "bls.gov": 1,
+    "worldbank.org": 1,
+    # tier 2 — báo chí kinh tế có ban biên tập và RSS công khai
+    "vietnamplus.vn": 2,
+    "vnexpress.net": 2,
+    "tuoitre.vn": 2,
+    # tier 3 — nguồn công nghệ/startup chỉ được bật optional và phải lọc tác động
+    "arxiv.org": 3,
+    "ieee.org": 3,
+    "spectrum.ieee.org": 3,
+    "techcrunch.com": 3,
+    "crunchbase.com": 3,
+    "sifted.eu": 3,
+    "e27.co": 3,
+    "techinasia.com": 3,
+    "dealstreetasia.com": 3,
+    "kr-asia.com": 3,
+    "ycombinator.com": 3,
     "news.ycombinator.com": 3,
     "producthunt.com": 3,
     "github.com": 3,
@@ -41,6 +50,18 @@ DEFAULT_TIER = 3
 # nguyên domain thô (vd "techcrunch.com" thay vì "TechCrunch") dù prompt đã
 # cho ví dụ.
 SOURCE_DISPLAY_NAMES: dict[str, str] = {
+    "sbv.gov.vn": "Ngân hàng Nhà nước Việt Nam",
+    "nso.gov.vn": "Cục Thống kê",
+    "gso.gov.vn": "Tổng cục Thống kê",
+    "baochinhphu.vn": "Báo Điện tử Chính phủ",
+    "ssc.gov.vn": "Ủy ban Chứng khoán Nhà nước",
+    "hnx.vn": "Sở Giao dịch Chứng khoán Hà Nội",
+    "federalreserve.gov": "Federal Reserve",
+    "imf.org": "International Monetary Fund",
+    "bls.gov": "U.S. Bureau of Labor Statistics",
+    "worldbank.org": "World Bank",
+    "vietnamplus.vn": "VietnamPlus",
+    "vnexpress.net": "VnExpress",
     "arxiv.org": "arXiv",
     "ieee.org": "IEEE",
     "spectrum.ieee.org": "IEEE Spectrum",
