@@ -1338,6 +1338,18 @@
         }
       ]
     },
+    "PNJ": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Palantir": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -1496,6 +1508,18 @@
         }
       ]
     },
+    "SHB": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "SJC": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -1509,12 +1533,17 @@
       ]
     },
     "SSI": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-21",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-21",
           "investors": [],
           "round": null
         }
@@ -4121,7 +4150,7 @@
       "notes": []
     },
     "Kinh tế vĩ mô": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
       "notes": []
@@ -4202,6 +4231,12 @@
       "count": 1,
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
+      "notes": []
+    },
+    "Ngân hàng bán lẻ": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
       "notes": []
     },
     "Nuclear Energy Revival": {
@@ -4396,10 +4431,22 @@
       "last_seen": "2026-07-03",
       "notes": []
     },
+    "Thanh khoản doanh nghiệp": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
     "Thị trường bán lẻ": {
       "count": 1,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
+      "notes": []
+    },
+    "Thị trường năng lượng": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
       "notes": []
     },
     "Thị trường tiền số": {
