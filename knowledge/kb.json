@@ -1789,6 +1789,18 @@
         }
       ]
     },
+    "VIMC": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "VPBank": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -1861,6 +1873,18 @@
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "VinFast": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "rounds": [
+        {
+          "date": "2026-07-21",
           "investors": [],
           "round": null
         }
@@ -3921,6 +3945,12 @@
       "last_seen": "2026-07-06",
       "notes": []
     },
+    "Chiến tranh thương mại": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
     "Chính sách tiền tệ": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -4474,6 +4504,18 @@
       "notes": []
     },
     "Tăng trưởng GDP": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Tăng trưởng kinh tế địa phương": {
+      "count": 1,
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Tối ưu hóa vận hành doanh nghiệp": {
       "count": 1,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
