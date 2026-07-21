@@ -39,6 +39,9 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
           ENABLE_LLM_RANKING: ${{ vars.ENABLE_LLM_RANKING || 'false' }}
+          # Legacy AI/startup feeds stay disabled unless an operator opts in;
+          # code still requires explicit economic-impact terms per item.
+          ENABLE_OPTIONAL_ECONOMIC_TECH_SOURCES: ${{ vars.ENABLE_OPTIONAL_ECONOMIC_TECH_SOURCES || 'false' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
           # Legacy fallback trong lúc migration; có thể xoá sau khi CHAT_IDS hoạt động.
