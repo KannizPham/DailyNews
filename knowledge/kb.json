@@ -605,6 +605,18 @@
         }
       ]
     },
+    "Deutsche Bank": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Dialog (Peter Thiel)": {
       "count": 1,
       "first_seen": "2026-07-04",
@@ -1061,6 +1073,18 @@
             "Meta (previous)"
           ],
           "round": "buyback"
+        }
+      ]
+    },
+    "Masan Group": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -1817,12 +1841,17 @@
       ]
     },
     "Techcombank": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-22",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-22",
           "investors": [],
           "round": null
         }
@@ -2008,6 +2037,18 @@
       "rounds": [
         {
           "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Vingroup": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
           "investors": [],
           "round": null
         }
@@ -4278,6 +4319,12 @@
       "last_seen": "2026-07-04",
       "notes": []
     },
+    "Giá dầu": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "notes": []
+    },
     "Gold Market": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -4542,6 +4589,18 @@
       "last_seen": "2026-07-17",
       "notes": []
     },
+    "Rủi ro giải chấp": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "notes": []
+    },
+    "Rủi ro pháp lý ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "notes": []
+    },
     "SEA Fintech": {
       "count": 4,
       "first_seen": "2026-06-29",
@@ -4633,9 +4692,9 @@
       "notes": []
     },
     "Thị trường chứng khoán": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-07-22",
       "notes": []
     },
     "Thị trường năng lượng": {
