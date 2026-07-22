@@ -120,6 +120,18 @@
         }
       ]
     },
+    "Airbus": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Alibaba": {
       "count": 2,
       "first_seen": "2026-07-07",
@@ -359,6 +371,18 @@
             "ZIG Ventures"
           ],
           "round": "Series Unknown"
+        }
+      ]
+    },
+    "Boeing": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -1873,6 +1897,18 @@
           "date": "2026-06-22",
           "investors": "N/A",
           "round": "N/A"
+        }
+      ]
+    },
+    "VEFAC": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "rounds": [
+        {
+          "date": "2026-07-22",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -4074,6 +4110,12 @@
       "last_seen": "2026-07-17",
       "notes": []
     },
+    "Căng thẳng thương mại hàng không": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "notes": []
+    },
     "Data Privacy": {
       "count": 1,
       "first_seen": "2026-07-13",
@@ -4297,6 +4339,12 @@
       "notes": []
     },
     "Lãi suất": {
+      "count": 1,
+      "first_seen": "2026-07-22",
+      "last_seen": "2026-07-22",
+      "notes": []
+    },
+    "Lợi nhuận tài chính": {
       "count": 1,
       "first_seen": "2026-07-22",
       "last_seen": "2026-07-22",
