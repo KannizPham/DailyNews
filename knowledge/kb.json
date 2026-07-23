@@ -557,6 +557,18 @@
         }
       ]
     },
+    "Công ty TNHH Kiểm toán và Tư vấn A&C": {
+      "count": 1,
+      "first_seen": "2026-07-23",
+      "last_seen": "2026-07-23",
+      "rounds": [
+        {
+          "date": "2026-07-23",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "DHL": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -1796,6 +1808,18 @@
           "date": "2026-06-19",
           "investors": "not clear",
           "round": "early access"
+        }
+      ]
+    },
+    "Sá xị Chương Dương": {
+      "count": 1,
+      "first_seen": "2026-07-23",
+      "last_seen": "2026-07-23",
+      "rounds": [
+        {
+          "date": "2026-07-23",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -4356,9 +4380,9 @@
       "notes": []
     },
     "Kinh tế vĩ mô": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-07-23",
       "notes": []
     },
     "LLM": {
@@ -4389,6 +4413,12 @@
       "count": 1,
       "first_seen": "2026-07-22",
       "last_seen": "2026-07-22",
+      "notes": []
+    },
+    "Lạm phát": {
+      "count": 1,
+      "first_seen": "2026-07-23",
+      "last_seen": "2026-07-23",
       "notes": []
     },
     "Lợi nhuận tài chính": {
@@ -4595,6 +4625,12 @@
       "last_seen": "2026-07-22",
       "notes": []
     },
+    "Rủi ro kiểm toán": {
+      "count": 1,
+      "first_seen": "2026-07-23",
+      "last_seen": "2026-07-23",
+      "notes": []
+    },
     "Rủi ro pháp lý ngân hàng": {
       "count": 1,
       "first_seen": "2026-07-22",
@@ -4725,6 +4761,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Tái cấu trúc doanh nghiệp": {
+      "count": 1,
+      "first_seen": "2026-07-23",
+      "last_seen": "2026-07-23",
       "notes": []
     },
     "Tăng trưởng GDP": {
