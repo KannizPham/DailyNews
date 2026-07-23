@@ -1763,6 +1763,18 @@
         }
       ]
     },
+    "SpaceX": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "rounds": [
+        {
+          "date": "2026-07-24",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Standard Chartered": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -1882,13 +1894,18 @@
       ]
     },
     "Tesla": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-06-20",
+      "last_seen": "2026-07-24",
       "rounds": [
         {
           "date": "2026-06-20",
           "investors": null,
+          "round": null
+        },
+        {
+          "date": "2026-07-24",
+          "investors": [],
           "round": null
         }
       ]
@@ -2061,6 +2078,18 @@
       "rounds": [
         {
           "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Vinamilk": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "rounds": [
+        {
+          "date": "2026-07-24",
           "investors": [],
           "round": null
         }
@@ -4140,9 +4169,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-22",
+      "last_seen": "2026-07-24",
       "notes": []
     },
     "Commodity Prices": {
@@ -4179,6 +4208,12 @@
       "count": 1,
       "first_seen": "2026-07-22",
       "last_seen": "2026-07-22",
+      "notes": []
+    },
+    "Cải cách hành chính": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
       "notes": []
     },
     "Data Privacy": {
@@ -4595,6 +4630,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Quản lý thị trường vàng": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "notes": []
+    },
     "Quản trị doanh nghiệp": {
       "count": 1,
       "first_seen": "2026-07-21",
@@ -4764,9 +4805,9 @@
       "notes": []
     },
     "Tái cấu trúc doanh nghiệp": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-23",
-      "last_seen": "2026-07-23",
+      "last_seen": "2026-07-24",
       "notes": []
     },
     "Tăng trưởng GDP": {
@@ -4827,6 +4868,12 @@
       "count": 1,
       "first_seen": "2026-07-13",
       "last_seen": "2026-07-13",
+      "notes": []
+    },
+    "Đầu tư công": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
       "notes": []
     },
     "Địa chính trị": {
