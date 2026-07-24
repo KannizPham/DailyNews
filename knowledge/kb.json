@@ -665,6 +665,18 @@
         }
       ]
     },
+    "Eximbank": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "rounds": [
+        {
+          "date": "2026-07-24",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "FTSE Russell": {
       "count": 1,
       "first_seen": "2026-07-21",
@@ -1112,6 +1124,18 @@
         }
       ]
     },
+    "Maybank": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "rounds": [
+        {
+          "date": "2026-07-24",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Menlo Ventures": {
       "count": 1,
       "first_seen": "2026-06-23",
@@ -1285,6 +1309,18 @@
           "date": "2026-07-11",
           "investors": "Nvidia",
           "round": "financing"
+        }
+      ]
+    },
+    "Nike": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "rounds": [
+        {
+          "date": "2026-07-24",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -4408,6 +4444,12 @@
       "last_seen": "2026-07-19",
       "notes": []
     },
+    "Kinh tế biển": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "notes": []
+    },
     "Kinh tế cửa khẩu": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -4672,6 +4714,12 @@
       "last_seen": "2026-07-23",
       "notes": []
     },
+    "Rủi ro pháp lý": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "notes": []
+    },
     "Rủi ro pháp lý ngân hàng": {
       "count": 1,
       "first_seen": "2026-07-22",
@@ -4792,6 +4840,12 @@
       "last_seen": "2026-07-19",
       "notes": []
     },
+    "Thị trường vốn": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
+      "notes": []
+    },
     "Time Series Foundation Models": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -4802,6 +4856,12 @@
       "count": 1,
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19",
+      "notes": []
+    },
+    "Tài chính ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-07-24",
+      "last_seen": "2026-07-24",
       "notes": []
     },
     "Tái cấu trúc doanh nghiệp": {
