@@ -1800,12 +1800,17 @@
       ]
     },
     "SpaceX": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-07-25",
       "rounds": [
         {
           "date": "2026-07-24",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-25",
           "investors": [],
           "round": null
         }
@@ -1930,9 +1935,9 @@
       ]
     },
     "Tesla": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-06-20",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-07-25",
       "rounds": [
         {
           "date": "2026-06-20",
@@ -1941,6 +1946,11 @@
         },
         {
           "date": "2026-07-24",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-25",
           "investors": [],
           "round": null
         }
@@ -2674,6 +2684,12 @@
       "first_seen": "2026-07-08",
       "last_seen": "2026-07-08"
     },
+    "Robot hình người": {
+      "count": 1,
+      "domain": "Robotics",
+      "first_seen": "2026-07-25",
+      "last_seen": "2026-07-25"
+    },
     "Robotic-assisted prostate cancer care platform": {
       "count": 1,
       "domain": "robotics",
@@ -3404,6 +3420,12 @@
       "last_seen": "2026-06-22",
       "notes": []
     },
+    "Chip": {
+      "count": 1,
+      "first_seen": "2026-07-25",
+      "last_seen": "2026-07-25",
+      "notes": []
+    },
     "Code Generation/Review": {
       "count": 1,
       "first_seen": "2026-07-04",
@@ -3830,6 +3852,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Robotaxi": {
+      "count": 1,
+      "first_seen": "2026-07-25",
+      "last_seen": "2026-07-25",
+      "notes": []
+    },
     "Robotics": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -4204,6 +4232,12 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Chính sách thuế quan": {
+      "count": 1,
+      "first_seen": "2026-07-25",
+      "last_seen": "2026-07-25",
+      "notes": []
+    },
     "Chính sách tiền tệ": {
       "count": 4,
       "first_seen": "2026-07-19",
@@ -4445,9 +4479,9 @@
       "notes": []
     },
     "Kinh tế biển": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-07-25",
       "notes": []
     },
     "Kinh tế cửa khẩu": {
@@ -4682,6 +4716,12 @@
       "count": 1,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Quản trị rủi ro thị trường": {
+      "count": 1,
+      "first_seen": "2026-07-25",
+      "last_seen": "2026-07-25",
       "notes": []
     },
     "Recursive Inference": {
@@ -4931,9 +4971,9 @@
       "notes": []
     },
     "Đầu tư công": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-07-25",
       "notes": []
     },
     "Địa chính trị": {
