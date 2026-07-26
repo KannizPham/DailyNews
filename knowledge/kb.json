@@ -2642,6 +2642,12 @@
       "first_seen": "2026-07-10",
       "last_seen": "2026-07-10"
     },
+    "Pin sạc": {
+      "count": 1,
+      "domain": "Năng lượng",
+      "first_seen": "2026-07-26",
+      "last_seen": "2026-07-26"
+    },
     "Post-Quantum Cybersecurity": {
       "count": 1,
       "domain": "Advanced Materials",
@@ -3456,6 +3462,12 @@
       "last_seen": "2026-07-02",
       "notes": []
     },
+    "Công nghệ lưu trữ năng lượng": {
+      "count": 1,
+      "first_seen": "2026-07-26",
+      "last_seen": "2026-07-26",
+      "notes": []
+    },
     "Data Centers": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -4232,6 +4244,12 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Chuyển đổi xanh": {
+      "count": 1,
+      "first_seen": "2026-07-26",
+      "last_seen": "2026-07-26",
+      "notes": []
+    },
     "Chính sách thuế quan": {
       "count": 1,
       "first_seen": "2026-07-25",
@@ -4604,6 +4622,12 @@
       "last_seen": "2026-06-22",
       "notes": []
     },
+    "Năng lượng": {
+      "count": 1,
+      "first_seen": "2026-07-26",
+      "last_seen": "2026-07-26",
+      "notes": []
+    },
     "OOD / Long-tailed learning": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -4716,6 +4740,12 @@
       "count": 1,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Quản trị rủi ro": {
+      "count": 1,
+      "first_seen": "2026-07-26",
+      "last_seen": "2026-07-26",
       "notes": []
     },
     "Quản trị rủi ro thị trường": {
@@ -4977,9 +5007,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-07-26",
       "notes": []
     }
   }
