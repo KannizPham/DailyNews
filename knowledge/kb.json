@@ -295,9 +295,9 @@
       ]
     },
     "BIDV": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-28",
       "rounds": [
         {
           "date": "2026-07-19",
@@ -306,6 +306,11 @@
         },
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-28",
           "investors": [],
           "round": null
         }
@@ -444,6 +449,18 @@
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Bất động sản Xavinco": {
+      "count": 1,
+      "first_seen": "2026-07-28",
+      "last_seen": "2026-07-28",
+      "rounds": [
+        {
+          "date": "2026-07-28",
           "investors": [],
           "round": null
         }
@@ -2142,12 +2159,17 @@
       ]
     },
     "Vingroup": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-22",
-      "last_seen": "2026-07-22",
+      "last_seen": "2026-07-28",
       "rounds": [
         {
           "date": "2026-07-22",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-28",
           "investors": [],
           "round": null
         }
@@ -2185,6 +2207,18 @@
         {
           "date": "2026-06-28",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "Xà phòng Hà Nội": {
+      "count": 1,
+      "first_seen": "2026-07-28",
+      "last_seen": "2026-07-28",
+      "rounds": [
+        {
+          "date": "2026-07-28",
+          "investors": [],
           "round": null
         }
       ]
@@ -4257,9 +4291,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-07-28",
       "notes": []
     },
     "Commodity Prices": {
@@ -4514,6 +4548,12 @@
       "last_seen": "2026-07-23",
       "notes": []
     },
+    "Kết quả kinh doanh": {
+      "count": 1,
+      "first_seen": "2026-07-28",
+      "last_seen": "2026-07-28",
+      "notes": []
+    },
     "LLM": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -4539,9 +4579,9 @@
       "notes": []
     },
     "Lãi suất": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-22",
-      "last_seen": "2026-07-22",
+      "last_seen": "2026-07-28",
       "notes": []
     },
     "Lạm phát": {
@@ -4952,6 +4992,12 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Tăng trưởng tín dụng": {
+      "count": 1,
+      "first_seen": "2026-07-28",
+      "last_seen": "2026-07-28",
+      "notes": []
+    },
     "Tối ưu hóa vận hành doanh nghiệp": {
       "count": 1,
       "first_seen": "2026-07-21",
@@ -5001,9 +5047,9 @@
       "notes": []
     },
     "Đầu tư công": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-25",
+      "last_seen": "2026-07-28",
       "notes": []
     },
     "Địa chính trị": {
