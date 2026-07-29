@@ -109,12 +109,17 @@
       ]
     },
     "Agribank": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-29",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-29",
           "investors": [],
           "round": null
         }
@@ -870,6 +875,18 @@
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Honda": {
+      "count": 1,
+      "first_seen": "2026-07-29",
+      "last_seen": "2026-07-29",
+      "rounds": [
+        {
+          "date": "2026-07-29",
           "investors": [],
           "round": null
         }
@@ -2123,12 +2140,17 @@
       ]
     },
     "Vietnam Airlines": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-07-29",
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-07-29",
           "investors": [],
           "round": null
         }
@@ -4278,6 +4300,12 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Chuyển đổi mô hình phát triển": {
+      "count": 1,
+      "first_seen": "2026-07-29",
+      "last_seen": "2026-07-29",
+      "notes": []
+    },
     "Chuyển đổi xanh": {
       "count": 1,
       "first_seen": "2026-07-26",
@@ -4294,6 +4322,12 @@
       "count": 5,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-28",
+      "notes": []
+    },
+    "Chính sách tài chính xanh": {
+      "count": 1,
+      "first_seen": "2026-07-29",
+      "last_seen": "2026-07-29",
       "notes": []
     },
     "Commodity Prices": {
@@ -4774,6 +4808,12 @@
       "count": 1,
       "first_seen": "2026-07-24",
       "last_seen": "2026-07-24",
+      "notes": []
+    },
+    "Quản lý đất đai": {
+      "count": 1,
+      "first_seen": "2026-07-29",
+      "last_seen": "2026-07-29",
       "notes": []
     },
     "Quản trị doanh nghiệp": {
