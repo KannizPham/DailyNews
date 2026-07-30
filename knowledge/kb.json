@@ -1002,6 +1002,18 @@
         }
       ]
     },
+    "Kho bạc Nhà nước": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
+      "rounds": [
+        {
+          "date": "2026-07-30",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Kimi": {
       "count": 1,
       "first_seen": "2026-07-16",
@@ -1343,6 +1355,18 @@
           "date": "2026-07-11",
           "investors": "Nvidia",
           "round": "financing"
+        }
+      ]
+    },
+    "Ngân hàng Nhà nước": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
+      "rounds": [
+        {
+          "date": "2026-07-30",
+          "investors": [],
+          "round": null
         }
       ]
     },
@@ -1905,6 +1929,18 @@
       "rounds": [
         {
           "date": "2026-07-23",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Sở Giao dịch Chứng khoán Việt Nam": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
+      "rounds": [
+        {
+          "date": "2026-07-30",
           "investors": [],
           "round": null
         }
@@ -3464,6 +3500,12 @@
       "last_seen": "2026-06-28",
       "notes": []
     },
+    "CBDC": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
+      "notes": []
+    },
     "CLI Agents": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -3486,6 +3528,12 @@
       "count": 1,
       "first_seen": "2026-07-25",
       "last_seen": "2026-07-25",
+      "notes": []
+    },
+    "Chuyển đổi số": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
       "notes": []
     },
     "Code Generation/Review": {
@@ -4306,6 +4354,12 @@
       "last_seen": "2026-07-29",
       "notes": []
     },
+    "Chuyển đổi số": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
+      "notes": []
+    },
     "Chuyển đổi xanh": {
       "count": 1,
       "first_seen": "2026-07-26",
@@ -4319,9 +4373,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-28",
+      "last_seen": "2026-07-30",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -4756,6 +4810,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Pháp lý thị trường vốn": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
+      "notes": []
+    },
     "Policy & Geopolitics": {
       "count": 1,
       "first_seen": "2026-06-28",
@@ -4946,6 +5006,12 @@
       "count": 1,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Thanh khoản liên ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-07-30",
+      "last_seen": "2026-07-30",
       "notes": []
     },
     "Thuế quan": {
