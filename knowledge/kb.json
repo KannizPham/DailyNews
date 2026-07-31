@@ -1773,6 +1773,18 @@
         }
       ]
     },
+    "Sacombank": {
+      "count": 1,
+      "first_seen": "2026-07-31",
+      "last_seen": "2026-07-31",
+      "rounds": [
+        {
+          "date": "2026-07-31",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Sakana AI": {
       "count": 1,
       "first_seen": "2026-06-27",
@@ -4318,6 +4330,12 @@
       "last_seen": "2026-07-12",
       "notes": []
     },
+    "Bất động sản": {
+      "count": 1,
+      "first_seen": "2026-07-31",
+      "last_seen": "2026-07-31",
+      "notes": []
+    },
     "Capital Allocation": {
       "count": 4,
       "first_seen": "2026-06-29",
@@ -4751,9 +4769,9 @@
       "notes": []
     },
     "Năng lượng": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-26",
-      "last_seen": "2026-07-26",
+      "last_seen": "2026-07-31",
       "notes": []
     },
     "OOD / Long-tailed learning": {
@@ -5033,9 +5051,9 @@
       "notes": []
     },
     "Thị trường chứng khoán": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-22",
+      "last_seen": "2026-07-31",
       "notes": []
     },
     "Thị trường năng lượng": {
@@ -5078,6 +5096,12 @@
       "count": 1,
       "first_seen": "2026-07-24",
       "last_seen": "2026-07-24",
+      "notes": []
+    },
+    "Tái cơ cấu ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-07-31",
+      "last_seen": "2026-07-31",
       "notes": []
     },
     "Tái cấu trúc doanh nghiệp": {
