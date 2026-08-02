@@ -1581,6 +1581,18 @@
         }
       ]
     },
+    "Petrolimex": {
+      "count": 1,
+      "first_seen": "2026-08-02",
+      "last_seen": "2026-08-02",
+      "rounds": [
+        {
+          "date": "2026-08-02",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Phú Quý": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -4336,6 +4348,12 @@
       "last_seen": "2026-07-31",
       "notes": []
     },
+    "Can thiệp ngoại hối": {
+      "count": 1,
+      "first_seen": "2026-08-02",
+      "last_seen": "2026-08-02",
+      "notes": []
+    },
     "Capital Allocation": {
       "count": 4,
       "first_seen": "2026-06-29",
@@ -4610,6 +4628,12 @@
       "count": 1,
       "first_seen": "2026-07-22",
       "last_seen": "2026-07-22",
+      "notes": []
+    },
+    "Giá năng lượng": {
+      "count": 1,
+      "first_seen": "2026-08-02",
+      "last_seen": "2026-08-02",
       "notes": []
     },
     "Gold Market": {
@@ -5135,9 +5159,9 @@
       "notes": []
     },
     "Tỷ giá": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-08-02",
       "notes": []
     },
     "Uncertainty": {
@@ -5174,6 +5198,12 @@
       "count": 1,
       "first_seen": "2026-07-13",
       "last_seen": "2026-07-13",
+      "notes": []
+    },
+    "Xuất khẩu thủy sản": {
+      "count": 1,
+      "first_seen": "2026-08-02",
+      "last_seen": "2026-08-02",
       "notes": []
     },
     "Đầu tư công": {
