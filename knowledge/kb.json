@@ -699,6 +699,18 @@
         }
       ]
     },
+    "FPT": {
+      "count": 1,
+      "first_seen": "2026-08-03",
+      "last_seen": "2026-08-03",
+      "rounds": [
+        {
+          "date": "2026-08-03",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "FTSE Russell": {
       "count": 1,
       "first_seen": "2026-07-21",
@@ -2057,6 +2069,18 @@
       "rounds": [
         {
           "date": "2026-07-15",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Thế giới số": {
+      "count": 1,
+      "first_seen": "2026-08-03",
+      "last_seen": "2026-08-03",
+      "rounds": [
+        {
+          "date": "2026-08-03",
           "investors": [],
           "round": null
         }
@@ -4409,9 +4433,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-30",
+      "last_seen": "2026-08-03",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -4673,9 +4697,9 @@
       "notes": []
     },
     "Kinh tế vĩ mô": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-23",
+      "last_seen": "2026-08-03",
       "notes": []
     },
     "Kết quả kinh doanh": {
@@ -4919,9 +4943,9 @@
       "notes": []
     },
     "Quản trị doanh nghiệp": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-08-03",
       "notes": []
     },
     "Quản trị rủi ro": {
@@ -5075,9 +5099,9 @@
       "notes": []
     },
     "Thị trường chứng khoán": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-31",
+      "last_seen": "2026-08-03",
       "notes": []
     },
     "Thị trường năng lượng": {
