@@ -36,6 +36,18 @@
         }
       ]
     },
+    "ACV": {
+      "count": 1,
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-04",
+      "rounds": [
+        {
+          "date": "2026-08-04",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "AMC Robotics Corporation": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -1617,6 +1629,18 @@
         }
       ]
     },
+    "Picomat Holding": {
+      "count": 1,
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-04",
+      "rounds": [
+        {
+          "date": "2026-08-04",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "PinLeads": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -1817,6 +1841,18 @@
         {
           "date": "2026-06-27",
           "investors": null,
+          "round": null
+        }
+      ]
+    },
+    "Sasco": {
+      "count": 1,
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-04",
+      "rounds": [
+        {
+          "date": "2026-08-04",
+          "investors": [],
           "round": null
         }
       ]
@@ -4594,6 +4630,12 @@
       "last_seen": "2026-07-08",
       "notes": []
     },
+    "FDI": {
+      "count": 1,
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-04",
+      "notes": []
+    },
     "FDI Policy": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -5105,9 +5147,9 @@
       "notes": []
     },
     "Thị trường năng lượng": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-08-04",
       "notes": []
     },
     "Thị trường tiền số": {
@@ -5153,9 +5195,15 @@
       "notes": []
     },
     "Tái cấu trúc doanh nghiệp": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-23",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-08-04",
+      "notes": []
+    },
+    "Tín dụng": {
+      "count": 1,
+      "first_seen": "2026-08-04",
+      "last_seen": "2026-08-04",
       "notes": []
     },
     "Tăng trưởng GDP": {
