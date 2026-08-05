@@ -603,6 +603,18 @@
         }
       ]
     },
+    "Công ty cổ phần Đầu tư Quốc tế Hoàng Anh Gia Lai": {
+      "count": 1,
+      "first_seen": "2026-08-05",
+      "last_seen": "2026-08-05",
+      "rounds": [
+        {
+          "date": "2026-08-05",
+          "investors": [],
+          "round": "IPO"
+        }
+      ]
+    },
     "DHL": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -864,9 +876,9 @@
       ]
     },
     "HDBank": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-22",
+      "last_seen": "2026-08-05",
       "rounds": [
         {
           "date": "2026-07-19",
@@ -876,6 +888,13 @@
         {
           "date": "2026-07-22",
           "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-05",
+          "investors": [
+            "Standard Chartered"
+          ],
           "round": null
         }
       ]
@@ -3228,6 +3247,12 @@
       "last_seen": "2026-06-19",
       "pattern_notes": []
     },
+    "Standard Chartered": {
+      "count": 1,
+      "first_seen": "2026-08-05",
+      "last_seen": "2026-08-05",
+      "pattern_notes": []
+    },
     "T": {
       "count": 1,
       "first_seen": "2026-07-17",
@@ -3776,6 +3801,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Hạ tầng dữ liệu": {
+      "count": 1,
+      "first_seen": "2026-08-05",
+      "last_seen": "2026-08-05",
+      "notes": []
+    },
     "IDE integration": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -3804,6 +3835,12 @@
       "count": 1,
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29",
+      "notes": []
+    },
+    "Ký số": {
+      "count": 1,
+      "first_seen": "2026-08-05",
+      "last_seen": "2026-08-05",
       "notes": []
     },
     "LLM": {
@@ -4469,9 +4506,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 7,
+      "count": 8,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-03",
+      "last_seen": "2026-08-05",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -4631,9 +4668,9 @@
       "notes": []
     },
     "FDI": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-08-04",
-      "last_seen": "2026-08-04",
+      "last_seen": "2026-08-05",
       "notes": []
     },
     "FDI Policy": {
@@ -5104,6 +5141,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Số hóa quản lý": {
+      "count": 1,
+      "first_seen": "2026-08-05",
+      "last_seen": "2026-08-05",
+      "notes": []
+    },
     "Talent Gap in Deep Tech": {
       "count": 1,
       "first_seen": "2026-07-03",
@@ -5165,9 +5208,9 @@
       "notes": []
     },
     "Thị trường vốn": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-08-05",
       "notes": []
     },
     "Time Series Foundation Models": {
