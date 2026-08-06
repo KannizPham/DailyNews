@@ -312,9 +312,9 @@
       ]
     },
     "BIDV": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-28",
+      "last_seen": "2026-08-06",
       "rounds": [
         {
           "date": "2026-07-19",
@@ -328,6 +328,11 @@
         },
         {
           "date": "2026-07-28",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-06",
           "investors": [],
           "round": null
         }
@@ -1365,6 +1370,18 @@
         }
       ]
     },
+    "NAPAS": {
+      "count": 1,
+      "first_seen": "2026-08-06",
+      "last_seen": "2026-08-06",
+      "rounds": [
+        {
+          "date": "2026-08-06",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "NVIDIA": {
       "count": 1,
       "first_seen": "2026-06-22",
@@ -2331,6 +2348,18 @@
         },
         {
           "date": "2026-07-28",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Weixin Pay": {
+      "count": 1,
+      "first_seen": "2026-08-06",
+      "last_seen": "2026-08-06",
+      "rounds": [
+        {
+          "date": "2026-08-06",
           "investors": [],
           "round": null
         }
@@ -4209,6 +4238,12 @@
       "last_seen": "2026-07-07",
       "notes": []
     },
+    "Thanh toán QR": {
+      "count": 1,
+      "first_seen": "2026-08-06",
+      "last_seen": "2026-08-06",
+      "notes": []
+    },
     "TimesFM 2.5": {
       "count": 1,
       "first_seen": "2026-06-19",
@@ -4757,6 +4792,12 @@
       "last_seen": "2026-07-11",
       "notes": []
     },
+    "Hạ tầng giao thông": {
+      "count": 1,
+      "first_seen": "2026-08-06",
+      "last_seen": "2026-08-06",
+      "notes": []
+    },
     "Khởi nghiệp": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -5165,6 +5206,12 @@
       "last_seen": "2026-07-30",
       "notes": []
     },
+    "Thanh toán xuyên biên giới": {
+      "count": 1,
+      "first_seen": "2026-08-06",
+      "last_seen": "2026-08-06",
+      "notes": []
+    },
     "Thuế quan": {
       "count": 1,
       "first_seen": "2026-07-22",
@@ -5316,15 +5363,15 @@
       "notes": []
     },
     "Xuất khẩu thủy sản": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-08-02",
-      "last_seen": "2026-08-02",
+      "last_seen": "2026-08-06",
       "notes": []
     },
     "Đầu tư công": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-28",
+      "last_seen": "2026-08-06",
       "notes": []
     },
     "Địa chính trị": {
