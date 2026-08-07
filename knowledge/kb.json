@@ -338,6 +338,18 @@
         }
       ]
     },
+    "BSR": {
+      "count": 1,
+      "first_seen": "2026-08-07",
+      "last_seen": "2026-08-07",
+      "rounds": [
+        {
+          "date": "2026-08-07",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "BVBank": {
       "count": 1,
       "first_seen": "2026-07-22",
@@ -947,6 +959,18 @@
       "rounds": [
         {
           "date": "2026-06-29",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Hưng Thịnh Land": {
+      "count": 1,
+      "first_seen": "2026-08-07",
+      "last_seen": "2026-08-07",
+      "rounds": [
+        {
+          "date": "2026-08-07",
           "investors": [],
           "round": null
         }
@@ -4475,9 +4499,9 @@
       "notes": []
     },
     "Bất động sản": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-31",
-      "last_seen": "2026-07-31",
+      "last_seen": "2026-08-07",
       "notes": []
     },
     "Can thiệp ngoại hối": {
@@ -4516,6 +4540,12 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Chuyển dịch năng lượng": {
+      "count": 1,
+      "first_seen": "2026-08-07",
+      "last_seen": "2026-08-07",
+      "notes": []
+    },
     "Chuyển đổi mô hình phát triển": {
       "count": 1,
       "first_seen": "2026-07-29",
@@ -4541,9 +4571,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 8,
+      "count": 9,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-05",
+      "last_seen": "2026-08-07",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -5063,9 +5093,9 @@
       "notes": []
     },
     "Quản trị doanh nghiệp": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-08-03",
+      "last_seen": "2026-08-07",
       "notes": []
     },
     "Quản trị rủi ro": {
