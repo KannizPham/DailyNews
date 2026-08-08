@@ -668,6 +668,18 @@
         }
       ]
     },
+    "DatVietVAC": {
+      "count": 1,
+      "first_seen": "2026-08-08",
+      "last_seen": "2026-08-08",
+      "rounds": [
+        {
+          "date": "2026-08-08",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "DeepSeek AI": {
       "count": 1,
       "first_seen": "2026-06-27",
@@ -4835,9 +4847,9 @@
       "notes": []
     },
     "Kinh tế biển": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-25",
+      "last_seen": "2026-08-08",
       "notes": []
     },
     "Kinh tế cửa khẩu": {
@@ -4853,9 +4865,9 @@
       "notes": []
     },
     "Kết quả kinh doanh": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-28",
-      "last_seen": "2026-07-28",
+      "last_seen": "2026-08-08",
       "notes": []
     },
     "LLM": {
@@ -5141,9 +5153,9 @@
       "notes": []
     },
     "Rủi ro pháp lý": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-24",
+      "last_seen": "2026-08-08",
       "notes": []
     },
     "Rủi ro pháp lý ngân hàng": {
@@ -5246,6 +5258,12 @@
       "count": 1,
       "first_seen": "2026-07-22",
       "last_seen": "2026-07-22",
+      "notes": []
+    },
+    "Thương mại quốc tế": {
+      "count": 1,
+      "first_seen": "2026-08-08",
+      "last_seen": "2026-08-08",
       "notes": []
     },
     "Thị trường bán lẻ": {
