@@ -2079,12 +2079,17 @@
       ]
     },
     "Sở Giao dịch Chứng khoán Việt Nam": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-30",
-      "last_seen": "2026-07-30",
+      "last_seen": "2026-08-10",
       "rounds": [
         {
           "date": "2026-07-30",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-10",
           "investors": [],
           "round": null
         }
@@ -4666,6 +4671,12 @@
       "last_seen": "2026-07-24",
       "notes": []
     },
+    "Cải cách pháp lý ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-08-10",
+      "last_seen": "2026-08-10",
+      "notes": []
+    },
     "Data Privacy": {
       "count": 1,
       "first_seen": "2026-07-13",
@@ -4877,9 +4888,9 @@
       "notes": []
     },
     "Kinh tế biển": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-08-08",
+      "last_seen": "2026-08-10",
       "notes": []
     },
     "Kinh tế cửa khẩu": {
@@ -5284,6 +5295,12 @@
       "last_seen": "2026-07-30",
       "notes": []
     },
+    "Thanh khoản thị trường vốn": {
+      "count": 1,
+      "first_seen": "2026-08-10",
+      "last_seen": "2026-08-10",
+      "notes": []
+    },
     "Thanh toán xuyên biên giới": {
       "count": 1,
       "first_seen": "2026-08-06",
@@ -5368,6 +5385,12 @@
       "last_seen": "2026-07-31",
       "notes": []
     },
+    "Tái cấu trúc chuỗi cung ứng": {
+      "count": 1,
+      "first_seen": "2026-08-10",
+      "last_seen": "2026-08-10",
+      "notes": []
+    },
     "Tái cấu trúc doanh nghiệp": {
       "count": 3,
       "first_seen": "2026-07-23",
@@ -5444,6 +5467,12 @@
       "count": 1,
       "first_seen": "2026-07-13",
       "last_seen": "2026-07-13",
+      "notes": []
+    },
+    "Xuất khẩu nông sản": {
+      "count": 1,
+      "first_seen": "2026-08-10",
+      "last_seen": "2026-08-10",
       "notes": []
     },
     "Xuất khẩu thủy sản": {
