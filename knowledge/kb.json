@@ -620,6 +620,18 @@
         }
       ]
     },
+    "Công ty cổ phần Vận tải và Xếp dỡ Hải An": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "rounds": [
+        {
+          "date": "2026-08-11",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Công ty cổ phần Đầu tư Quốc tế Hoàng Anh Gia Lai": {
       "count": 1,
       "first_seen": "2026-08-05",
@@ -3506,9 +3518,9 @@
   },
   "tech": {
     "AI": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-19",
+      "last_seen": "2026-08-11",
       "notes": []
     },
     "AI Agent Control": {
@@ -3883,6 +3895,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Hạ tầng AI": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "notes": []
+    },
     "Hạ tầng dữ liệu": {
       "count": 1,
       "first_seen": "2026-08-05",
@@ -3959,6 +3977,12 @@
       "count": 1,
       "first_seen": "2026-06-27",
       "last_seen": "2026-06-27",
+      "notes": []
+    },
+    "Linh kiện điện tử": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
       "notes": []
     },
     "Linux Pressure Stall Information (PSI)": {
@@ -4899,6 +4923,12 @@
       "last_seen": "2026-07-19",
       "notes": []
     },
+    "Kinh tế tư nhân": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "notes": []
+    },
     "Kinh tế vĩ mô": {
       "count": 6,
       "first_seen": "2026-07-21",
@@ -5289,6 +5319,12 @@
       "last_seen": "2026-07-21",
       "notes": []
     },
+    "Thanh khoản hệ thống": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "notes": []
+    },
     "Thanh khoản liên ngân hàng": {
       "count": 1,
       "first_seen": "2026-07-30",
@@ -5403,6 +5439,12 @@
       "last_seen": "2026-08-04",
       "notes": []
     },
+    "Tín dụng ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "notes": []
+    },
     "Tăng trưởng GDP": {
       "count": 1,
       "first_seen": "2026-07-21",
@@ -5467,6 +5509,12 @@
       "count": 1,
       "first_seen": "2026-07-13",
       "last_seen": "2026-07-13",
+      "notes": []
+    },
+    "Xuất khẩu công nghệ": {
+      "count": 1,
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
       "notes": []
     },
     "Xuất khẩu nông sản": {
