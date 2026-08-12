@@ -2235,6 +2235,18 @@
         }
       ]
     },
+    "Tập đoàn Lộc Trời": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
+      "rounds": [
+        {
+          "date": "2026-08-12",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Ubicloud": {
       "count": 1,
       "first_seen": "2026-07-03",
@@ -2296,9 +2308,9 @@
       ]
     },
     "Vietcombank": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-08-12",
       "rounds": [
         {
           "date": "2026-07-19",
@@ -2307,6 +2319,11 @@
         },
         {
           "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-12",
           "investors": [],
           "round": null
         }
@@ -2331,6 +2348,18 @@
       "rounds": [
         {
           "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Vietjet": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
+      "rounds": [
+        {
+          "date": "2026-08-12",
           "investors": [],
           "round": null
         }
@@ -2628,6 +2657,18 @@
           "round": null
         }
       ]
+    },
+    "Đầu tư Phát triển Xây dựng": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
+      "rounds": [
+        {
+          "date": "2026-08-12",
+          "investors": [],
+          "round": null
+        }
+      ]
     }
   },
   "deep_tech": {
@@ -2722,10 +2763,10 @@
       "last_seen": "2026-07-08"
     },
     "Bán dẫn": {
-      "count": 1,
-      "domain": "Sản xuất và đóng gói chip",
+      "count": 2,
+      "domain": "Công nghiệp công nghệ cao",
       "first_seen": "2026-08-09",
-      "last_seen": "2026-08-09"
+      "last_seen": "2026-08-12"
     },
     "Contextual Emotion AI": {
       "count": 1,
@@ -3739,6 +3780,12 @@
       "last_seen": "2026-07-30",
       "notes": []
     },
+    "Chuyển đổi số ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
+      "notes": []
+    },
     "Code Generation/Review": {
       "count": 1,
       "first_seen": "2026-07-04",
@@ -4381,6 +4428,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Vật liệu công nghệ cao": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
+      "notes": []
+    },
     "WireGuard VPN": {
       "count": 1,
       "first_seen": "2026-07-11",
@@ -4618,15 +4671,21 @@
       "notes": []
     },
     "Chuyển đổi số": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-30",
-      "last_seen": "2026-07-30",
+      "last_seen": "2026-08-12",
       "notes": []
     },
     "Chuyển đổi xanh": {
       "count": 1,
       "first_seen": "2026-07-26",
       "last_seen": "2026-07-26",
+      "notes": []
+    },
+    "Chuỗi cung ứng khoáng sản": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
       "notes": []
     },
     "Chính sách thuế quan": {
@@ -4636,9 +4695,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 9,
+      "count": 10,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-07",
+      "last_seen": "2026-08-12",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -5449,6 +5508,12 @@
       "count": 1,
       "first_seen": "2026-07-21",
       "last_seen": "2026-07-21",
+      "notes": []
+    },
+    "Tăng trưởng kinh tế": {
+      "count": 1,
+      "first_seen": "2026-08-12",
+      "last_seen": "2026-08-12",
       "notes": []
     },
     "Tăng trưởng kinh tế địa phương": {
