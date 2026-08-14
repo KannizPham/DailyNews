@@ -500,6 +500,30 @@
         }
       ]
     },
+    "CJ Biomaterials": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
+      "rounds": [
+        {
+          "date": "2026-08-14",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "CJ Group": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
+      "rounds": [
+        {
+          "date": "2026-08-14",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "COMAC": {
       "count": 1,
       "first_seen": "2026-08-13",
@@ -4150,6 +4174,12 @@
       "last_seen": "2026-07-02",
       "notes": []
     },
+    "Nhựa sinh học": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
+      "notes": []
+    },
     "OCR": {
       "count": 1,
       "first_seen": "2026-07-02",
@@ -4515,6 +4545,12 @@
       "first_seen": "2026-07-11",
       "last_seen": "2026-07-11",
       "notes": []
+    },
+    "Điện khí LNG": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
+      "notes": []
     }
   },
   "themes": {
@@ -4626,6 +4662,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "An ninh năng lượng": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
+      "notes": []
+    },
     "Autonomy Stack": {
       "count": 3,
       "first_seen": "2026-06-22",
@@ -4735,9 +4777,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 10,
+      "count": 11,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-12",
+      "last_seen": "2026-08-14",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -5550,6 +5592,12 @@
       "last_seen": "2026-08-04",
       "notes": []
     },
+    "Tín chỉ carbon": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
+      "notes": []
+    },
     "Tín dụng": {
       "count": 1,
       "first_seen": "2026-08-04",
@@ -5626,6 +5674,12 @@
       "count": 1,
       "first_seen": "2026-07-06",
       "last_seen": "2026-07-06",
+      "notes": []
+    },
+    "Vật liệu xanh": {
+      "count": 1,
+      "first_seen": "2026-08-14",
+      "last_seen": "2026-08-14",
       "notes": []
     },
     "Workflow Orchestration": {
