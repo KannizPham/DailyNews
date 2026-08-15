@@ -697,6 +697,18 @@
         }
       ]
     },
+    "Công ty cổ phần Xuất nhập khẩu Bắc Giang": {
+      "count": 1,
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16",
+      "rounds": [
+        {
+          "date": "2026-08-16",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Công ty cổ phần Đầu tư Quốc tế Hoàng Anh Gia Lai": {
       "count": 1,
       "first_seen": "2026-08-05",
@@ -2023,6 +2035,18 @@
         }
       ]
     },
+    "Sany": {
+      "count": 1,
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16",
+      "rounds": [
+        {
+          "date": "2026-08-16",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Sasco": {
       "count": 1,
       "first_seen": "2026-08-04",
@@ -2907,6 +2931,12 @@
       "domain": "Vật liệu tiên tiến",
       "first_seen": "2026-08-15",
       "last_seen": "2026-08-15"
+    },
+    "Công nghệ cao": {
+      "count": 1,
+      "domain": "Công nghiệp",
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16"
     },
     "DSpark": {
       "count": 1,
@@ -3950,6 +3980,12 @@
       "last_seen": "2026-07-02",
       "notes": []
     },
+    "Công nghệ cao": {
+      "count": 1,
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16",
+      "notes": []
+    },
     "Công nghệ lưu trữ năng lượng": {
       "count": 1,
       "first_seen": "2026-07-26",
@@ -4604,6 +4640,12 @@
       "last_seen": "2026-07-13",
       "notes": []
     },
+    "Xe tải điện": {
+      "count": 1,
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16",
+      "notes": []
+    },
     "Xe điện thông minh": {
       "count": 1,
       "first_seen": "2026-08-15",
@@ -5039,9 +5081,9 @@
       "notes": []
     },
     "FDI": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-08-04",
-      "last_seen": "2026-08-05",
+      "last_seen": "2026-08-16",
       "notes": []
     },
     "FDI Policy": {
@@ -5165,9 +5207,9 @@
       "notes": []
     },
     "Kinh tế vĩ mô": {
-      "count": 7,
+      "count": 8,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-08-13",
+      "last_seen": "2026-08-16",
       "notes": []
     },
     "Kết quả kinh doanh": {
@@ -5198,6 +5240,12 @@
       "count": 1,
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29",
+      "notes": []
+    },
+    "Logistics": {
+      "count": 1,
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16",
       "notes": []
     },
     "Lãi suất": {
@@ -5294,6 +5342,12 @@
       "count": 1,
       "first_seen": "2026-06-22",
       "last_seen": "2026-06-22",
+      "notes": []
+    },
+    "Nông nghiệp": {
+      "count": 1,
+      "first_seen": "2026-08-16",
+      "last_seen": "2026-08-16",
       "notes": []
     },
     "Năng lượng": {
@@ -5807,9 +5861,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-26",
+      "last_seen": "2026-08-16",
       "notes": []
     },
     "Địa chính trị công nghệ": {
