@@ -866,12 +866,17 @@
       ]
     },
     "FTSE Russell": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-07-21",
+      "last_seen": "2026-08-17",
       "rounds": [
         {
           "date": "2026-07-21",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-17",
           "investors": [],
           "round": null
         }
@@ -1579,6 +1584,18 @@
       "rounds": [
         {
           "date": "2026-07-30",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Ngân hàng Nhà nước Việt Nam": {
+      "count": 1,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "rounds": [
+        {
+          "date": "2026-08-17",
           "investors": [],
           "round": null
         }
@@ -3244,6 +3261,12 @@
       "first_seen": "2026-06-19",
       "last_seen": "2026-06-19"
     },
+    "Sản xuất khoáng sản": {
+      "count": 1,
+      "domain": "Công nghiệp chiến lược",
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17"
+    },
     "Triangulene-based Superatomic Graphene": {
       "count": 1,
       "domain": "materials science",
@@ -3891,9 +3914,9 @@
       "notes": []
     },
     "Bán dẫn": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-08-09",
-      "last_seen": "2026-08-15",
+      "last_seen": "2026-08-17",
       "notes": []
     },
     "C++ libraries": {
@@ -4146,6 +4169,12 @@
       "count": 1,
       "first_seen": "2026-07-02",
       "last_seen": "2026-07-02",
+      "notes": []
+    },
+    "Khoáng sản chiến lược": {
+      "count": 1,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
       "notes": []
     },
     "Knowledge Conflict Resolution for LLM": {
@@ -4894,6 +4923,12 @@
       "last_seen": "2026-07-26",
       "notes": []
     },
+    "Chuỗi cung ứng": {
+      "count": 1,
+      "first_seen": "2026-08-17",
+      "last_seen": "2026-08-17",
+      "notes": []
+    },
     "Chuỗi cung ứng khoáng sản": {
       "count": 1,
       "first_seen": "2026-08-12",
@@ -4907,9 +4942,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 12,
+      "count": 13,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-15",
+      "last_seen": "2026-08-17",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -5207,9 +5242,9 @@
       "notes": []
     },
     "Kinh tế vĩ mô": {
-      "count": 8,
+      "count": 9,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-08-16",
+      "last_seen": "2026-08-17",
       "notes": []
     },
     "Kết quả kinh doanh": {
@@ -5669,9 +5704,9 @@
       "notes": []
     },
     "Thị trường chứng khoán": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-08-03",
+      "last_seen": "2026-08-17",
       "notes": []
     },
     "Thị trường dầu mỏ": {
@@ -5861,9 +5896,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-16",
+      "last_seen": "2026-08-17",
       "notes": []
     },
     "Địa chính trị công nghệ": {
