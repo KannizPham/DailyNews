@@ -589,6 +589,18 @@
         }
       ]
     },
+    "Chevrolet": {
+      "count": 1,
+      "first_seen": "2026-08-18",
+      "last_seen": "2026-08-18",
+      "rounds": [
+        {
+          "date": "2026-08-18",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Chứng khoán Bảo Minh": {
       "count": 1,
       "first_seen": "2026-07-22",
@@ -942,6 +954,18 @@
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "GM": {
+      "count": 1,
+      "first_seen": "2026-08-18",
+      "last_seen": "2026-08-18",
+      "rounds": [
+        {
+          "date": "2026-08-18",
           "investors": [],
           "round": null
         }
@@ -4995,6 +5019,12 @@
       "last_seen": "2026-07-22",
       "notes": []
     },
+    "Cạnh tranh ngành ô tô": {
+      "count": 1,
+      "first_seen": "2026-08-18",
+      "last_seen": "2026-08-18",
+      "notes": []
+    },
     "Cải cách hành chính": {
       "count": 1,
       "first_seen": "2026-07-24",
@@ -5751,6 +5781,12 @@
       "last_seen": "2026-06-19",
       "notes": []
     },
+    "Trừng phạt kinh tế": {
+      "count": 1,
+      "first_seen": "2026-08-18",
+      "last_seen": "2026-08-18",
+      "notes": []
+    },
     "Tài chính ngân hàng": {
       "count": 1,
       "first_seen": "2026-07-24",
@@ -5878,9 +5914,9 @@
       "notes": []
     },
     "Xuất khẩu nông sản": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-08-10",
-      "last_seen": "2026-08-10",
+      "last_seen": "2026-08-18",
       "notes": []
     },
     "Xuất khẩu thủy sản": {
@@ -5896,9 +5932,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-17",
+      "last_seen": "2026-08-18",
       "notes": []
     },
     "Địa chính trị công nghệ": {
