@@ -697,6 +697,18 @@
         }
       ]
     },
+    "Công ty cổ phần Nguyên liệu Á Châu AIG": {
+      "count": 1,
+      "first_seen": "2026-08-19",
+      "last_seen": "2026-08-19",
+      "rounds": [
+        {
+          "date": "2026-08-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Công ty cổ phần Vận tải và Xếp dỡ Hải An": {
       "count": 1,
       "first_seen": "2026-08-11",
@@ -1211,6 +1223,18 @@
       "rounds": [
         {
           "date": "2026-07-19",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "KCN Việt Nam": {
+      "count": 1,
+      "first_seen": "2026-08-19",
+      "last_seen": "2026-08-19",
+      "rounds": [
+        {
+          "date": "2026-08-19",
           "investors": [],
           "round": null
         }
@@ -3087,6 +3111,12 @@
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29"
     },
+    "Hạ tầng khu công nghiệp": {
+      "count": 1,
+      "domain": "Bất động sản công nghiệp",
+      "first_seen": "2026-08-19",
+      "last_seen": "2026-08-19"
+    },
     "Inkling": {
       "count": 1,
       "domain": "Generative Modeling",
@@ -3938,9 +3968,9 @@
       "notes": []
     },
     "Bán dẫn": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-08-09",
-      "last_seen": "2026-08-17",
+      "last_seen": "2026-08-19",
       "notes": []
     },
     "C++ libraries": {
@@ -4966,9 +4996,9 @@
       "notes": []
     },
     "Chính sách tiền tệ": {
-      "count": 13,
+      "count": 14,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-17",
+      "last_seen": "2026-08-19",
       "notes": []
     },
     "Chính sách tài chính xanh": {
@@ -5146,9 +5176,9 @@
       "notes": []
     },
     "FDI": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-08-04",
-      "last_seen": "2026-08-16",
+      "last_seen": "2026-08-19",
       "notes": []
     },
     "FDI Policy": {
@@ -5697,6 +5727,12 @@
       "last_seen": "2026-07-30",
       "notes": []
     },
+    "Thanh khoản ngân hàng": {
+      "count": 1,
+      "first_seen": "2026-08-19",
+      "last_seen": "2026-08-19",
+      "notes": []
+    },
     "Thanh khoản thị trường vốn": {
       "count": 1,
       "first_seen": "2026-08-10",
@@ -5716,9 +5752,9 @@
       "notes": []
     },
     "Thương mại quốc tế": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-08-08",
-      "last_seen": "2026-08-08",
+      "last_seen": "2026-08-19",
       "notes": []
     },
     "Thị trường bán lẻ": {
