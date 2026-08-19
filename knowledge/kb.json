@@ -613,6 +613,18 @@
         }
       ]
     },
+    "Chứng khoán HSC": {
+      "count": 1,
+      "first_seen": "2026-08-20",
+      "last_seen": "2026-08-20",
+      "rounds": [
+        {
+          "date": "2026-08-20",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
     "Circle": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -728,6 +740,18 @@
       "rounds": [
         {
           "date": "2026-08-16",
+          "investors": [],
+          "round": null
+        }
+      ]
+    },
+    "Công ty cổ phần Xây dựng số 2": {
+      "count": 1,
+      "first_seen": "2026-08-20",
+      "last_seen": "2026-08-20",
+      "rounds": [
+        {
+          "date": "2026-08-20",
           "investors": [],
           "round": null
         }
@@ -5451,6 +5475,12 @@
       "last_seen": "2026-08-09",
       "notes": []
     },
+    "Nợ công": {
+      "count": 1,
+      "first_seen": "2026-08-20",
+      "last_seen": "2026-08-20",
+      "notes": []
+    },
     "OOD / Long-tailed learning": {
       "count": 1,
       "first_seen": "2026-06-26",
@@ -5770,9 +5800,9 @@
       "notes": []
     },
     "Thị trường chứng khoán": {
-      "count": 5,
+      "count": 6,
       "first_seen": "2026-07-21",
-      "last_seen": "2026-08-17",
+      "last_seen": "2026-08-20",
       "notes": []
     },
     "Thị trường dầu mỏ": {
@@ -5833,6 +5863,12 @@
       "count": 1,
       "first_seen": "2026-07-31",
       "last_seen": "2026-07-31",
+      "notes": []
+    },
+    "Tái cơ cấu ngân sách": {
+      "count": 1,
+      "first_seen": "2026-08-20",
+      "last_seen": "2026-08-20",
       "notes": []
     },
     "Tái cấu trúc chuỗi cung ứng": {
@@ -5962,9 +5998,9 @@
       "notes": []
     },
     "Đầu tư công": {
-      "count": 4,
+      "count": 5,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-08-06",
+      "last_seen": "2026-08-20",
       "notes": []
     },
     "Địa chính trị": {
