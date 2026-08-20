@@ -2079,9 +2079,9 @@
       ]
     },
     "SSI": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-07-22",
+      "last_seen": "2026-08-21",
       "rounds": [
         {
           "date": "2026-07-19",
@@ -2095,6 +2095,11 @@
         },
         {
           "date": "2026-07-22",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-21",
           "investors": [],
           "round": null
         }
@@ -4040,9 +4045,9 @@
       "notes": []
     },
     "Chuyển đổi số": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-07-30",
-      "last_seen": "2026-07-30",
+      "last_seen": "2026-08-21",
       "notes": []
     },
     "Chuyển đổi số ngân hàng": {
@@ -4115,6 +4120,12 @@
       "count": 1,
       "first_seen": "2026-06-29",
       "last_seen": "2026-06-29",
+      "notes": []
+    },
+    "Drone": {
+      "count": 1,
+      "first_seen": "2026-08-21",
+      "last_seen": "2026-08-21",
       "notes": []
     },
     "E-Paper": {
@@ -4990,9 +5001,9 @@
       "notes": []
     },
     "Chuyển đổi số": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-30",
-      "last_seen": "2026-08-12",
+      "last_seen": "2026-08-21",
       "notes": []
     },
     "Chuyển đổi xanh": {
@@ -5368,9 +5379,9 @@
       "notes": []
     },
     "Lãi suất": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-22",
-      "last_seen": "2026-07-28",
+      "last_seen": "2026-08-21",
       "notes": []
     },
     "Lạm phát": {
@@ -5739,6 +5750,12 @@
       "last_seen": "2026-07-03",
       "notes": []
     },
+    "Thanh khoản": {
+      "count": 1,
+      "first_seen": "2026-08-21",
+      "last_seen": "2026-08-21",
+      "notes": []
+    },
     "Thanh khoản doanh nghiệp": {
       "count": 1,
       "first_seen": "2026-07-21",
@@ -6004,9 +6021,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 6,
+      "count": 7,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-18",
+      "last_seen": "2026-08-21",
       "notes": []
     },
     "Địa chính trị công nghệ": {
