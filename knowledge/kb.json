@@ -2226,9 +2226,9 @@
       ]
     },
     "SpaceX": {
-      "count": 2,
+      "count": 3,
       "first_seen": "2026-07-24",
-      "last_seen": "2026-07-25",
+      "last_seen": "2026-08-22",
       "rounds": [
         {
           "date": "2026-07-24",
@@ -2237,6 +2237,11 @@
         },
         {
           "date": "2026-07-25",
+          "investors": [],
+          "round": null
+        },
+        {
+          "date": "2026-08-22",
           "investors": [],
           "round": null
         }
@@ -3829,9 +3834,9 @@
   },
   "tech": {
     "AI": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-15",
+      "last_seen": "2026-08-22",
       "notes": []
     },
     "AI Agent Control": {
@@ -4096,6 +4101,12 @@
       "count": 1,
       "first_seen": "2026-07-26",
       "last_seen": "2026-07-26",
+      "notes": []
+    },
+    "Công nghệ số": {
+      "count": 1,
+      "first_seen": "2026-08-22",
+      "last_seen": "2026-08-22",
       "notes": []
     },
     "Data Centers": {
@@ -5043,9 +5054,9 @@
       "notes": []
     },
     "Chính sách tài khóa": {
-      "count": 1,
+      "count": 2,
       "first_seen": "2026-08-09",
-      "last_seen": "2026-08-09",
+      "last_seen": "2026-08-22",
       "notes": []
     },
     "Commodity Prices": {
@@ -5312,6 +5323,12 @@
       "last_seen": "2026-08-06",
       "notes": []
     },
+    "IPO": {
+      "count": 1,
+      "first_seen": "2026-08-22",
+      "last_seen": "2026-08-22",
+      "notes": []
+    },
     "Khởi nghiệp": {
       "count": 1,
       "first_seen": "2026-07-19",
@@ -5328,6 +5345,12 @@
       "count": 1,
       "first_seen": "2026-07-19",
       "last_seen": "2026-07-19",
+      "notes": []
+    },
+    "Kinh tế số": {
+      "count": 1,
+      "first_seen": "2026-08-22",
+      "last_seen": "2026-08-22",
       "notes": []
     },
     "Kinh tế tư nhân": {
@@ -5379,9 +5402,9 @@
       "notes": []
     },
     "Lãi suất": {
-      "count": 3,
+      "count": 4,
       "first_seen": "2026-07-22",
-      "last_seen": "2026-08-21",
+      "last_seen": "2026-08-22",
       "notes": []
     },
     "Lạm phát": {
@@ -6021,9 +6044,9 @@
       "notes": []
     },
     "Địa chính trị": {
-      "count": 7,
+      "count": 8,
       "first_seen": "2026-07-19",
-      "last_seen": "2026-08-21",
+      "last_seen": "2026-08-22",
       "notes": []
     },
     "Địa chính trị công nghệ": {
